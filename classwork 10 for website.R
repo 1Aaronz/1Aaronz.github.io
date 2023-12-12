@@ -31,3 +31,9 @@ g2a <- ny_pincp %>%
 
 
 
+Q2c <- ggplot(Q2b, aes(x = posteam, y = pass)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+

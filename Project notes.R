@@ -33,7 +33,18 @@ write_csv(diamonds, "diamonds.csv") # to save data.frame as a csv file
 
 # to create new blog post: copy in blog
 
+```
 
-# Quarto ------------------------------------------------------------------
+``` backticks
 
-quarto render
+
+# Html format -------------------------------------------------------------
+
+
+---
+  title: "Habits"
+author: YOUR_NAME
+date: November 27, 2023
+format: 
+  html
+---
