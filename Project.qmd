@@ -56,7 +56,7 @@ We retrieved the dataset "Stock Market: Historical Data of Top 10 Companies" fro
 ## Loading in Data
 
 ```{r}
-Stock_data <- read.csv("/Users/aaron/Downloads/archive/data.csv")
+Stock_data <- read.csv("C:/Users/aaron/Documents/data analitics/1Aaronz.github.io/danl-website-template-master/project_files/archive/data.csv")
 head(Stock_data)
 ```
 
@@ -146,7 +146,7 @@ ggplot(StocksChange, aes( x = Company, y = PVT)) +
 # How does higher volume correlate with an increase in price for the different companies?
 
 ```{r}
-stocks <- read_csv("/Users/aaron/Downloads/archive/data.csv")
+stocks <- read_csv("C:/Users/aaron/Documents/data analitics/1Aaronz.github.io/danl-website-template-master/project_files/archive/data.csv")
 
 stocks <- stocks %>% 
   mutate(Open=as.numeric(str_replace_all(Open, "\\$","")), 

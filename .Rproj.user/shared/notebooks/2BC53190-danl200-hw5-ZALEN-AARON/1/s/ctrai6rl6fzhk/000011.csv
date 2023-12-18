@@ -1,6 +1,0 @@
-"0","top_passers <- summary_data %>%
-  filter(n_pass >= third_quartile) %>%
-  sort(n_pass, decreasing)
-"
-"2","Error: object 'n_pass' not found
-"
