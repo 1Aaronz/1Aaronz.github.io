@@ -1,0 +1,34 @@
+"0","Stock_data_clean <- Stock_data %>% "
+"0","  mutate(Close.Last.Numeric = gsub(""\\$"","""", Stock_data$Close.Last),"
+"0","         Open.Numeric = gsub(""\\$"","""", Stock_data$Open),"
+"0","         High.Numeric = gsub(""\\$"","""", Stock_data$High),"
+"0","         Low.Numeric = gsub(""\\$"","""", Stock_data$Low)) %>% "
+"0","  mutate(Close_Last = as.numeric(Close.Last.Numeric),"
+"0","         Open_Numeric = as.numeric(Open.Numeric),"
+"0","         High_Numeric = as.numeric(High.Numeric),"
+"0","         Low_Numeric  = as.numeric(Low.Numeric)) %>% "
+"0","  select(Company, Date, Volume, Close_Last:Low_Numeric)"
+"0",""
+"0","skim(Stock_data_clean)"
+"1","── Data Summary ────────────────────────
+"
+"1","                           Values          
+"
+"1","Name                       Stock_data_clean
+"
+"1","Number of rows             25160           
+"
+"1","Number of columns          7               
+"
+"1","_______________________                    
+"
+"1","Column type frequency:                     
+"
+"1","  character                2               
+"
+"1","  numeric                  5               
+"
+"1","________________________                   
+"
+"1","Group variables            None            
+"

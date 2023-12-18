@@ -1,0 +1,5 @@
+"0","Q2f <- passers_data %>%
+  group_by(passer,week) %>% 
+  summarise(mean_epa= mean(epa))
+"
+"2","`summarise()` has grouped output by 'passer'. You can override using the `.groups` argument."

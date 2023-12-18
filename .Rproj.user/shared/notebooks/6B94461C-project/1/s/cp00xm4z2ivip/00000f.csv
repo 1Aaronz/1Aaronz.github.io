@@ -1,0 +1,2 @@
+"0","Stock_data <- read.csv(""/Users/aaron/Downloads/archive/data.csv"")"
+"0","head(Stock_data)"

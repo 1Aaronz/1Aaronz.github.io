@@ -1,0 +1,5 @@
+"0","threshold <- 0.6"
+"0",""
+"0","high_correlation_pairs <- subset(as.data.frame(which(correlation_matrix > threshold, arr.ind = TRUE)))"
+"0",""
+"0","high_correlation_pairs"

@@ -1,0 +1,3 @@
+"0","ggplot(StocksChange, aes( x = Company, y = PVT)) +"
+"0","  geom_hex()"
+"0",""
