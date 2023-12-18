@@ -1,0 +1,237 @@
+---
+title: DANL-200 Final Project
+subtitle: ""
+author: 
+  - John Christanis 
+  - Jack Katz
+  - Chris Taratko 
+  - Aaron Zalen 
+
+toc: true
+toc-title: "Table of Contents"
+toc-depth: 2
+number-sections: true
+
+fig-width: 9
+
+execute:
+  code-tools: true
+  message: false
+  warning: false
+
+from: markdown+emoji
+---
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+
+theme_set(theme_ipsum()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(10,0,0,0)),
+                axis.title.y = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = margin(0,10,0,0))
+                )
+          )
+```
+
+# Introduction
+
+About this project:
+
+The purpose of our project is to analyze a basket of ten stocks from the years 2013-2023. Through our analysis we make a stock recommendation for two different types of investors: A long-term and Short-term investor. We do this by analyzing changes in stock price, volatility and correlation between the different stock price movements over time.
+
+# Data
+
+We retrieved the dataset "Stock Market: Historical Data of Top 10 Companies" from Kaggle. https://www.kaggle.com/datasets/khushipitroda/stock-market-historical-data-of-top-10-companies The data includes 7 variables and 25160 observations. The variables are Company which is a factor variable for each company name. As well variables that show the price at a given time.
+
+## Loading in Data
+
+```{r}
+Stock_data <- read.csv("/Users/aaron/Downloads/archive/data.csv")
+head(Stock_data)
+```
+
+## Summary Statistics
+
+```{r}
+Stock_data_clean <- Stock_data %>% 
+  mutate(Close.Last.Numeric = gsub("\\$","", Stock_data$Close.Last),
+         Open.Numeric = gsub("\\$","", Stock_data$Open),
+         High.Numeric = gsub("\\$","", Stock_data$High),
+         Low.Numeric = gsub("\\$","", Stock_data$Low)) %>% 
+  mutate(Close_Last = as.numeric(Close.Last.Numeric),
+         Open_Numeric = as.numeric(Open.Numeric),
+         High_Numeric = as.numeric(High.Numeric),
+         Low_Numeric  = as.numeric(Low.Numeric)) %>% 
+  select(Company, Date, Volume, Close_Last:Low_Numeric)
+
+skim(Stock_data_clean)
+```
+
+# Research Question 1: Which stocks have the most historical volatility.
+
+Creating new variables for analysis, Separating by month day and year will make it easier to group and filter observations by year.
+
+```{r}
+Volatility_analysis <- Stock_data_clean %>% 
+  separate(Date, into = c("Month/Day","Year"), sep = 6 )
+
+```
+
+#### Historical volitility for each company in each year.
+
+A simple measure of historical volatility is calculated by finding the standard deviation of the close prices over a time series. In this case we found the standard deviation for each stock for each year and then showed this data on ggplot.
+
+```{r}
+Historical_Volatility <- Volatility_analysis %>% 
+  group_by(Company, Year) %>% 
+  summarise(Volatility = sd(Close_Last))
+
+head(Historical_Volatility)
+```
+
+```{r}
+Volatility <- ggplot(Historical_Volatility,
+       mapping = aes(x = as.numeric(Year),
+                     y = Volatility
+                     )) +
+  geom_point(color = "blue") +
+  geom_line(color = "green") +
+  facet_wrap( . ~Company) +
+  ggtitle("Stock Price Volatility from 2013-2023", subtitle = "In dollars") +
+  labs(x = "Year") +
+  theme_economist_white()
+
+Volatility + scale_x_continuous(breaks = scales::breaks_width(2))
+
+```
+
+From this ggplot we see that Netflix, Meta and Tesla have invreasing volatility over the time series. Some of this can be attributed to the COVID-19 pandemic.
+
+# Which Stocks Are Short Term Investments vs Long Term Investments?
+
+### Figuring out which stocks could be used at short term and Long Term investments was through the use of their pvt indicator Values and MAD (Mean Absolute Deviation) of their Closing Value Change.
+
+```{r}
+StocksUpdated2 <- Stock_data_clean
+
+StocksChange <- StocksUpdated2 %>% 
+  select(Company, Date, `Close_Last`, Volume) %>% 
+  group_by(Company) %>% 
+  mutate(CL_Chg = `Close_Last` - lag(`Close_Last`),
+         V_Chg = Volume - lag(Volume),
+         PVT = (CL_Chg / V_Chg))
+
+```
+
+```{r}
+ggplot(StocksChange, aes( x = Company, y = PVT)) +
+  geom_hex()
+
+```
+
+# PVT = Price Volume Trend Indicator. ( ∆ in Price / ∆ in Volume )
+
+#### PVT will show whether a stock is increasing as a direct relationship to the amount of volume a stock has. Factors that would change this correlation are Total Market shifts or Internal buyouts / increasing the Company's treasury stock.
+
+# How does higher volume correlate with an increase in price for the different companies?
+
+```{r}
+stocks <- read_csv("/Users/aaron/Downloads/archive/data.csv")
+
+stocks <- stocks %>% 
+  mutate(Open=as.numeric(str_replace_all(Open, "\\$","")), 
+         High=as.numeric(str_replace_all(High, "\\$","")), 
+         Close=as.numeric(str_replace_all(`Close/Last`, "\\$","")),
+         Low=as.numeric(str_replace_all(Low, "\\$","")), 
+         Date=str_replace_all(Date, "\\/", "-"))%>% 
+  mutate(Change=Close-Open) %>% 
+  mutate(PercentageChange = ((Close - Open) / Open) * 100) %>% 
+  group_by(Company)
+
+
+ggplot(stocks, aes(y = PercentageChange, x = log10(Volume))) +
+  geom_point(alpha = 0.1, color = "blue") +
+  geom_smooth(method = "lm", color = "red") +
+  facet_wrap(~ Company, scales="free_y") +
+  labs(
+    title = "Percentage Change vs. Volume",
+    x = "Log10 of Volume",
+    y = "Percentage Change",
+    caption = "Blue points represent data, Red line represents linear fit"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
+    strip.text = element_text(size = 12),
+    legend.position = "none"  # Remove legend for better clarity
+  )
+
+```
+
+It appears that for all companies, any correlation between volume and change in price is negligible Tesla has the highest positive correlation, while Microsoft has the highest negative correlation.
+
+```{r}
+# Different graph --------------------------------------------------------------
+
+correlation_by_group <- stocks %>%
+  group_by(Company) %>%
+  summarise(correlation = cor(PercentageChange, Volume))
+
+ggplot(correlation_by_group, aes(x=Company, y=correlation))+
+  geom_col()+
+  labs(title= "How strongly does Volume and Percentage Change in Price Correlate?")
+
+```
+It appears that for all companies, any correlation between volume and change in price is negligible Tesla has the highest positive correlation, while Microsoft has the highest negative correlation.
+
+# Which Stocks, If Any, Are Correlated?
+```{r}
+stocks <- stocks %>% 
+  mutate(Open=as.numeric(str_replace_all(Open, "\\$","")), 
+         High=as.numeric(str_replace_all(High, "\\$","")), 
+         Close=as.numeric(str_replace_all(`Close/Last`, "\\$","")),
+         Low=as.numeric(str_replace_all(Low, "\\$","")), 
+         Date=str_replace_all(Date, "\\/", "-"))%>% 
+  mutate(Change=Close-Open) %>% 
+  mutate(PercentageChange = ((Close - Open) / Open) * 100)
+
+stock <- stocks %>% 
+  select(Company|PercentageChange|Date) %>% 
+  pivot_wider(names_from = "Company", values_from = "PercentageChange")
+
+
+correlation_matrix <- cor(stock[, sapply(stock, is.numeric)], use = "pairwise.complete.obs")
+
+print(correlation_matrix)
+
+```
+This code makes a list of the highly correlated stocks.
+
+```{r}
+threshold <- 0.6
+
+high_correlation_pairs <- subset(as.data.frame(which(correlation_matrix > threshold, arr.ind = TRUE)))
+
+high_correlation_pairs
+```
+
+If more than one stock has a correlation to one another, that means that they share the same volatility and their values increase and decrease together.
+
+
+
+
+# Conclusion
+
+From our analysis we would recommend more volatile stocks for a short term investor and less volatile stocks for a long-term investor. From both of our metrics for volatility, MAD and SD, the most volatile stocks are Tesla, Netflix, Microsoft, and Qualcomm. This can be due to a number of factors. For example Tesla has a sporadic CEO whose actions can lead to big changes in stock price. Also for Qualcomm, which is primarily a microchip company, the current international climate regarding microchips is very controversial. Constant policy regarding pricing and trade have made microchip companies stock prices very volatile. Our last metric was elasticity of price compared to volume. We were not able to make any statistically significant conclusions from this data. The change in volume does not appear to have any significant effect on the stock's price. Stocks that are highly correlated with each other such as Amazon and Netflix. This tells us that both move similarly in price changes so they should be reccomended together.  

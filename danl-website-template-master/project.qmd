@@ -22,6 +22,7 @@ execute:
 
 from: markdown+emoji
 ---
+
 ```{r setup}
 #| include: false
 library(tidyverse)
@@ -43,26 +44,34 @@ theme_set(theme_ipsum()+
           )
 ```
 
-
-
 # Introduction
 
-About this project :clap:
+The goal intended of the research and analysis of the stocks performed was to help people understand what certain stocks would classify as, whether it be a good investment overall, something preferable for the short/long run, what the volatility of a stock is, and other performance functions that would help the reader grasp what to look for when investing.
 
 ```{r}
-1 + 1
-```
 
+```
 
 # Data
 
-The data.frame `mpg` contains a subset of the fuel economy data that the EPA makes available on [https://fueleconomy.gov/](https://fueleconomy.gov/). It contains only models which had a new release every year between 1999 and 2008 - this was used as a proxy for the popularity of the car. :oncoming_automobile:
+We retrieved the dataset \"Stock Market: Historical Data of Top 10 Companies\" from Kaggle. <https://www.kaggle.com/datasets/khushipitroda/stock-market-historical-data-of-top-10-companies>
 
+The data includes 7 variables and 25160 observations. The variables are Company which is a factor variable for each company name. As well as variables that show the price at a given time.
 
 ## Summary Statistics
 
 ```{r}
-mpg <- ggplot2::mpg
+Stock_data_clean <- Stock_data %>% 
+  mutate(Close.Last.Numeric = gsub("\\$","", Stock_data$Close.Last),
+         Open.Numeric = gsub("\\$","", Stock_data$Open),
+         High.Numeric = gsub("\\$","", Stock_data$High),
+         Low.Numeric = gsub("\\$","", Stock_data$Low)) %>% 
+  mutate(Close_Last = as.numeric(Close.Last.Numeric),
+         Open_Numeric = as.numeric(Open.Numeric),
+         High_Numeric = as.numeric(High.Numeric),
+         Low_Numeric  = as.numeric(Low.Numeric)) %>% 
+  select(Company, Date, Volume, Close_Last:Low_Numeric)
+
 ```
 
 ```{r}
@@ -71,16 +80,14 @@ mpg <- ggplot2::mpg
 rmarkdown::paged_table(mpg) 
 ```
 
-
 ```{r}
-skim(mpg) %>% 
+skim(Stock_data_clean) %>% 
   select(-n_missing)
 ```
 
+## Research Question 1: Which Stocks Have the Most Historical Volatility
 
-## MPG and a Type of Cars
 The following boxplot shows how the distribution of highway MPG (`hwy`) varies by a type of cars (`class`) :blue_car: :truck: :minibus:.
-
 
 ```{r}
 ggplot(data = mpg) +
@@ -88,5 +95,3 @@ ggplot(data = mpg) +
                show.legend = F) +
   labs(x = "Class", y = "Highway\nMPG") 
 ```
-
-
