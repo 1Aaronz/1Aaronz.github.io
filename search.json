@@ -107,16 +107,16 @@
   {
     "objectID": "project.html",
     "href": "project.html",
-    "title": "DANL Project",
+    "title": "DANL-200 Final Project",
     "section": "",
-    "text": "About this project 👏\n\n1 + 1\n\n[1] 2"
+    "text": "About this project:\nThe purpose of our project is to analyze a basket of ten stocks from the years 2013-2023. Through our analysis we make a stock recommendation for two different types of investors: A long-term and Short-term investor. We do this by analyzing changes in stock price, volatility and correlation between the different stock price movements over time."
   },
   {
     "objectID": "project.html#summary-statistics",
     "href": "project.html#summary-statistics",
-    "title": "DANL Project",
-    "section": "2.1 Summary Statistics",
-    "text": "2.1 Summary Statistics\n\nmpg <- ggplot2::mpg\n\n\n\n\n  \n\n\n\nskim(mpg) %>% \n  select(-n_missing)\n\n\nData summary\n\n\nName\nmpg\n\n\nNumber of rows\n234\n\n\nNumber of columns\n11\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n6\n\n\nnumeric\n5\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\nskim_variable\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nmanufacturer\n1\n4\n10\n0\n15\n0\n\n\nmodel\n1\n2\n22\n0\n38\n0\n\n\ntrans\n1\n8\n10\n0\n10\n0\n\n\ndrv\n1\n1\n1\n0\n3\n0\n\n\nfl\n1\n1\n1\n0\n5\n0\n\n\nclass\n1\n3\n10\n0\n7\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\ndispl\n1\n3.47\n1.29\n1.6\n2.4\n3.3\n4.6\n7\n▇▆▆▃▁\n\n\nyear\n1\n2003.50\n4.51\n1999.0\n1999.0\n2003.5\n2008.0\n2008\n▇▁▁▁▇\n\n\ncyl\n1\n5.89\n1.61\n4.0\n4.0\n6.0\n8.0\n8\n▇▁▇▁▇\n\n\ncty\n1\n16.86\n4.26\n9.0\n14.0\n17.0\n19.0\n35\n▆▇▃▁▁\n\n\nhwy\n1\n23.44\n5.95\n12.0\n18.0\n24.0\n27.0\n44\n▅▅▇▁▁"
+    "title": "DANL-200 Final Project",
+    "section": "2.2 Summary Statistics",
+    "text": "2.2 Summary Statistics\n\nStock_data_clean &lt;- Stock_data %&gt;% \n  mutate(Close.Last.Numeric = gsub(\"\\\\$\",\"\", Stock_data$Close.Last),\n         Open.Numeric = gsub(\"\\\\$\",\"\", Stock_data$Open),\n         High.Numeric = gsub(\"\\\\$\",\"\", Stock_data$High),\n         Low.Numeric = gsub(\"\\\\$\",\"\", Stock_data$Low)) %&gt;% \n  mutate(Close_Last = as.numeric(Close.Last.Numeric),\n         Open_Numeric = as.numeric(Open.Numeric),\n         High_Numeric = as.numeric(High.Numeric),\n         Low_Numeric  = as.numeric(Low.Numeric)) %&gt;% \n  select(Company, Date, Volume, Close_Last:Low_Numeric)\n\nskim(Stock_data_clean)\n\n\nData summary\n\n\nName\nStock_data_clean\n\n\nNumber of rows\n25160\n\n\nNumber of columns\n7\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n2\n\n\nnumeric\n5\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nCompany\n0\n1\n3\n4\n0\n10\n0\n\n\nDate\n0\n1\n10\n10\n0\n2516\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nVolume\n0\n1\n51317642.69\n63991428.71\n1143952.00\n12003942.50\n26720830.00\n68572694.00\n1.065209e+09\n▇▁▁▁▁\n\n\nClose_Last\n0\n1\n102.46\n101.99\n1.62\n36.57\n65.68\n134.24\n6.916900e+02\n▇▂▁▁▁\n\n\nOpen_Numeric\n0\n1\n102.43\n102.00\n1.62\n36.51\n65.65\n134.32\n6.923500e+02\n▇▂▁▁▁\n\n\nHigh_Numeric\n0\n1\n103.83\n103.53\n1.69\n36.89\n66.49\n136.23\n7.009900e+02\n▇▂▁▁▁\n\n\nLow_Numeric\n0\n1\n101.01\n100.40\n1.61\n36.13\n64.92\n132.66\n6.860900e+02\n▇▂▁▁▁"
   },
   {
     "objectID": "project.html#mpg-and-a-type-of-cars",
@@ -124,5 +124,12 @@
     "title": "DANL Project",
     "section": "2.2 MPG and a Type of Cars",
     "text": "2.2 MPG and a Type of Cars\nThe following boxplot shows how the distribution of highway MPG (hwy) varies by a type of cars (class) 🚙 🚚 🚐.\n\nggplot(data = mpg) +\n  geom_boxplot(aes(x = class, y = hwy, fill = class),\n               show.legend = F) +\n  labs(x = \"Class\", y = \"Highway\\nMPG\")"
+  },
+  {
+    "objectID": "project.html#loading-in-data",
+    "href": "project.html#loading-in-data",
+    "title": "DANL-200 Final Project",
+    "section": "2.1 Loading in Data",
+    "text": "2.1 Loading in Data\n\nStock_data &lt;- read.csv(\"C:/Users/aaron/Documents/data analitics/Dataproject/1Aaronz/data.csv\")\nhead(Stock_data)\n\n  Company       Date Close.Last   Volume    Open      High      Low\n1    AAPL 07/17/2023    $193.99 50520160 $191.90   $194.32  $191.81\n2    AAPL 07/14/2023    $190.69 41616240 $190.23 $191.1799  $189.63\n3    AAPL 07/13/2023    $190.54 41342340 $190.50   $191.19  $189.78\n4    AAPL 07-12-2023    $189.77 60750250 $189.68   $191.70  $188.47\n5    AAPL 07-11-2023    $188.08 46638120 $189.16   $189.30  $186.60\n6    AAPL 07-10-2023    $188.61 59922160 $189.26   $189.99 $187.035"
   }
 ]
