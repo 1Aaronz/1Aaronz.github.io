@@ -3,9 +3,8 @@ title: "Aaron Zalen"
 about:
   template: jolla  # Options: jolla, trestles, solana, marquee, broadside
   image: img/profile.png
-
-image-width: 16em
-image-shape: round
+  image-width: 16em
+  image-shape: round
 
 links:
   - icon: linkedin
@@ -16,11 +15,11 @@ links:
     href: https://github.com
   - icon: file-text
     text: Resumé
-    href: resume-example.pdf
+    href: resume.pdf
     target: _blank
   - icon: mailbox
     text: Email
-    href: mailto:YOUR_EMAIL@geneseo.edu
+    href: mailto:arz1@geneseo.edu
 ---
 
 I am a junior year Data Analytics major at SUNY Geneseo. My biggest hobby is strategy board games. I enjoy reading in my free time.
