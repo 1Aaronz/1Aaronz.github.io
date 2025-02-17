@@ -4,12 +4,10 @@ author: Aaron Zaleb
 date: 2025-02-14
 categories: [Python, Coding, Blog] # tags for a blog post (e.g., python)
 image: "image.png"
-jupyter: python3
 toc: true
 ---
 
-```{python}
-
+```{}
 ```
 
 ![](image.png)

@@ -9,8 +9,6 @@ website:
     left:
       - text: Blog
         href: blog-listing.qmd
-      - text: Python Basics
-        href: blog/python_basics.ipynb
       - text: Project
         href: danl_proj_nba.ipynb
       - text: Python Data Analysis

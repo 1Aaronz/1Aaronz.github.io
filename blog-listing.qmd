@@ -1,15 +1,10 @@
 ---
-title: "Insightful Analytics<br><br>"
-listing:
-  contents: posts
-  type: default
-  sort:
-    - "date desc"
-    - "title desc"
-  categories: true
-  sort-ui: true
-  filter-ui: true
-  fields: [image, date, title, author, reading-time]
-
-page-layout: full
+title: python_basics
+author: Aaron Zaleb
+date: 2025-02-14
+categories: [Python, Coding, Blog] # tags for a blog post (e.g., python)
+image: "image.png"
+toc: true
 ---
+
+Coding with python is pretty similar with coding using r. "=" is used to assign variables we can do various math operations using +, -, \*, /, \*\* and the like. Python also uses \# to signify comments. The main difference from R is that indexing starts at 0.
