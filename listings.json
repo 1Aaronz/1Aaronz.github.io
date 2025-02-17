@@ -2,9 +2,20 @@
   {
     "listing": "/blog-listing.html",
     "items": [
+      "/posts/post-with-code/index.html",
+      "/danl-website-template-master/posts/welcome/index.html",
       "/posts/welcome/index.html",
+      "/danl-website-template-master/posts/starwars/starwars_df.html",
       "/posts/starwars/starwars_df.html",
-      "/posts/post-with-code/index.html"
+      "/danl-website-template-master/posts/post-with-code/index.html"
+    ]
+  },
+  {
+    "listing": "/danl-website-template-master/blog-listing.html",
+    "items": [
+      "/danl-website-template-master/posts/welcome/index.html",
+      "/danl-website-template-master/posts/starwars/starwars_df.html",
+      "/danl-website-template-master/posts/post-with-code/index.html"
     ]
   }
 ]
