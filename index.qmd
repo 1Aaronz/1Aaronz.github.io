@@ -1,39 +1,35 @@
 ---
-title: "YOUR NAME" 
+title: "Aaron Zalen" 
 about:
-  template: jolla  # jolla  trestles  solana  marquee  broadside
+  template: jolla  # Options: jolla, trestles, solana, marquee, broadside
   image: img/profile.png
-  image-width: 16em
-  image-shape: round # rectangle  round  rounded
-  
-  links:
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com
-    - icon: github
-      text: GitHub
-      href: https://github.com
-    - icon: file-earmark-pdf
-      text: Resumé
-      href: resume-example.pdf
-      target: _blank
-    - icon: mailbox
-      text: Email
-      href: mailto:YOUR_EMAIL@geneseo.edu
 
+image-width: 16em
+image-shape: round
+
+links:
+  - icon: linkedin
+    text: LinkedIn
+    href: https://linkedin.com
+  - icon: github
+    text: GitHub
+    href: https://github.com
+  - icon: file-text
+    text: Resumé
+    href: resume-example.pdf
+    target: _blank
+  - icon: mailbox
+    text: Email
+    href: mailto:YOUR_EMAIL@geneseo.edu
 ---
 
-
-Finley Malloc majors in Data Analytics at SUNY Geneseo. When not working on data analytics, Finley enjoys spending time unicycling and playing with her pet iguana.
+I am a junior year Data Analytics major at SUNY Geneseo. My biggest hobby is strategy board games. I enjoy reading in my free time.
 
 ## Education
 
-State University of New York at Geneseo | Geneseo, NY <br>
-B.S. in Data Analytics | Aug 2022 - May 2026 <br>
-Minor in Economics
+**State University of New York at Geneseo** | Geneseo, NY  
+**Major in Data Analytics** | Aug 2022 - Present  
 
 ## Experience
 
-Starbucks Analytics | Data Analyst Intern | May 2024 - Aug 2024
-
-
+Hobbyist Data Analyst | March 2023 - Feb 2025
