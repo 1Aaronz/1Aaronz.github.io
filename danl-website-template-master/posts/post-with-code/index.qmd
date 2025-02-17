@@ -1,15 +1,14 @@
 ---
-title: "Post With Code"
-author: "YOUR NAME"
-date: 2025-01-22
-categories: [news, code, analysis]
+title: "Python_Basics"
+author: "Aaron Zalen"
+date: 2025-02-17
+categories: [Python, code, analysis]
 image: "image.jpg"
 ---
 
-This is a post with executable code with no space in the folder name.
+Coding with python is pretty similar with coding using r. "=" is used to assign variables we can do various math operations using +, -, \*, /, \*\* and the like. Python also uses \# to signify comments. The main difference from R is that indexing starts at 0.
 
-```{r}
-1 + 1
-```
 
-![](image.jpg)
+
+
+![](image.png)
