@@ -17,6 +17,9 @@ website:
             href: pandas_basic.ipynb
           - text: Seaborn Basics
             href: seaborn_basic.ipynb
+      - text: resume
+        href: resume.pdf
+        
 
   page-footer: 
     center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© YOUR NAME, 2025"
