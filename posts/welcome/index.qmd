@@ -1,8 +1,8 @@
 ---
-title: "Welcome To My Blog"
-author: "YOUR NAME"
-date: "2025-01-22"
-categories: [news]
+title: "Spotify Playlist"
+author: "Aaron Zalen"
+date: "2025-03-3"
+categories: [music]
 ---
 
 This is the first post in a Quarto blog. Welcome!
