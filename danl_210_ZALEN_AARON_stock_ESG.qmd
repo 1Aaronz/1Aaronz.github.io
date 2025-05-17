@@ -1,0 +1,204 @@
+---
+title: "ESG Risk Factors and Financial Performance Analysis"
+format: html
+---
+
+## Introduction
+
+### Background
+
+This analysis examines the relationship between ESG risk scores and financial performance for major corporations. ESG measurements are a key metric for weighing the sustainability of a given company. 
+
+### Statement of the Problem
+
+The primary questions I aim to answer are as follows:
+
+1\. Is there a correlation between total ESG risk and stock returns?
+
+2\. Which risk pillar (Environmental, Social, or Governance) most impacts performance?
+
+
+### Data Collection
+
+Data sources include:
+
+\- ESG risk scores from Yahoo Finance
+
+\-Historical stock prices from bcdanl.github.io/data/stock_history_2023.csv
+
+## Descriptive Statistics
+
+```{python}
+#| echo: true
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, Markdown
+
+# Load and prepare ESG data
+esg_data = pd.read_csv("C:/Users/aaron/Documents/DANL 210/projectdata/danl_210_ZALEN_AARON_ESG.csv")
+
+# Download and process stock data
+stock_data = pd.read_csv("https://bcdanl.github.io/data/stock_history_2023.csv")
+stock_data['Date'] = pd.to_datetime(stock_data['Date'])
+stock_returns = stock_data.groupby('Symbol')['Close'].apply(
+    lambda x: x.iloc[-1]/x.iloc[0] - 1
+).reset_index().rename(columns={'Close':'Annual_Return'})
+
+# Merge datasets
+merged = pd.merge(esg_data, stock_returns, on='Symbol', how='inner')
+### ESG Risk Profiles
+
+#| echo: false
+import pandas as pd
+from IPython.display import display, Markdown
+
+# Load ESG data
+esg_data = pd.read_csv("C:/Users/aaron/Documents/DANL 210/projectdata/danl_210_ZALEN_AARON_ESG.csv")
+
+# Summary statistics
+esg_summary = esg_data.agg({
+    'Symbol': 'nunique',
+    'Total_ESG_Risk': 'mean',
+    'Environmental_Risk': 'mean',
+    'Social_Risk': 'mean',
+    'Governance_Risk': 'mean'
+}).rename({
+    'Symbol': 'Companies',
+    'Total_ESG_Risk': 'Avg_Total_Risk',
+    'Environmental_Risk': 'Avg_Environmental',
+    'Social_Risk': 'Avg_Social',
+    'Governance_Risk': 'Avg_Governance'
+}).to_frame().T
+
+display(Markdown("### Overall ESG Risk Profile"))
+display(esg_summary)
+```
+
+**Risk Distribution by Category**
+
+```{python}
+#| fig-cap: "Distribution of ESG Risk Components"
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+melted = esg_data.melt(
+    id_vars=['Symbol'],
+    value_vars=['Environmental_Risk', 'Social_Risk', 'Governance_Risk'],
+    var_name='Risk_Type',
+    value_name='Score'
+)
+
+plt.figure(figsize=(10, 6))
+sns.kdeplot(data=melted, x='Score', hue='Risk_Type', fill=True, alpha=0.5)
+plt.title('Distribution of ESG Risk Components')
+plt.xlabel('Risk Score')
+plt.ylabel('Density')
+plt.show()
+```
+
+When comparing the various risk scores to each other, we see that they follow different types of data distribution.
+
+Environmental risk has a right scew, so while most companies have a small environmental risk, the companies that do have a high environmental risk tend to have a disproportionately high risk.
+
+Government risk has a low standard deviation, with most companies falling around 5.
+
+Social risk has a higher standard deviation than government risk, and averages a bit higher at around 10.
+
+## Correlation Analysis
+
+```{python}
+#| label: corr-heatmap
+#| fig-cap: "ESG Risk-Financial Performance Correlation"
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Create correlation matrix
+corr_matrix = merged[['Total_ESG_Risk', 
+                     'Environmental_Risk', 
+                     'Social_Risk', 
+                     'Governance_Risk',
+                     'Annual_Return']].corr()
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, 
+           annot=True, 
+           cmap='coolwarm',
+           vmin=-1, 
+           vmax=1)
+plt.title('ESG Risk vs. Financial Returns')
+plt.show()
+```
+
+It appears that ESG scores and average annual return are minimally correlated. For all ESG scores besides governance, there is a slight positive correlation, meaning the stock is actually associated with a higher annual return for higher scores. The only negatively correlated metric is governance, with a slight negative correlation to annual returns
+
+```{python}
+# Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, Markdown
+
+# Key Metrics
+display(Markdown("### Key Metrics"))
+gov_corr = merged['Governance_Risk'].corr(merged['Annual_Return'])
+display(Markdown(f"* Governance Risk correlation with returns: {gov_corr:.2f}"))
+
+
+plt.figure(figsize=(14, 6))
+display(Markdown("### ESG Risk vs. Returns Analysis"))
+sns.regplot(
+    data=merged,
+    x='Total_ESG_Risk',
+    y='Annual_Return',
+    scatter_kws={'s': 80, 'alpha': 0.7, 'color': 'steelblue'},
+    line_kws={'color': 'red', 'linestyle': '--'}
+)
+plt.title('Total ESG Risk vs. Annual Returns', fontsize=14)
+plt.xlabel('Total ESG Risk Score', fontsize=12)
+plt.ylabel('Annual Return (%)', fontsize=12)
+plt.axhline(0, color='gray', linestyle=':')
+plt.grid(True, alpha=0.3)
+
+# Add company labels for outliers
+for idx, row in merged.nlargest(3, 'Annual_Return').iterrows():
+    plt.annotate(row['Symbol'], (row['Total_ESG_Risk'], row['Annual_Return']),
+                 xytext=(5,5), textcoords='offset points')
+for idx, row in merged.nsmallest(3, 'Annual_Return').iterrows():
+    plt.annotate(row['Symbol'], (row['Total_ESG_Risk'], row['Annual_Return']),
+                 xytext=(5,-15), textcoords='offset points')
+
+plt.tight_layout()
+plt.show()
+
+# 4. Component Analysis
+display(Markdown("### Risk Component Breakdown"))
+fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+components = ['Environmental_Risk', 'Social_Risk', 'Governance_Risk']
+titles = ['Environmental', 'Social', 'Governance']
+
+for ax, component, title in zip(axes, components, titles):
+    sns.scatterplot(
+        data=merged,
+        x=component,
+        y='Annual_Return',
+        hue='Total_ESG_Risk',
+        palette='viridis',
+        alpha=0.7,
+        ax=ax
+    )
+    ax.set_title(f'{title} Risk vs Returns', fontsize=12)
+    ax.set_xlabel(f'{title} Risk Score', fontsize=10)
+    ax.axhline(0, color='gray', linestyle=':')
+    ax.grid(True, alpha=0.2)
+
+axes[0].set_ylabel('Annual Return (%)', fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+## Conclusion
+
+This analysis reveals nuanced relationships between ESG risks and financial performance. Surprisingly, environmental and social risks demonstrated weak positive correlations, potentially indicating under-pricing of risks. While total ESG risk showed minimal overall correlation to returns, the component-level analysis proves more valuable, particularly the right-skewed distribution of environmental risks highlighting significant outliers.The findings suggest ESG measurements are not a significant indicator of stock performance.   
+

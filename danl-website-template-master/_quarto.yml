@@ -3,13 +3,15 @@ project:
   output-dir: "." 
 
 website:
-  title: "YOUR NAME"
-  navbar:
-    # background: "#1c4982"
-    pinned: true
-    left:
-      - text: Blog
-        href: blog-listing.qmd
+  title: "Aaron Zalen's website"
+navbar:
+  left:
+  - text: "Home" 
+href: index.qmd
+- text: "Project" 
+href: danl_210_ZALEN_AARON_stock_ESG.qmd
+- text: "Blog"
+href: blog-listing.qmd
             
   page-footer: 
     center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© YOUR NAME, 2025"
