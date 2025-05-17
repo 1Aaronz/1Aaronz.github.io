@@ -20,7 +20,7 @@ website:
 
 
   page-footer: 
-    center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© YOUR NAME, 2025"
+    center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© Aaron Zalen, 2025"
 
 format:
   html:
