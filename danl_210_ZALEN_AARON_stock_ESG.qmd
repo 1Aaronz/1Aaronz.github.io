@@ -108,7 +108,6 @@ Social risk has a higher standard deviation than government risk, and averages a
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Create correlation matrix
 corr_matrix = merged[['Total_ESG_Risk', 
                      'Environmental_Risk', 
                      'Social_Risk', 
@@ -133,10 +132,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from IPython.display import display, Markdown
-
-display(Markdown("### Key Metrics"))
-gov_corr = merged['Governance_Risk'].corr(merged['Annual_Return'])
-display(Markdown(f"* Governance Risk correlation with returns: {gov_corr:.2f}"))
 
 
 plt.figure(figsize=(14, 6))

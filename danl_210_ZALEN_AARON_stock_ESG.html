@@ -205,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="descriptive-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h2>
-<div id="00b79d3c" class="cell" data-execution_count="1">
+<div id="c72f7d33" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -278,7 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Risk Distribution by Category</strong></p>
-<div id="e43459f2" class="cell" data-execution_count="2">
+<div id="2a529069" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -315,21 +315,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create correlation matrix</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> merged[[<span class="st">'Total_ESG_Risk'</span>, </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Environmental_Risk'</span>, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Social_Risk'</span>, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Governance_Risk'</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Annual_Return'</span>]].corr()</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>sns.heatmap(corr_matrix, </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>           annot<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>           cmap<span class="op">=</span><span class="st">'coolwarm'</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>           vmin<span class="op">=-</span><span class="dv">1</span>, </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ESG Risk vs. Financial Returns'</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> merged[[<span class="st">'Total_ESG_Risk'</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Environmental_Risk'</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Social_Risk'</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Governance_Risk'</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Annual_Return'</span>]].corr()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(corr_matrix, </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>           annot<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>           cmap<span class="op">=</span><span class="st">'coolwarm'</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>           vmin<span class="op">=-</span><span class="dv">1</span>, </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ESG Risk vs. Financial Returns'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="corr-heatmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -340,81 +339,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>It appears that ESG scores and average annual return are minimally correlated. For all ESG scores besides governance, there is a slight positive correlation, meaning the stock is actually associated with a higher annual return for higher scores. The only negatively correlated metric is governance, with a slight negative correlation to annual returns</p>
-<div id="ba99427c" class="cell" data-execution_count="4">
+<div id="49b00830" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### Key Metrics"</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>gov_corr <span class="op">=</span> merged[<span class="st">'Governance_Risk'</span>].corr(merged[<span class="st">'Annual_Return'</span>])</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="ss">f"* Governance Risk correlation with returns: </span><span class="sc">{</span>gov_corr<span class="sc">:.2f}</span><span class="ss">"</span>))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### ESG Risk vs. Returns Analysis"</span>))</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>sns.regplot(</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>merged,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    scatter_kws<span class="op">=</span>{<span class="st">'s'</span>: <span class="dv">80</span>, <span class="st">'alpha'</span>: <span class="fl">0.7</span>, <span class="st">'color'</span>: <span class="st">'steelblue'</span>},</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'red'</span>, <span class="st">'linestyle'</span>: <span class="st">'--'</span>}</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Total ESG Risk vs. Annual Returns'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Total ESG Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> merged.nlargest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    plt.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                 xytext<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">5</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> merged.nsmallest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    plt.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>                 xytext<span class="op">=</span>(<span class="dv">5</span>,<span class="op">-</span><span class="dv">15</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### Risk Component Breakdown"</span>))</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">5</span>))</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>components <span class="op">=</span> [<span class="st">'Environmental_Risk'</span>, <span class="st">'Social_Risk'</span>, <span class="st">'Governance_Risk'</span>]</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>titles <span class="op">=</span> [<span class="st">'Environmental'</span>, <span class="st">'Social'</span>, <span class="st">'Governance'</span>]</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, component, title <span class="kw">in</span> <span class="bu">zip</span>(axes, components, titles):</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>merged,</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>component,</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        hue<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span><span class="st">'viridis'</span>,</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Risk vs Returns'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="ss">f'</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="key-metrics" class="level3 cell-output cell-output-display cell-output-markdown">
-<h3 class="anchored" data-anchor-id="key-metrics">Key Metrics</h3>
-</section>
-<div class="cell-output cell-output-display cell-output-markdown">
-<ul>
-<li>Governance Risk correlation with returns: -0.06</li>
-</ul>
-</div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### ESG Risk vs. Returns Analysis"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>sns.regplot(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>merged,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    scatter_kws<span class="op">=</span>{<span class="st">'s'</span>: <span class="dv">80</span>, <span class="st">'alpha'</span>: <span class="fl">0.7</span>, <span class="st">'color'</span>: <span class="st">'steelblue'</span>},</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'red'</span>, <span class="st">'linestyle'</span>: <span class="st">'--'</span>}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Total ESG Risk vs. Annual Returns'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Total ESG Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> merged.nlargest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    plt.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                 xytext<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">5</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> merged.nsmallest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    plt.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                 xytext<span class="op">=</span>(<span class="dv">5</span>,<span class="op">-</span><span class="dv">15</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### Risk Component Breakdown"</span>))</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">5</span>))</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>components <span class="op">=</span> [<span class="st">'Environmental_Risk'</span>, <span class="st">'Social_Risk'</span>, <span class="st">'Governance_Risk'</span>]</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>titles <span class="op">=</span> [<span class="st">'Environmental'</span>, <span class="st">'Social'</span>, <span class="st">'Governance'</span>]</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, component, title <span class="kw">in</span> <span class="bu">zip</span>(axes, components, titles):</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        data<span class="op">=</span>merged,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>component,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        hue<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        palette<span class="op">=</span><span class="st">'viridis'</span>,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        ax<span class="op">=</span>ax</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Risk vs Returns'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="ss">f'</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="esg-risk-vs.-returns-analysis" class="level3 cell-output cell-output-display cell-output-markdown">
 <h3 class="anchored" data-anchor-id="esg-risk-vs.-returns-analysis">ESG Risk vs.&nbsp;Returns Analysis</h3>
 </section>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/cell-5-output-4.png" class="img-fluid figure-img"></p>
+<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -424,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/cell-5-output-6.png" class="img-fluid figure-img"></p>
+<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/cell-5-output-4.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
