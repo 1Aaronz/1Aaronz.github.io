@@ -1,0 +1,54 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Spotify Playlist\"\n",
+        "author: \"Aaron Zalen\"\n",
+        "date: \"2025-03-3\"\n",
+        "categories: [music]\n",
+        "---\n",
+        "\n",
+        "\n",
+        "One of my favorite spotify bands is maybe \"The Hush Sound\"\n"
+      ],
+      "id": "5c3e3f1d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "spotify = pd.read_csv('https://bcdanl.github.io/data/spotify_all.csv')\n",
+        "\n",
+        "hush_sound_playlists = spotify_playlists[spotify_playlists['artist_name'] == 'The Hush Sound'].shape[0]"
+      ],
+      "id": "71cf9738",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "![](thumbnail.jpg)\n",
+        "\n",
+        "Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts."
+      ],
+      "id": "ee3da61b"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "C:\\Python311\\share\\jupyter\\kernels\\python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

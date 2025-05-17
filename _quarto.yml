@@ -1,6 +1,6 @@
-project: 
+project:
   type: website
-  output-dir: "." 
+  output-dir: "."
 
 website:
   title: "Aaron Zalen"
@@ -17,8 +17,6 @@ website:
             href: pandas_basic.ipynb
           - text: Seaborn Basics
             href: seaborn_basic.ipynb
-
-
   page-footer: 
     center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© Aaron Zalen, 2025"
 
@@ -32,5 +30,6 @@ format:
     css: styles.css
     toc: false
     include-after-body: target_blank.html
-      filters:
-      - fontawesome
+
+extensions:
+  - quarto-ext/fontawesome
