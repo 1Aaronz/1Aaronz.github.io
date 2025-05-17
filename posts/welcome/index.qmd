@@ -5,7 +5,17 @@ date: "2025-03-3"
 categories: [music]
 ---
 
-This is the first post in a Quarto blog. Welcome!
+One of my favorite spotify bands is maybe "The Hush Sound"
+
+```{python}
+
+import pandas as pd
+
+spotify = pd.read_csv('https://bcdanl.github.io/data/spotify_all.csv')
+
+hush_sound_playlists = spotify_playlists[spotify_playlists['artist_name'] == 'The Hush Sound'].shape[0]
+
+```
 
 ![](thumbnail.jpg)
 
