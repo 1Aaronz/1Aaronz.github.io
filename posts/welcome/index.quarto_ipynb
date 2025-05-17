@@ -14,7 +14,7 @@
         "\n",
         "One of my favorite spotify bands is maybe \"The Hush Sound\"\n"
       ],
-      "id": "b139ce3a"
+      "id": "937c7616"
     },
     {
       "cell_type": "code",
@@ -24,9 +24,9 @@
         "\n",
         "spotify = pd.read_csv('https://bcdanl.github.io/data/spotify_all.csv')\n",
         "\n",
-        "hush_sound_playlists = spotify[spotify['artist_name'] == 'The Hush Sound'].shape[0]"
+        "hush_sound_playlists = spotify_playlists[spotify_playlists['artist_name'] == 'The Hush Sound'].shape[0]"
       ],
-      "id": "f01e3628",
+      "id": "ed5f05fc",
       "execution_count": null,
       "outputs": []
     },
@@ -38,7 +38,7 @@
         "\n",
         "Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts."
       ],
-      "id": "e5a77d7b"
+      "id": "b252eacb"
     }
   ],
   "metadata": {
