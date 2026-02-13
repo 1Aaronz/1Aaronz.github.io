@@ -1,12 +1,11 @@
 project:
   type: website
-
+  output-dir: .   
+  
 website:
   title: "Aaron Zalen"
   navbar:
     left:
-      - text: Project
-        href: project.qmd
       - text: Blog
         href: blog-listing.qmd
 
