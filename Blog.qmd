@@ -1,0 +1,24 @@
+---
+title: "Blog.qmd"
+editor: visual
+---
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+
+library(tidyverse)
+ice_cream <- read_csv("https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv")
+```
+
+```{r}
+#| eval: true
+#| echo: false
+#| warning: false
+
+rmarkdown::paged_table(
+  readr::read_csv("https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv"),
+  options = list(rows.print = 25)
+)
+```
