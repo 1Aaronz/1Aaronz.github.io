@@ -1,35 +1,17 @@
 project:
   type: website
-  output-dir: "."
 
 website:
-  title: "Aaron Zalen"
+  title: "Aaron Zaeln"
   navbar:
-    pinned: true
     left:
-      - text: Blog
-        href: blog-listing.qmd
       - text: Project
-        href: danl_210_ZALEN_AARON_stock_ESG.qmd
-      - text: Python Data Analysis
-        menu:
-          - text: Pandas Basics
-            href: pandas_basic.ipynb
-          - text: Seaborn Basics
-            href: seaborn_basic.ipynb
-  page-footer: 
-    center: "Powered with GitHub, Quarto, and Jupyter Notebook<br>© Aaron Zalen, 2025"
+        href: project.qmd
+      - text: Blog
+        href: Blog.qmd
 
 format:
   html:
-    theme: 
-      light: flatly
-      dark: darkly
-    mainfont: system-ui
-    highlight-style: atom-one
+    theme: cosmo
     css: styles.css
     toc: false
-    include-after-body: target_blank.html
-
-extensions:
-  - quarto-ext/fontawesome
