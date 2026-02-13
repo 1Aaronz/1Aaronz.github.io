@@ -7,6 +7,23 @@ image: "image.png"
 toc: true
 ---
 
-![](image.png)
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
 
-Coding with python is pretty similar with coding using r. "=" is used to assign variables we can do various math operations using +, -, \*, /, \*\* and the like. Python also uses \# to signify comments. The main difference from R is that coindexing starts at 0.
+library(tidyverse)
+ice_cream <- read_csv("https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv")
+```
+
+```{r}
+#| eval: true
+#| echo: false
+#| warning: false
+
+rmarkdown::paged_table(
+  readr::read_csv("https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv"),
+  options = list(rows.print = 25)
+)
+```
+
