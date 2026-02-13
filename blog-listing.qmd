@@ -1,10 +1,13 @@
 ---
-title: python_basics
-author: Aaron Zaleb
+title: "python_basics"
+author: "Aaron Zalen"
 date: 2025-02-14
-categories: [Python, Coding, Blog] # tags for a blog post (e.g., python)
+categories: [Python, Coding, Blog]
 image: "image.png"
 toc: true
+execute:
+  eval: true
+  echo: true
 ---
 
 ```{r}
