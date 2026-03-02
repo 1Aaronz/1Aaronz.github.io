@@ -7,6 +7,13 @@
     "text": "library(tidyverse)\nice_cream &lt;- read_csv(\"https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv\")"
   },
   {
+    "objectID": "beer_markets.html",
+    "href": "beer_markets.html",
+    "title": "Beer Markets Analysis",
+    "section": "",
+    "text": "testing"
+  },
+  {
     "objectID": "blog-listing.html",
     "href": "blog-listing.html",
     "title": "python_basics",
