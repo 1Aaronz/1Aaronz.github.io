@@ -9,7 +9,7 @@ website:
       - text: Blog
         href: blog-listing.qmd
       - text: "Beer Markets Analysis"
-        href: beer_markets.R
+        href: beer_markets.qmd
 
 format:
   html:
