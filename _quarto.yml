@@ -1,13 +1,15 @@
 project:
   type: website
   output-dir: .   
-  
+
 website:
   title: "Aaron Zalen"
   navbar:
     left:
       - text: Blog
         href: blog-listing.qmd
+      - text: "Beer Markets Analysis"
+        href: beer_markets.R
 
 format:
   html:

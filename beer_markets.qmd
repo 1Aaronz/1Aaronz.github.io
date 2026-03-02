@@ -1,0 +1,13 @@
+---
+title: "Beer Markets Analysis"
+author: "Aaron Zalen"
+date: "2024"
+format: 
+  html:
+    code-fold: true
+    code-tools: true
+    toc: true
+    theme: cosmo
+---
+
+testing
