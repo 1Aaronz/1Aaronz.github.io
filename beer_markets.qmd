@@ -10,4 +10,23 @@ format:
     theme: cosmo
 ---
 
-testing
+```{r}
+#| echo: true
+#| eval: true
+
+library(tidyverse)
+library(stargazer)
+library(broom)
+```
+
+```{r}
+library(tidyverse)
+
+beer_markets <- read_csv(
+  "https://bcdanl.github.io/data/beer_markets_all_cleaned.csv"
+)
+```
+
+```{r}
+beer_sub <- beer_markets %>% filter(container == "CAN" | container == "NON_REFILLABLE_BOTTLE")
+```
