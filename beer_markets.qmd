@@ -132,29 +132,7 @@ rmse3 <- sqrt(mean((model3_pred_test$pred_price_floz - beer_test$price_floz)^2))
 print(c(rmse1,rmse2, rmse3))
 ```
 
-#### It looks like model three performs the best, being off at predicting beer price by about .849 dollars per ounce
-
-### Question 5 — Interpret market effects (Model 3)
-
-Using **Model 3**, interpret the estimated coefficients for the following market indicators:
-
-1.  `market_ALBANY`
-2.  `market_EXURBAN_NY`
-3.  `market_RURAL_NEW_YORK`
-4.  `market_SURBURBAN_NY`
-5.  `market_SYRACUSE`
-6.  `market_URBAN_NY`
-
-**Requirements:**
-
--   Interpret each coefficient **relative to the reference market** (`BUFFALO-ROCHESTER`), holding other variables fixed.
--   Since the outcome is in logs, convert each coefficient to an approximate percent difference using:
-    -   Approximation: $100\times \beta$ (when $|\beta|$ is small)
-    -   Exact: $100\times (\exp(\beta)-1)$
-
-Use whichever you prefer, but be consistent.
-
-**Answer:**
+##### It looks like model three performs the best, being off at predicting beer price by about .849 dollars per ounce
 
 ```{r}
 market_coefs <- tidy(model3) %>%
@@ -170,24 +148,9 @@ print(market_coefs)
 
 #### Compared to buffalo-rochester:
 
-Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper
+######Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper
 
-Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive
-
-### Question 6 — Volume sensitivity and promo (elasticities)
-
-Across the three models, analyze **how sensitive price is to volume**, and how that differs by brand and promo:
-
-1.  In **Model 1**, explain what the coefficient on $\log(\text{beer\_floz})$ means.
-2.  In **Model 2**, show how the volume sensitivity differs by brand.
-3.  In **Model 3**, explain how `promo` changes the sensitivity, and how the effect can differ by brand.
-
-**Requirements:**
-
--   Write the *expression* for the slope of $\log(\text{beer\_floz})$ for:
-    -   a particular brand when `promo = FALSE`
-    -   the same brand when `promo = TRUE`
--   Provide at least **one numeric example** using estimated coefficients from your Model 3 output (pick any one brand).
+######Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive
 
 **Answer:**
 
@@ -233,27 +196,11 @@ results$difference <- results$promo_true - results$promo_false
 results
 ```
 
-The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.
+#######The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.
 
-Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive
+#######Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive
 
-Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.
-
-### Question 7 — Residual diagnostics
-
-For each model (1–3), create a residual plot:
-
--   x-axis: fitted values
--   y-axis: residuals
--   include a horizontal line at 0
-
-Then answer:
-
--   Are residuals centered around 0 on average?
--   Do you see systematic patterns (curvature, fan shape / heteroskedasticity, clusters, outliers)?
--   Which model appears to have the best residual behavior?
-
-**Answer:**
+#######Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.
 
 ```{r}
 model1_pred_test %>% 
@@ -290,17 +237,6 @@ model3_pred_test %>%
   )
 ```
 
-based on the residuals, it isn't clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underpredicted the price by a large margin. All models look close to being centered around 0.
+####based on the residuals, it isn't clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underrepresented the price by a large margin. All models look close to being centered around 0.
 
-### Question 8 — Choose a preferred model
-
-Which model do you prefer most and why? Your answer must reference at least **two** of the following:
-
--   out-of-sample performance (test RMSE)
--   interpretability / simplicity
--   whether interactions are substantively meaningful
--   residual plot patterns
-
-**Answer:**
-
-I would prefer to use model 3. Model 3's RMSE of .008489 is the lowest out of all models. Additionally, the residual plot is on par with all other models.
+####I would prefer to use model 3. Model 3's RMSE of .008489 is the lowest out of all models. Additionally, the residual plot is on par with all other models.
