@@ -1,0 +1,338 @@
+---
+title: "ggplot2 Basics"
+subtitle: "Data Visualization"
+author: "YOUR NAME"
+date: last-modified
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+    highlight-style: atom-one
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Getting Started
+
+This document introduces the **ggplot2** workflow for building clear and professional visualizations in R.
+
+You will learn how to:
+
+- create scatterplots, line plots, and bar charts
+- map variables to aesthetics (`aes()`)
+- control color, size, transparency, and labels
+- use `facet_wrap()` to compare groups
+- polish plots with themes and annotations
+
+<br>
+
+# Setup
+
+## Install (one-time)
+
+```{r}
+# install.packages("tidyverse")
+```
+
+## Load packages
+
+```{r}
+library(tidyverse)
+```
+
+<br>
+
+# The ggplot2 Grammar of Graphics
+
+Most ggplot charts follow this structure:
+
+```{r}
+#| eval: false
+ggplot(data = DATA, aes(x = X_VAR, y = Y_VAR)) +
+  geom_...( ) +
+  labs(title = "...", x = "...", y = "...") +
+  theme_minimal()
+```
+
+Key pieces:
+
+- **Data**: a data frame
+- **Aesthetics (`aes`)**: how variables map to visual elements
+- **Geoms**: the type of plot (points, lines, bars, etc.)
+- **Labels**: title, subtitle, axes, caption
+- **Theme**: overall style
+
+<br>
+
+# Example Dataset
+
+We will use the built-in dataset `mpg` (fuel economy data).
+
+```{r}
+mpg |> glimpse()
+```
+
+<br>
+
+# Scatterplots
+
+## Basic scatterplot
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+## Add transparency
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.5)
+```
+
+## Map color to a categorical variable
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point(alpha = 0.7)
+```
+
+## Map size to a numeric variable
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, size = cyl)) +
+  geom_point(alpha = 0.6)
+```
+
+✅ Rule of thumb:  
+- `color = ...` inside `aes()` means **it changes by data values**  
+- `color = "blue"` outside `aes()` means **fixed color**
+
+<br>
+
+# Trend Lines
+
+## Add a smooth trend
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth()
+```
+
+## Linear regression line
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+<br>
+
+# Faceting (Small Multiples)
+
+Facets create a grid of plots split by a group variable.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  facet_wrap(~ class)
+```
+
+<br>
+
+# Bar Charts
+
+Bar charts are usually used for **categorical variables**.
+
+## Count bar chart
+
+```{r}
+ggplot(mpg, aes(x = class)) +
+  geom_bar()
+```
+
+## Flip coordinates (nice for long labels)
+
+```{r}
+ggplot(mpg, aes(x = class)) +
+  geom_bar() +
+  coord_flip()
+```
+
+## Bar chart with fill color
+
+```{r}
+ggplot(mpg, aes(x = class, fill = drv)) +
+  geom_bar()
+```
+
+<br>
+
+# Summarized Bar Charts
+
+Sometimes you want bars representing *summary statistics* (means, totals, etc.).
+
+## Step 1: Summarize with dplyr
+
+```{r}
+mpg_mean <- mpg |>
+  group_by(class) |>
+  summarise(mean_hwy = mean(hwy), .groups = "drop")
+
+mpg_mean
+```
+
+## Step 2: Plot the summarized data
+
+```{r}
+ggplot(mpg_mean, aes(x = class, y = mean_hwy)) +
+  geom_col()
+```
+
+✅ `geom_bar()` counts rows automatically.  
+✅ `geom_col()` uses your own y-values.
+
+<br>
+
+# Line Charts
+
+Line charts require an x-variable that has a meaningful order (often time).
+
+We will build a small example dataset.
+
+```{r}
+sales <- tibble(
+  month = 1:12,
+  revenue = c(10, 12, 11, 13, 15, 18, 17, 20, 22, 23, 25, 28)
+)
+
+sales
+```
+
+## Basic line plot
+
+```{r}
+ggplot(sales, aes(x = month, y = revenue)) +
+  geom_line()
+```
+
+## Line + points
+
+```{r}
+ggplot(sales, aes(x = month, y = revenue)) +
+  geom_line() +
+  geom_point()
+```
+
+<br>
+
+# Labels and Titles
+
+Use `labs()` to make your charts understandable.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Engine Size vs Highway MPG",
+    subtitle = "Bigger engines usually get lower fuel efficiency",
+    x = "Engine displacement (liters)",
+    y = "Highway MPG",
+    caption = "Source: ggplot2::mpg"
+  )
+```
+
+<br>
+
+# Themes
+
+Themes change the overall style.
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  theme_minimal()
+```
+
+Try a few common ones:
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  theme_classic()
+```
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6) +
+  theme_light()
+```
+
+<br>
+
+# Changing Colors (Manually)
+
+If you want a **custom palette**, you can set:
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point(alpha = 0.7) +
+  scale_color_brewer(palette = "Set2")
+```
+
+Or use a fixed color:
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.7, color = "steelblue")
+```
+
+<br>
+
+# Saving Plots
+
+Use `ggsave()` to export a plot.
+
+```{r}
+p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(alpha = 0.6)
+
+ggsave("my_scatterplot.png", plot = p, width = 7, height = 5, dpi = 300)
+```
+
+<br>
+
+# Practice Problems ✅
+
+1. Create a scatterplot of `cty` vs `hwy`.  
+2. Color points by `drv` and set `alpha = 0.6`.  
+3. Add a linear trend line (`method = "lm"`, `se = FALSE`).  
+4. Use `facet_wrap(~ drv)` to compare groups.  
+5. Create a bar chart of `manufacturer`. Flip the axis using `coord_flip()`.  
+6. Create a summarized bar chart of mean `hwy` by `manufacturer` (**top 10 only**).  
+
+<br>
+
+# Challenge 💡 (Top 10 Manufacturers)
+
+```{r}
+top10 <- mpg |>
+  count(manufacturer, sort = TRUE) |>
+  slice_head(n = 10)
+
+top10
+```
+
+Now:
+
+- filter `mpg` to only these 10 manufacturers
+- compute mean `hwy` by manufacturer
+- make a `geom_col()` plot
+- flip the coordinates and add titles

@@ -1,0 +1,397 @@
+---
+title: "dplyr Basics"
+subtitle: "Data Transformation"
+author: "YOUR NAME"
+date: last-modified
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+    highlight-style: atom-one
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Getting Started
+
+This document introduces the **dplyr** workflow for cleaning, transforming, and summarizing data in R.
+
+You will learn how to:
+
+- select columns with `select()`
+- filter rows with `filter()`
+- sort data with `arrange()`
+- create new variables with `mutate()`
+- summarize data with `summarise()`
+- group operations with `group_by()`
+- combine datasets with joins
+
+<br>
+
+# Setup
+
+## Install (one-time)
+
+```{r}
+# install.packages("tidyverse")
+```
+
+## Load packages
+
+```{r}
+library(tidyverse)
+```
+
+<br>
+
+# A Quick Look at a Dataset
+
+We will use the built-in dataset **`mpg`**.
+
+```{r}
+mpg |> glimpse()
+```
+
+<br>
+
+# The Pipe Operator `|>`
+
+The pipe sends the output of one step into the next step.
+
+```{r}
+mpg |>
+  select(manufacturer, model, year)
+```
+
+This is equivalent to:
+
+```{r}
+select(mpg, manufacturer, model, year)
+```
+
+✅ Use pipes to write code in a clear, step-by-step style.
+
+<br>
+
+# `select()` (Choose Columns)
+
+## Select a few columns
+
+```{r}
+mpg |>
+  select(manufacturer, model, displ, hwy)
+```
+
+## Select a range of columns
+
+```{r}
+mpg |>
+  select(manufacturer:year)
+```
+
+## Remove columns
+
+```{r}
+mpg |>
+  select(-cty, -hwy)
+```
+
+<br>
+
+# `filter()` (Choose Rows)
+
+## Filter by a condition
+
+```{r}
+mpg |>
+  filter(class == "compact")
+```
+
+## Multiple conditions with AND
+
+```{r}
+mpg |>
+  filter(class == "compact", year == 2008)
+```
+
+## OR conditions using `%in%`
+
+```{r}
+mpg |>
+  filter(class %in% c("compact", "suv"))
+```
+
+<br>
+
+# `arrange()` (Sort Rows)
+
+## Sort ascending
+
+```{r}
+mpg |>
+  arrange(hwy)
+```
+
+## Sort descending
+
+```{r}
+mpg |>
+  arrange(desc(hwy))
+```
+
+## Sort by multiple variables
+
+```{r}
+mpg |>
+  arrange(class, desc(hwy))
+```
+
+<br>
+
+# `mutate()` (Create New Variables)
+
+## Create a new variable
+
+```{r}
+mpg |>
+  mutate(hwy_per_liter = hwy / displ)
+```
+
+## Create multiple new variables
+
+```{r}
+mpg |>
+  mutate(
+    hwy_per_liter = hwy / displ,
+    cty_per_liter = cty / displ
+  )
+```
+
+## Use `if_else()` for conditional logic
+
+```{r}
+mpg |>
+  mutate(
+    big_engine = if_else(displ >= 4, "Yes", "No")
+  ) |>
+  count(big_engine)
+```
+
+<br>
+
+# `summarise()` (Compute Summary Statistics)
+
+## One summary value
+
+```{r}
+mpg |>
+  summarise(mean_hwy = mean(hwy))
+```
+
+## Multiple summaries
+
+```{r}
+mpg |>
+  summarise(
+    mean_hwy = mean(hwy),
+    sd_hwy   = sd(hwy),
+    max_hwy  = max(hwy),
+    min_hwy  = min(hwy)
+  )
+```
+
+✅ Tip: Use `na.rm = TRUE` if your data has missing values.
+
+<br>
+
+# `group_by()` + `summarise()` (Grouped Summaries)
+
+## Mean highway MPG by class
+
+```{r}
+mpg |>
+  group_by(class) |>
+  summarise(mean_hwy = mean(hwy), .groups = "drop") |>
+  arrange(desc(mean_hwy))
+```
+
+## Count rows by group
+
+```{r}
+mpg |>
+  group_by(drv) |>
+  summarise(n = n(), .groups = "drop")
+```
+
+<br>
+
+# `count()` (Fast Frequency Tables)
+
+```{r}
+mpg |>
+  count(class, sort = TRUE)
+```
+
+With two variables:
+
+```{r}
+mpg |>
+  count(class, drv, sort = TRUE)
+```
+
+<br>
+
+# `distinct()` (Unique Values)
+
+```{r}
+mpg |>
+  distinct(manufacturer)
+```
+
+Unique combinations:
+
+```{r}
+mpg |>
+  distinct(manufacturer, year)
+```
+
+<br>
+
+# `slice_*()` (Pick Specific Rows)
+
+## Top rows
+
+```{r}
+mpg |>
+  slice_head(n = 5)
+```
+
+## Bottom rows
+
+```{r}
+mpg |>
+  slice_tail(n = 5)
+```
+
+## Top rows by a variable
+
+```{r}
+mpg |>
+  arrange(desc(hwy)) |>
+  slice_head(n = 10)
+```
+
+<br>
+
+# `across()` (Apply Functions to Many Columns)
+
+Example: compute means for multiple numeric columns.
+
+```{r}
+mpg |>
+  summarise(
+    across(c(cty, hwy, displ), mean)
+  )
+```
+
+You can combine with `group_by()`:
+
+```{r}
+mpg |>
+  group_by(class) |>
+  summarise(
+    across(c(cty, hwy), mean),
+    .groups = "drop"
+  )
+```
+
+<br>
+
+# Joining Data (Combining Tables)
+
+Joins combine tables using a matching key column.
+
+We will create two small example tables.
+
+```{r}
+students <- tibble(
+  id = c(101, 102, 103),
+  name = c("Alex", "Bella", "Chris")
+)
+
+grades <- tibble(
+  id = c(101, 103),
+  score = c(95, 88)
+)
+```
+
+## `left_join()` (most common)
+
+```{r}
+students |>
+  left_join(grades, by = "id")
+```
+
+## `inner_join()`
+
+```{r}
+students |>
+  inner_join(grades, by = "id")
+```
+
+## `anti_join()` (find non-matches)
+
+```{r}
+students |>
+  anti_join(grades, by = "id")
+```
+
+<br>
+
+# A Typical dplyr Workflow Example
+
+Goal: find the best average highway MPG by car class (with sample size).
+
+```{r}
+mpg |>
+  group_by(class) |>
+  summarise(
+    mean_hwy = mean(hwy),
+    n = n(),
+    .groups = "drop"
+  ) |>
+  arrange(desc(mean_hwy))
+```
+
+<br>
+
+# Practice Problems ✅
+
+1. Use `select()` to keep only `manufacturer`, `model`, `year`, `hwy`.  
+2. Filter to only cars with `drv == "f"` and `year == 2008`.  
+3. Sort the filtered data by `hwy` (descending).  
+4. Create a new variable `efficiency = hwy / displ`.  
+5. Compute the mean of `efficiency`.  
+6. Compute mean `hwy` by `class` and sort from highest to lowest.  
+7. Find the top 5 classes by mean `hwy`.  
+
+<br>
+
+# Challenge 💡 (Top Manufacturers)
+
+1. Count how many rows each manufacturer has.
+2. Keep only manufacturers with **at least 20 cars** in the dataset.
+3. Compute mean highway MPG by manufacturer.
+4. Sort the results from highest to lowest.
+
+Starter code:
+
+```{r}
+mpg |>
+  count(manufacturer, sort = TRUE)
+```

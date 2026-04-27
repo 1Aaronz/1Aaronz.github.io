@@ -1,0 +1,27 @@
+---
+title: "Aaron Zalen" 
+about:
+  template: jolla  # jolla  trestles  solana  marquee  broadside
+  image: img/profile.png
+  image-width: 16em
+  image-shape: round # rectangle  round  rounded
+  
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/aaron-zalen22
+    - icon: github
+      text: GitHub
+      href: https://github.com/1Aaronz/1Aaronz
+    - icon: file-earmark-pdf
+      text: Resumé
+      href: Resume-new.pdf
+      target: _blank
+    - icon: mailbox
+      text: Email
+      href: mailto:AaronZalen222@gmail.com
+---
+
+## Education
+
+State University of New York at Geneseo \| Geneseo, NY <br> B.S. in Data Analytics \| Aug 2022 - May 2026 <br>

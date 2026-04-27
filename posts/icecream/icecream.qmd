@@ -1,0 +1,91 @@
+---
+title: "Analysis of Ben & Jerry’s Ice Cream Data"
+author: Byeong-Hak Choe
+date: 2026-02-11
+categories: [ice-cream, code, data-analysis, data-visualization]
+image: ben-jerry-ice-cream.png
+
+execute: 
+  warning: false
+  message: false
+  
+toc: true
+---
+```{r}
+#| include: false
+
+library(tidyverse)
+library(rmarkdown)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+
+theme_set(theme_minimal()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x  = element_text(angle = 0,
+                                            size = rel(1.5),
+                                            margin = margin(10,0,0,0)),
+                axis.title.y  = element_text(angle = 0,
+                                            size = rel(1.5),
+                                            margin = margin(0,10,0,0))
+                )
+          )
+
+
+# Set global options for color-blind-friendly scales
+scale_colour_discrete <- function(...) scale_colour_viridis_d(...)
+scale_fill_discrete <- function(...) scale_fill_viridis_d(...)
+
+```
+
+Let's analyze the `starwars` data:
+
+```{r}
+ice_cream <- read_csv("https://bcdanl.github.io/data/ben-and-jerry-cleaned.csv")
+```
+
+
+```{r}
+#| results: asis
+rmarkdown::paged_table(ice_cream) 
+```
+
+
+
+## Variable Description for `ice_cream` data.frame
+
+The following describes the variables in the `ice_cream` data.frame.
+
+
+...
+
+
+```{r}
+ice_cream |> 
+  skim()
+```
+
+## Flavor Description
+
+```{r}
+flavor_desc <- ice_cream |> 
+  count(flavor_descr) |> 
+  arrange(-n)
+```
+
+
+```{r}
+
+
+icecream_sub <- ice_cream |> 
+  filter(flavor_descr %in% flavor_desc$flavor_descr[1:5])
+
+ggplot(icecream_sub,
+       aes(x = priceper1,
+           fill = flavor_descr)) +
+  geom_density(alpha = .25)
+```
+
+
+
+
