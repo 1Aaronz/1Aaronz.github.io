@@ -9,7 +9,7 @@ date: last-modified
 
 execute: 
   echo: true
-  eval: true
+  eval: false
   warning: false
   message: false
   fig-width: 10
@@ -28,7 +28,8 @@ format:
 
 ## This page under construction! Here's a snippet of the project code:
 
-```{text}
+```{.r}
+#| eval: false
 
 library(ggplot2)
 library(patchwork)
