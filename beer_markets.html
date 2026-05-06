@@ -132,6 +132,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./project/marchmadnessproject.html"> 
 <span class="menu-text">March Madness Project</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./danl-310-data-storytelling.qmd"> 
+<span class="menu-text">HSR Visualization</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-analysis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Data Analysis</span>
@@ -201,38 +205,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.2.0
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-
-Please cite as: 
-
-
- Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.
-
- R package version 5.2.3. https://CRAN.R-project.org/package=stargazer 
-
-
-Rows: 73115 Columns: 26
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (15): X_purchase_desc, brand, container, region, state, market, buyertyp...
-dbl  (5): household, quantity, dollar_spent, beer_floz, price_floz
-lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
 <section id="beer-markets-data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="beer-markets-data-analysis">Beer Markets data analysis</h2>
 <p>This blog post will analyze the market for beer. We will explore how the price of beer varies by factors such as can size and region using regression models.</p>
@@ -241,7 +213,7 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(beer_markets)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(beer_markets)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "household"        "X_purchase_desc"  "quantity"         "brand"           
@@ -256,14 +228,14 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
@@ -278,7 +250,7 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>beer_sub <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> <span class="fu">filter</span>(container <span class="sc">==</span> <span class="st">"CAN"</span> <span class="sc">|</span> container <span class="sc">==</span> <span class="st">"NON_REFILLABLE_BOTTLE"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>beer_sub <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> <span class="fu">filter</span>(container <span class="sc">==</span> <span class="st">"CAN"</span> <span class="sc">|</span> container <span class="sc">==</span> <span class="st">"NON_REFILLABLE_BOTTLE"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -287,15 +259,15 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>summarize_by_region <span class="ot">&lt;-</span>  beer_markets <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>summarize_by_region</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>summarize_by_region <span class="ot">&lt;-</span>  beer_markets <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>summarize_by_region</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 4
@@ -313,29 +285,29 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rnd =</span> <span class="fu">runif</span>(<span class="fu">n</span>()))</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&gt;</span> <span class="fl">0.67</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>beer_test <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&lt;=</span> <span class="fl">0.23</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_train) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rnd =</span> <span class="fu">runif</span>(<span class="fu">n</span>()))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&gt;</span> <span class="fl">0.67</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>beer_test <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&lt;=</span> <span class="fl">0.23</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_train) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 23904</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_markets)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_markets)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 73115</code></pre>
@@ -344,33 +316,33 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> brand <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> brand <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> promo <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>model1_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model1_pred_test<span class="sc">$</span>.fitted)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>model2_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model2_pred_test<span class="sc">$</span>.fitted)</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> promo <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model3, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>model3_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model3_pred_test<span class="sc">$</span>.fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>model1_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model1_pred_test<span class="sc">$</span>.fitted)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>model2_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model2_pred_test<span class="sc">$</span>.fitted)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model3, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>model3_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model3_pred_test<span class="sc">$</span>.fitted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   household         X_purchase_desc     quantity            brand      
@@ -442,7 +414,7 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   household         X_purchase_desc     quantity            brand      
@@ -514,7 +486,7 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3_pred_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   household         X_purchase_desc     quantity            brand      
@@ -586,11 +558,11 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rmse1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model1_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>rmse2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model2_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>rmse3 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model3_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View it</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(rmse1,rmse2, rmse3))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rmse1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model1_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>rmse2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model2_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>rmse3 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model3_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View it</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(rmse1,rmse2, rmse3))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.008603649 0.008567392 0.008489148</code></pre>
@@ -602,14 +574,14 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>market_coefs <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model3) <span class="sc">%&gt;%</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"marketBUFFALO-ROCHESTER"</span>, <span class="st">"marketALBANY"</span>, <span class="st">"marketEXURBAN_NY"</span>, <span class="st">"marketRURAL_NEW_YORK"</span>, </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"marketsuburban_ny"</span>, <span class="st">"marketSYRACUSE"</span>, <span class="st">"marketURBAN_NY"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate) <span class="sc">%&gt;%</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_diff =</span> <span class="dv">100</span> <span class="sc">*</span> (<span class="fu">exp</span>(estimate) <span class="sc">-</span> <span class="dv">1</span>)  <span class="co"># Exact percentage difference</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(market_coefs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>market_coefs <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model3) <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"marketBUFFALO-ROCHESTER"</span>, <span class="st">"marketALBANY"</span>, <span class="st">"marketEXURBAN_NY"</span>, <span class="st">"marketRURAL_NEW_YORK"</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"marketsuburban_ny"</span>, <span class="st">"marketSYRACUSE"</span>, <span class="st">"marketURBAN_NY"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate) <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_diff =</span> <span class="dv">100</span> <span class="sc">*</span> (<span class="fu">exp</span>(estimate) <span class="sc">-</span> <span class="dv">1</span>)  <span class="co"># Exact percentage difference</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(market_coefs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
@@ -625,14 +597,14 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </section>
 <section id="compared-to-buffalo-rochester" class="level4">
 <h4 class="anchored" data-anchor-id="compared-to-buffalo-rochester">Compared to buffalo-rochester:</h4>
-<p>######Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper</p>
-<p>######Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive</p>
+<p>Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper</p>
+<p>Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive</p>
 <p><strong>Answer:</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model1<span class="sc">$</span>coefficients[<span class="st">"log(beer_floz)"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model1<span class="sc">$</span>coefficients[<span class="st">"log(beer_floz)"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>log(beer_floz) 
@@ -640,12 +612,12 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model2) <span class="sc">|&gt;</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, <span class="at">elasticity =</span> estimate)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>b2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model2) <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, <span class="at">elasticity =</span> estimate)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>b2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
@@ -659,35 +631,35 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 3</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>main <span class="ot">&lt;-</span> b3[<span class="st">"log(beer_floz)"</span>]</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>promo_main <span class="ot">&lt;-</span> b3[<span class="st">"promoTRUE:log(beer_floz)"</span>]</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get brand names and terms</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>brands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BUD_LIGHT"</span>, <span class="st">"BUSCH_LIGHT"</span>, <span class="st">"COORS_LIGHT"</span>, <span class="st">"MILLER_LITE"</span>, <span class="st">"NATURAL_LIGHT"</span>)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>brand_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="fu">names</span>(b3))]</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>brand_promo_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:promo.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>, <span class="fu">names</span>(b3))]</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>promo_false_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>promo_true_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>promo_false_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>promo_true_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main <span class="sc">+</span> promo_main</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  promo_false_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>]</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  promo_true_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>] <span class="sc">+</span> promo_main <span class="sc">+</span> brand_promo_terms[i<span class="dv">-1</span>]</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">brand =</span> brands,</span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_false =</span> promo_false_values,</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_true =</span> promo_true_values</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>difference <span class="ot">&lt;-</span> results<span class="sc">$</span>promo_true <span class="sc">-</span> results<span class="sc">$</span>promo_false</span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 3</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>main <span class="ot">&lt;-</span> b3[<span class="st">"log(beer_floz)"</span>]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>promo_main <span class="ot">&lt;-</span> b3[<span class="st">"promoTRUE:log(beer_floz)"</span>]</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get brand names and terms</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>brands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BUD_LIGHT"</span>, <span class="st">"BUSCH_LIGHT"</span>, <span class="st">"COORS_LIGHT"</span>, <span class="st">"MILLER_LITE"</span>, <span class="st">"NATURAL_LIGHT"</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>brand_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="fu">names</span>(b3))]</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>brand_promo_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:promo.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>, <span class="fu">names</span>(b3))]</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>promo_false_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>promo_true_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>promo_false_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>promo_true_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main <span class="sc">+</span> promo_main</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  promo_false_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>]</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  promo_true_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>] <span class="sc">+</span> promo_main <span class="sc">+</span> brand_promo_terms[i<span class="dv">-1</span>]</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">brand =</span> brands,</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_false =</span> promo_false_values,</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_true =</span> promo_true_values</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>difference <span class="ot">&lt;-</span> results<span class="sc">$</span>promo_true <span class="sc">-</span> results<span class="sc">$</span>promo_false</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          brand promo_false  promo_true    difference
@@ -698,22 +670,22 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 5 NATURAL_LIGHT  -0.1028821 -0.04207298  0.0608091148</code></pre>
 </div>
 </div>
-<p>#######The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.</p>
-<p>#######Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive</p>
-<p>#######Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.</p>
+<p>The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.</p>
+<p>Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive</p>
+<p>Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="sc">%&gt;%</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 1"</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 1"</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -727,16 +699,16 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="sc">%&gt;%</span>  </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 2"</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="sc">%&gt;%</span>  </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 2"</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -750,16 +722,16 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="sc">%&gt;%</span>  </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 3"</span></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="sc">%&gt;%</span>  </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 3"</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -772,6 +744,9 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
 </div>
 </div>
 </div>
+</section>
+<section id="conclusion" class="level4">
+<h4 class="anchored" data-anchor-id="conclusion">Conclusion:</h4>
 <p>based on the residuals, it isn’t clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underrepresented the price by a large margin. All models look close to being centered around 0.</p>
 <p>I would prefer to use model 3. Model 3’s RMSE of .008489 is the lowest out of all models. Additionally, the residual plot is on par with all other models.</p>
 
@@ -1234,248 +1209,251 @@ lgl  (6): promo, childrenUnder6, children6to17, microwave, dishwasher, singl...
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Beer Markets Analysis"</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Aaron Zalen"</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024"</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
-<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://bcdanl.github.io/data/beer_markets_all_cleaned.csv"</span></span>
-<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Beer Markets data analysis</span></span>
-<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>This blog post will analyze the market for beer. We will explore how the price of beer varies by factors such as can size and region using regression models.</span>
-<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Descriptive statistics:</span></span>
-<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(beer_markets)</span>
-<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> </span>
-<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
-<span id="cb37-47"><a href="#cb37-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
-<span id="cb37-48"><a href="#cb37-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
-<span id="cb37-49"><a href="#cb37-49" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-50"><a href="#cb37-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-51"><a href="#cb37-51" aria-hidden="true" tabindex="-1"></a>summary</span>
-<span id="cb37-52"><a href="#cb37-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-53"><a href="#cb37-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-54"><a href="#cb37-54" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Filtering to only cans or non-refillable bottles</span></span>
-<span id="cb37-55"><a href="#cb37-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-58"><a href="#cb37-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-59"><a href="#cb37-59" aria-hidden="true" tabindex="-1"></a>beer_sub <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> <span class="fu">filter</span>(container <span class="sc">==</span> <span class="st">"CAN"</span> <span class="sc">|</span> container <span class="sc">==</span> <span class="st">"NON_REFILLABLE_BOTTLE"</span>)</span>
-<span id="cb37-60"><a href="#cb37-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-61"><a href="#cb37-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-62"><a href="#cb37-62" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Grouped summaries</span></span>
-<span id="cb37-63"><a href="#cb37-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-66"><a href="#cb37-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-67"><a href="#cb37-67" aria-hidden="true" tabindex="-1"></a>summarize_by_region <span class="ot">&lt;-</span>  beer_markets <span class="sc">%&gt;%</span> </span>
-<span id="cb37-68"><a href="#cb37-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-69"><a href="#cb37-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb37-70"><a href="#cb37-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
-<span id="cb37-71"><a href="#cb37-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
-<span id="cb37-72"><a href="#cb37-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
-<span id="cb37-73"><a href="#cb37-73" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-74"><a href="#cb37-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-75"><a href="#cb37-75" aria-hidden="true" tabindex="-1"></a>summarize_by_region</span>
-<span id="cb37-76"><a href="#cb37-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-77"><a href="#cb37-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-78"><a href="#cb37-78" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Regression models</span></span>
-<span id="cb37-79"><a href="#cb37-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-82"><a href="#cb37-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-83"><a href="#cb37-83" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb37-84"><a href="#cb37-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-85"><a href="#cb37-85" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb37-86"><a href="#cb37-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rnd =</span> <span class="fu">runif</span>(<span class="fu">n</span>()))</span>
-<span id="cb37-87"><a href="#cb37-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-88"><a href="#cb37-88" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb37-89"><a href="#cb37-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&gt;</span> <span class="fl">0.67</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb37-90"><a href="#cb37-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
-<span id="cb37-91"><a href="#cb37-91" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
-<span id="cb37-92"><a href="#cb37-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-93"><a href="#cb37-93" aria-hidden="true" tabindex="-1"></a>beer_test <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
-<span id="cb37-94"><a href="#cb37-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&lt;=</span> <span class="fl">0.23</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb37-95"><a href="#cb37-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
-<span id="cb37-96"><a href="#cb37-96" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
-<span id="cb37-97"><a href="#cb37-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-98"><a href="#cb37-98" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_train) </span>
-<span id="cb37-99"><a href="#cb37-99" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_markets)</span>
-<span id="cb37-100"><a href="#cb37-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-101"><a href="#cb37-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-104"><a href="#cb37-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-105"><a href="#cb37-105" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> brand <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb37-106"><a href="#cb37-106" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
-<span id="cb37-107"><a href="#cb37-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-108"><a href="#cb37-108" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb37-109"><a href="#cb37-109" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
-<span id="cb37-110"><a href="#cb37-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-111"><a href="#cb37-111" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> promo <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
-<span id="cb37-112"><a href="#cb37-112" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
-<span id="cb37-113"><a href="#cb37-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-114"><a href="#cb37-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-115"><a href="#cb37-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-116"><a href="#cb37-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-119"><a href="#cb37-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-120"><a href="#cb37-120" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb37-121"><a href="#cb37-121" aria-hidden="true" tabindex="-1"></a>model1_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model1_pred_test<span class="sc">$</span>.fitted)</span>
-<span id="cb37-122"><a href="#cb37-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-123"><a href="#cb37-123" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb37-124"><a href="#cb37-124" aria-hidden="true" tabindex="-1"></a>model2_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model2_pred_test<span class="sc">$</span>.fitted)</span>
-<span id="cb37-125"><a href="#cb37-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-126"><a href="#cb37-126" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model3, <span class="at">newdata =</span> beer_test)</span>
-<span id="cb37-127"><a href="#cb37-127" aria-hidden="true" tabindex="-1"></a>model3_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model3_pred_test<span class="sc">$</span>.fitted)</span>
-<span id="cb37-128"><a href="#cb37-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-129"><a href="#cb37-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-132"><a href="#cb37-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-133"><a href="#cb37-133" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1_pred_test)</span>
-<span id="cb37-134"><a href="#cb37-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-135"><a href="#cb37-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-138"><a href="#cb37-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-139"><a href="#cb37-139" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2_pred_test)</span>
-<span id="cb37-140"><a href="#cb37-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-141"><a href="#cb37-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-142"><a href="#cb37-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-145"><a href="#cb37-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-146"><a href="#cb37-146" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3_pred_test)</span>
-<span id="cb37-147"><a href="#cb37-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-148"><a href="#cb37-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-151"><a href="#cb37-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-152"><a href="#cb37-152" aria-hidden="true" tabindex="-1"></a>rmse1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model1_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb37-153"><a href="#cb37-153" aria-hidden="true" tabindex="-1"></a>rmse2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model2_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb37-154"><a href="#cb37-154" aria-hidden="true" tabindex="-1"></a>rmse3 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model3_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb37-155"><a href="#cb37-155" aria-hidden="true" tabindex="-1"></a><span class="co"># View it</span></span>
-<span id="cb37-156"><a href="#cb37-156" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(rmse1,rmse2, rmse3))</span>
-<span id="cb37-157"><a href="#cb37-157" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-158"><a href="#cb37-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-159"><a href="#cb37-159" aria-hidden="true" tabindex="-1"></a><span class="fu">##### It looks like model three performs the best, being off at predicting beer price by about .849 dollars per ounce</span></span>
-<span id="cb37-160"><a href="#cb37-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-163"><a href="#cb37-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-164"><a href="#cb37-164" aria-hidden="true" tabindex="-1"></a>market_coefs <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model3) <span class="sc">%&gt;%</span></span>
-<span id="cb37-165"><a href="#cb37-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"marketBUFFALO-ROCHESTER"</span>, <span class="st">"marketALBANY"</span>, <span class="st">"marketEXURBAN_NY"</span>, <span class="st">"marketRURAL_NEW_YORK"</span>, </span>
-<span id="cb37-166"><a href="#cb37-166" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"marketsuburban_ny"</span>, <span class="st">"marketSYRACUSE"</span>, <span class="st">"marketURBAN_NY"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-167"><a href="#cb37-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate) <span class="sc">%&gt;%</span></span>
-<span id="cb37-168"><a href="#cb37-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb37-169"><a href="#cb37-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_diff =</span> <span class="dv">100</span> <span class="sc">*</span> (<span class="fu">exp</span>(estimate) <span class="sc">-</span> <span class="dv">1</span>)  <span class="co"># Exact percentage difference</span></span>
-<span id="cb37-170"><a href="#cb37-170" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-171"><a href="#cb37-171" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(market_coefs)</span>
-<span id="cb37-172"><a href="#cb37-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-173"><a href="#cb37-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-174"><a href="#cb37-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-175"><a href="#cb37-175" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Compared to buffalo-rochester:</span></span>
-<span id="cb37-176"><a href="#cb37-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-177"><a href="#cb37-177" aria-hidden="true" tabindex="-1"></a>######Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper</span>
-<span id="cb37-178"><a href="#cb37-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-179"><a href="#cb37-179" aria-hidden="true" tabindex="-1"></a>######Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive</span>
-<span id="cb37-180"><a href="#cb37-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-181"><a href="#cb37-181" aria-hidden="true" tabindex="-1"></a>**Answer:**</span>
-<span id="cb37-182"><a href="#cb37-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-185"><a href="#cb37-185" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-186"><a href="#cb37-186" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1</span></span>
-<span id="cb37-187"><a href="#cb37-187" aria-hidden="true" tabindex="-1"></a>model1<span class="sc">$</span>coefficients[<span class="st">"log(beer_floz)"</span>]</span>
-<span id="cb37-188"><a href="#cb37-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-189"><a href="#cb37-189" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2</span></span>
-<span id="cb37-190"><a href="#cb37-190" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model2) <span class="sc">|&gt;</span> </span>
-<span id="cb37-191"><a href="#cb37-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb37-192"><a href="#cb37-192" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, <span class="at">elasticity =</span> estimate)</span>
-<span id="cb37-193"><a href="#cb37-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-194"><a href="#cb37-194" aria-hidden="true" tabindex="-1"></a>b2</span>
-<span id="cb37-195"><a href="#cb37-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-196"><a href="#cb37-196" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 3</span></span>
-<span id="cb37-197"><a href="#cb37-197" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)</span>
-<span id="cb37-198"><a href="#cb37-198" aria-hidden="true" tabindex="-1"></a>main <span class="ot">&lt;-</span> b3[<span class="st">"log(beer_floz)"</span>]</span>
-<span id="cb37-199"><a href="#cb37-199" aria-hidden="true" tabindex="-1"></a>promo_main <span class="ot">&lt;-</span> b3[<span class="st">"promoTRUE:log(beer_floz)"</span>]</span>
-<span id="cb37-200"><a href="#cb37-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-201"><a href="#cb37-201" aria-hidden="true" tabindex="-1"></a><span class="co"># Get brand names and terms</span></span>
-<span id="cb37-202"><a href="#cb37-202" aria-hidden="true" tabindex="-1"></a>brands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BUD_LIGHT"</span>, <span class="st">"BUSCH_LIGHT"</span>, <span class="st">"COORS_LIGHT"</span>, <span class="st">"MILLER_LITE"</span>, <span class="st">"NATURAL_LIGHT"</span>)</span>
-<span id="cb37-203"><a href="#cb37-203" aria-hidden="true" tabindex="-1"></a>brand_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="fu">names</span>(b3))]</span>
-<span id="cb37-204"><a href="#cb37-204" aria-hidden="true" tabindex="-1"></a>brand_promo_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:promo.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>, <span class="fu">names</span>(b3))]</span>
-<span id="cb37-205"><a href="#cb37-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-206"><a href="#cb37-206" aria-hidden="true" tabindex="-1"></a>promo_false_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
-<span id="cb37-207"><a href="#cb37-207" aria-hidden="true" tabindex="-1"></a>promo_true_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
-<span id="cb37-208"><a href="#cb37-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-209"><a href="#cb37-209" aria-hidden="true" tabindex="-1"></a>promo_false_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main</span>
-<span id="cb37-210"><a href="#cb37-210" aria-hidden="true" tabindex="-1"></a>promo_true_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main <span class="sc">+</span> promo_main</span>
-<span id="cb37-211"><a href="#cb37-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-212"><a href="#cb37-212" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb37-213"><a href="#cb37-213" aria-hidden="true" tabindex="-1"></a>  promo_false_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>]</span>
-<span id="cb37-214"><a href="#cb37-214" aria-hidden="true" tabindex="-1"></a>  promo_true_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>] <span class="sc">+</span> promo_main <span class="sc">+</span> brand_promo_terms[i<span class="dv">-1</span>]</span>
-<span id="cb37-215"><a href="#cb37-215" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-216"><a href="#cb37-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-217"><a href="#cb37-217" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb37-218"><a href="#cb37-218" aria-hidden="true" tabindex="-1"></a>  <span class="at">brand =</span> brands,</span>
-<span id="cb37-219"><a href="#cb37-219" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_false =</span> promo_false_values,</span>
-<span id="cb37-220"><a href="#cb37-220" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_true =</span> promo_true_values</span>
-<span id="cb37-221"><a href="#cb37-221" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb37-222"><a href="#cb37-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-223"><a href="#cb37-223" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>difference <span class="ot">&lt;-</span> results<span class="sc">$</span>promo_true <span class="sc">-</span> results<span class="sc">$</span>promo_false</span>
-<span id="cb37-224"><a href="#cb37-224" aria-hidden="true" tabindex="-1"></a>results</span>
-<span id="cb37-225"><a href="#cb37-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-226"><a href="#cb37-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-227"><a href="#cb37-227" aria-hidden="true" tabindex="-1"></a>#######The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.</span>
-<span id="cb37-228"><a href="#cb37-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-229"><a href="#cb37-229" aria-hidden="true" tabindex="-1"></a>#######Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive</span>
-<span id="cb37-230"><a href="#cb37-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-231"><a href="#cb37-231" aria-hidden="true" tabindex="-1"></a>#######Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.</span>
-<span id="cb37-232"><a href="#cb37-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-235"><a href="#cb37-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb37-236"><a href="#cb37-236" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="sc">%&gt;%</span> </span>
-<span id="cb37-237"><a href="#cb37-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb37-238"><a href="#cb37-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb37-239"><a href="#cb37-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb37-240"><a href="#cb37-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb37-241"><a href="#cb37-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb37-242"><a href="#cb37-242" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb37-243"><a href="#cb37-243" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb37-244"><a href="#cb37-244" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 1"</span></span>
-<span id="cb37-245"><a href="#cb37-245" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-246"><a href="#cb37-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-247"><a href="#cb37-247" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="sc">%&gt;%</span>  </span>
-<span id="cb37-248"><a href="#cb37-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb37-249"><a href="#cb37-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb37-250"><a href="#cb37-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb37-251"><a href="#cb37-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb37-252"><a href="#cb37-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb37-253"><a href="#cb37-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb37-254"><a href="#cb37-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb37-255"><a href="#cb37-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 2"</span></span>
-<span id="cb37-256"><a href="#cb37-256" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-257"><a href="#cb37-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-258"><a href="#cb37-258" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="sc">%&gt;%</span>  </span>
-<span id="cb37-259"><a href="#cb37-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb37-260"><a href="#cb37-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
-<span id="cb37-261"><a href="#cb37-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb37-262"><a href="#cb37-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
-<span id="cb37-263"><a href="#cb37-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb37-264"><a href="#cb37-264" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
-<span id="cb37-265"><a href="#cb37-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
-<span id="cb37-266"><a href="#cb37-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 3"</span></span>
-<span id="cb37-267"><a href="#cb37-267" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb37-268"><a href="#cb37-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb37-269"><a href="#cb37-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-270"><a href="#cb37-270" aria-hidden="true" tabindex="-1"></a>based on the residuals, it isn't clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underrepresented the price by a large margin. All models look close to being centered around 0.</span>
-<span id="cb37-271"><a href="#cb37-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-272"><a href="#cb37-272" aria-hidden="true" tabindex="-1"></a>I would prefer to use model 3. Model 3's RMSE of .008489 is the lowest out of all models. Additionally, the residual plot is on par with all other models.</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Beer Markets Analysis"</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Aaron Zalen"</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024"</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://bcdanl.github.io/data/beer_markets_all_cleaned.csv"</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Beer Markets data analysis</span></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>This blog post will analyze the market for beer. We will explore how the price of beer varies by factors such as can size and region using regression models.</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Descriptive statistics:</span></span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(beer_markets)</span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> </span>
+<span id="cb36-46"><a href="#cb36-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb36-47"><a href="#cb36-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
+<span id="cb36-48"><a href="#cb36-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
+<span id="cb36-49"><a href="#cb36-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
+<span id="cb36-50"><a href="#cb36-50" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-51"><a href="#cb36-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-52"><a href="#cb36-52" aria-hidden="true" tabindex="-1"></a>summary</span>
+<span id="cb36-53"><a href="#cb36-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-54"><a href="#cb36-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-55"><a href="#cb36-55" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Filtering to only cans or non-refillable bottles</span></span>
+<span id="cb36-56"><a href="#cb36-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-59"><a href="#cb36-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-60"><a href="#cb36-60" aria-hidden="true" tabindex="-1"></a>beer_sub <span class="ot">&lt;-</span> beer_markets <span class="sc">%&gt;%</span> <span class="fu">filter</span>(container <span class="sc">==</span> <span class="st">"CAN"</span> <span class="sc">|</span> container <span class="sc">==</span> <span class="st">"NON_REFILLABLE_BOTTLE"</span>)</span>
+<span id="cb36-61"><a href="#cb36-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-62"><a href="#cb36-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-63"><a href="#cb36-63" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Grouped summaries</span></span>
+<span id="cb36-64"><a href="#cb36-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-67"><a href="#cb36-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-68"><a href="#cb36-68" aria-hidden="true" tabindex="-1"></a>summarize_by_region <span class="ot">&lt;-</span>  beer_markets <span class="sc">%&gt;%</span> </span>
+<span id="cb36-69"><a href="#cb36-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-70"><a href="#cb36-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb36-71"><a href="#cb36-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_price =</span> <span class="fu">mean</span>(price_floz),</span>
+<span id="cb36-72"><a href="#cb36-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_size =</span> <span class="fu">mean</span>(beer_floz),</span>
+<span id="cb36-73"><a href="#cb36-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_spent =</span> <span class="fu">mean</span>(dollar_spent)</span>
+<span id="cb36-74"><a href="#cb36-74" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-75"><a href="#cb36-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-76"><a href="#cb36-76" aria-hidden="true" tabindex="-1"></a>summarize_by_region</span>
+<span id="cb36-77"><a href="#cb36-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-78"><a href="#cb36-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-79"><a href="#cb36-79" aria-hidden="true" tabindex="-1"></a><span class="fu">##### Regression models</span></span>
+<span id="cb36-80"><a href="#cb36-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-83"><a href="#cb36-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-84"><a href="#cb36-84" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-85"><a href="#cb36-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-86"><a href="#cb36-86" aria-hidden="true" tabindex="-1"></a>beer_markets <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb36-87"><a href="#cb36-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rnd =</span> <span class="fu">runif</span>(<span class="fu">n</span>()))</span>
+<span id="cb36-88"><a href="#cb36-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-89"><a href="#cb36-89" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb36-90"><a href="#cb36-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&gt;</span> <span class="fl">0.67</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb36-91"><a href="#cb36-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
+<span id="cb36-92"><a href="#cb36-92" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
+<span id="cb36-93"><a href="#cb36-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-94"><a href="#cb36-94" aria-hidden="true" tabindex="-1"></a>beer_test <span class="ot">&lt;-</span> beer_markets <span class="sc">|&gt;</span> </span>
+<span id="cb36-95"><a href="#cb36-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rnd <span class="sc">&lt;=</span> <span class="fl">0.23</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb36-96"><a href="#cb36-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market =</span> <span class="fu">as.factor</span>(market),</span>
+<span id="cb36-97"><a href="#cb36-97" aria-hidden="true" tabindex="-1"></a>         <span class="at">market =</span> <span class="fu">relevel</span>(market, <span class="at">ref =</span> <span class="st">"BUFFALO-ROCHESTER"</span>))</span>
+<span id="cb36-98"><a href="#cb36-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-99"><a href="#cb36-99" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_train) </span>
+<span id="cb36-100"><a href="#cb36-100" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(beer_markets)</span>
+<span id="cb36-101"><a href="#cb36-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-102"><a href="#cb36-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-105"><a href="#cb36-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-106"><a href="#cb36-106" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> brand <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb36-107"><a href="#cb36-107" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb36-108"><a href="#cb36-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-109"><a href="#cb36-109" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb36-110"><a href="#cb36-110" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb36-111"><a href="#cb36-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-112"><a href="#cb36-112" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price_floz) <span class="sc">~</span> market <span class="sc">+</span> <span class="fu">I</span>(container<span class="sc">==</span><span class="st">"CAN"</span>) <span class="sc">+</span> brand <span class="sc">*</span> promo <span class="sc">*</span> <span class="fu">log</span>(beer_floz), </span>
+<span id="cb36-113"><a href="#cb36-113" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> beer_train)</span>
+<span id="cb36-114"><a href="#cb36-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-115"><a href="#cb36-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-116"><a href="#cb36-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-117"><a href="#cb36-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-120"><a href="#cb36-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-121"><a href="#cb36-121" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb36-122"><a href="#cb36-122" aria-hidden="true" tabindex="-1"></a>model1_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model1_pred_test<span class="sc">$</span>.fitted)</span>
+<span id="cb36-123"><a href="#cb36-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-124"><a href="#cb36-124" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb36-125"><a href="#cb36-125" aria-hidden="true" tabindex="-1"></a>model2_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model2_pred_test<span class="sc">$</span>.fitted)</span>
+<span id="cb36-126"><a href="#cb36-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-127"><a href="#cb36-127" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="ot">&lt;-</span> <span class="fu">augment</span>(model3, <span class="at">newdata =</span> beer_test)</span>
+<span id="cb36-128"><a href="#cb36-128" aria-hidden="true" tabindex="-1"></a>model3_pred_test<span class="sc">$</span>pred_price_floz <span class="ot">&lt;-</span> <span class="fu">exp</span>(model3_pred_test<span class="sc">$</span>.fitted)</span>
+<span id="cb36-129"><a href="#cb36-129" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-130"><a href="#cb36-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-133"><a href="#cb36-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-134"><a href="#cb36-134" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1_pred_test)</span>
+<span id="cb36-135"><a href="#cb36-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-136"><a href="#cb36-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-139"><a href="#cb36-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-140"><a href="#cb36-140" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2_pred_test)</span>
+<span id="cb36-141"><a href="#cb36-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-142"><a href="#cb36-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-143"><a href="#cb36-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-146"><a href="#cb36-146" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-147"><a href="#cb36-147" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3_pred_test)</span>
+<span id="cb36-148"><a href="#cb36-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-149"><a href="#cb36-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-152"><a href="#cb36-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-153"><a href="#cb36-153" aria-hidden="true" tabindex="-1"></a>rmse1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model1_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb36-154"><a href="#cb36-154" aria-hidden="true" tabindex="-1"></a>rmse2 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model2_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb36-155"><a href="#cb36-155" aria-hidden="true" tabindex="-1"></a>rmse3 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((model3_pred_test<span class="sc">$</span>pred_price_floz <span class="sc">-</span> beer_test<span class="sc">$</span>price_floz)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb36-156"><a href="#cb36-156" aria-hidden="true" tabindex="-1"></a><span class="co"># View it</span></span>
+<span id="cb36-157"><a href="#cb36-157" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(rmse1,rmse2, rmse3))</span>
+<span id="cb36-158"><a href="#cb36-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-159"><a href="#cb36-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-160"><a href="#cb36-160" aria-hidden="true" tabindex="-1"></a><span class="fu">##### It looks like model three performs the best, being off at predicting beer price by about .849 dollars per ounce</span></span>
+<span id="cb36-161"><a href="#cb36-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-164"><a href="#cb36-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-165"><a href="#cb36-165" aria-hidden="true" tabindex="-1"></a>market_coefs <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model3) <span class="sc">%&gt;%</span></span>
+<span id="cb36-166"><a href="#cb36-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"marketBUFFALO-ROCHESTER"</span>, <span class="st">"marketALBANY"</span>, <span class="st">"marketEXURBAN_NY"</span>, <span class="st">"marketRURAL_NEW_YORK"</span>, </span>
+<span id="cb36-167"><a href="#cb36-167" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"marketsuburban_ny"</span>, <span class="st">"marketSYRACUSE"</span>, <span class="st">"marketURBAN_NY"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-168"><a href="#cb36-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate) <span class="sc">%&gt;%</span></span>
+<span id="cb36-169"><a href="#cb36-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-170"><a href="#cb36-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_diff =</span> <span class="dv">100</span> <span class="sc">*</span> (<span class="fu">exp</span>(estimate) <span class="sc">-</span> <span class="dv">1</span>)  <span class="co"># Exact percentage difference</span></span>
+<span id="cb36-171"><a href="#cb36-171" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-172"><a href="#cb36-172" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(market_coefs)</span>
+<span id="cb36-173"><a href="#cb36-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-174"><a href="#cb36-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-175"><a href="#cb36-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-176"><a href="#cb36-176" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Compared to buffalo-rochester:</span></span>
+<span id="cb36-177"><a href="#cb36-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-178"><a href="#cb36-178" aria-hidden="true" tabindex="-1"></a>Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper</span>
+<span id="cb36-179"><a href="#cb36-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-180"><a href="#cb36-180" aria-hidden="true" tabindex="-1"></a>Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive</span>
+<span id="cb36-181"><a href="#cb36-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-182"><a href="#cb36-182" aria-hidden="true" tabindex="-1"></a>**Answer:**</span>
+<span id="cb36-183"><a href="#cb36-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-186"><a href="#cb36-186" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-187"><a href="#cb36-187" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1</span></span>
+<span id="cb36-188"><a href="#cb36-188" aria-hidden="true" tabindex="-1"></a>model1<span class="sc">$</span>coefficients[<span class="st">"log(beer_floz)"</span>]</span>
+<span id="cb36-189"><a href="#cb36-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-190"><a href="#cb36-190" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2</span></span>
+<span id="cb36-191"><a href="#cb36-191" aria-hidden="true" tabindex="-1"></a>b2 <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model2) <span class="sc">|&gt;</span> </span>
+<span id="cb36-192"><a href="#cb36-192" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb36-193"><a href="#cb36-193" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, <span class="at">elasticity =</span> estimate)</span>
+<span id="cb36-194"><a href="#cb36-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-195"><a href="#cb36-195" aria-hidden="true" tabindex="-1"></a>b2</span>
+<span id="cb36-196"><a href="#cb36-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-197"><a href="#cb36-197" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 3</span></span>
+<span id="cb36-198"><a href="#cb36-198" aria-hidden="true" tabindex="-1"></a>b3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)</span>
+<span id="cb36-199"><a href="#cb36-199" aria-hidden="true" tabindex="-1"></a>main <span class="ot">&lt;-</span> b3[<span class="st">"log(beer_floz)"</span>]</span>
+<span id="cb36-200"><a href="#cb36-200" aria-hidden="true" tabindex="-1"></a>promo_main <span class="ot">&lt;-</span> b3[<span class="st">"promoTRUE:log(beer_floz)"</span>]</span>
+<span id="cb36-201"><a href="#cb36-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-202"><a href="#cb36-202" aria-hidden="true" tabindex="-1"></a><span class="co"># Get brand names and terms</span></span>
+<span id="cb36-203"><a href="#cb36-203" aria-hidden="true" tabindex="-1"></a>brands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BUD_LIGHT"</span>, <span class="st">"BUSCH_LIGHT"</span>, <span class="st">"COORS_LIGHT"</span>, <span class="st">"MILLER_LITE"</span>, <span class="st">"NATURAL_LIGHT"</span>)</span>
+<span id="cb36-204"><a href="#cb36-204" aria-hidden="true" tabindex="-1"></a>brand_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)$"</span>, <span class="fu">names</span>(b3))]</span>
+<span id="cb36-205"><a href="#cb36-205" aria-hidden="true" tabindex="-1"></a>brand_promo_terms <span class="ot">&lt;-</span> b3[<span class="fu">grepl</span>(<span class="st">"brand.*:promo.*:log</span><span class="sc">\\</span><span class="st">(beer_floz</span><span class="sc">\\</span><span class="st">)"</span>, <span class="fu">names</span>(b3))]</span>
+<span id="cb36-206"><a href="#cb36-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-207"><a href="#cb36-207" aria-hidden="true" tabindex="-1"></a>promo_false_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
+<span id="cb36-208"><a href="#cb36-208" aria-hidden="true" tabindex="-1"></a>promo_true_values <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">5</span>)</span>
+<span id="cb36-209"><a href="#cb36-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-210"><a href="#cb36-210" aria-hidden="true" tabindex="-1"></a>promo_false_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main</span>
+<span id="cb36-211"><a href="#cb36-211" aria-hidden="true" tabindex="-1"></a>promo_true_values[<span class="dv">1</span>] <span class="ot">&lt;-</span> main <span class="sc">+</span> promo_main</span>
+<span id="cb36-212"><a href="#cb36-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-213"><a href="#cb36-213" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb36-214"><a href="#cb36-214" aria-hidden="true" tabindex="-1"></a>  promo_false_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>]</span>
+<span id="cb36-215"><a href="#cb36-215" aria-hidden="true" tabindex="-1"></a>  promo_true_values[i] <span class="ot">&lt;-</span> main <span class="sc">+</span> brand_terms[i<span class="dv">-1</span>] <span class="sc">+</span> promo_main <span class="sc">+</span> brand_promo_terms[i<span class="dv">-1</span>]</span>
+<span id="cb36-216"><a href="#cb36-216" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-217"><a href="#cb36-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-218"><a href="#cb36-218" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb36-219"><a href="#cb36-219" aria-hidden="true" tabindex="-1"></a>  <span class="at">brand =</span> brands,</span>
+<span id="cb36-220"><a href="#cb36-220" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_false =</span> promo_false_values,</span>
+<span id="cb36-221"><a href="#cb36-221" aria-hidden="true" tabindex="-1"></a>  <span class="at">promo_true =</span> promo_true_values</span>
+<span id="cb36-222"><a href="#cb36-222" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-223"><a href="#cb36-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-224"><a href="#cb36-224" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>difference <span class="ot">&lt;-</span> results<span class="sc">$</span>promo_true <span class="sc">-</span> results<span class="sc">$</span>promo_false</span>
+<span id="cb36-225"><a href="#cb36-225" aria-hidden="true" tabindex="-1"></a>results</span>
+<span id="cb36-226"><a href="#cb36-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-227"><a href="#cb36-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-228"><a href="#cb36-228" aria-hidden="true" tabindex="-1"></a>The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.</span>
+<span id="cb36-229"><a href="#cb36-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-230"><a href="#cb36-230" aria-hidden="true" tabindex="-1"></a>Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive</span>
+<span id="cb36-231"><a href="#cb36-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-232"><a href="#cb36-232" aria-hidden="true" tabindex="-1"></a>Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.</span>
+<span id="cb36-233"><a href="#cb36-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-236"><a href="#cb36-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-237"><a href="#cb36-237" aria-hidden="true" tabindex="-1"></a>model1_pred_test <span class="sc">%&gt;%</span> </span>
+<span id="cb36-238"><a href="#cb36-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb36-239"><a href="#cb36-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb36-240"><a href="#cb36-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb36-241"><a href="#cb36-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb36-242"><a href="#cb36-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-243"><a href="#cb36-243" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb36-244"><a href="#cb36-244" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb36-245"><a href="#cb36-245" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 1"</span></span>
+<span id="cb36-246"><a href="#cb36-246" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-247"><a href="#cb36-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-248"><a href="#cb36-248" aria-hidden="true" tabindex="-1"></a>model2_pred_test <span class="sc">%&gt;%</span>  </span>
+<span id="cb36-249"><a href="#cb36-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb36-250"><a href="#cb36-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb36-251"><a href="#cb36-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb36-252"><a href="#cb36-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb36-253"><a href="#cb36-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-254"><a href="#cb36-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb36-255"><a href="#cb36-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb36-256"><a href="#cb36-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 2"</span></span>
+<span id="cb36-257"><a href="#cb36-257" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-258"><a href="#cb36-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-259"><a href="#cb36-259" aria-hidden="true" tabindex="-1"></a>model3_pred_test <span class="sc">%&gt;%</span>  </span>
+<span id="cb36-260"><a href="#cb36-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb36-261"><a href="#cb36-261" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb36-262"><a href="#cb36-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb36-263"><a href="#cb36-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"loess"</span>) <span class="sc">+</span></span>
+<span id="cb36-264"><a href="#cb36-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-265"><a href="#cb36-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Fitted values"</span>,</span>
+<span id="cb36-266"><a href="#cb36-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span>,</span>
+<span id="cb36-267"><a href="#cb36-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model 3"</span></span>
+<span id="cb36-268"><a href="#cb36-268" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-269"><a href="#cb36-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb36-270"><a href="#cb36-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-271"><a href="#cb36-271" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Conclusion:</span></span>
+<span id="cb36-272"><a href="#cb36-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-273"><a href="#cb36-273" aria-hidden="true" tabindex="-1"></a>based on the residuals, it isn't clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underrepresented the price by a large margin. All models look close to being centered around 0.</span>
+<span id="cb36-274"><a href="#cb36-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-275"><a href="#cb36-275" aria-hidden="true" tabindex="-1"></a>I would prefer to use model 3. Model 3's RMSE of .008489 is the lowest out of all models. Additionally, the residual plot is on par with all other models.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

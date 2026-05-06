@@ -12,7 +12,8 @@ format:
 
 ```{r}
 #| echo: false
-#| eval: true
+#| message: false
+#| warning: false
 
 library(tidyverse)
 library(stargazer)
@@ -148,9 +149,9 @@ print(market_coefs)
 
 #### Compared to buffalo-rochester:
 
-######Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper
+Albany is 4.37% more expensive. ExUrban NY is 11.1% more expensive. Rural NY is .817% cheaper
 
-######Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive
+Syracuse is 4.87% cheaper. Urban NY is 18.2% more expensive
 
 **Answer:**
 
@@ -196,11 +197,11 @@ results$difference <- results$promo_true - results$promo_false
 results
 ```
 
-#######The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.
+The coefficient for log(beer_floz) is -.1447708, which means that a 1% increase in fluid ounces is associated with a -.145% decrease in price per fluid ounce.
 
-#######Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive
+Compared to bud_light, busch light is .0031% more price sensitive. Coors_ligt is .0037% less price sensitive, Miller_light is .0161% more price sensitive, and Natural_light is .0585% less price sensitive
 
-#######Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.
+Promotion does seem to have an effect on price sensitivity, but it varies by brand. For instance, Bud light barely changes in price sensitivity when they advertise. Coors light however becomes more price sensitive by .052% compared to not promoting.
 
 ```{r}
 model1_pred_test %>% 
@@ -236,6 +237,8 @@ model3_pred_test %>%
     title = "Model 3"
   )
 ```
+
+#### Conclusion:
 
 based on the residuals, it isn't clear which model performs the best. They all perform well, and have homoscedastisticty, with some major outliers where each model underrepresented the price by a large margin. All models look close to being centered around 0.
 

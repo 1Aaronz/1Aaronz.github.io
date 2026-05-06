@@ -10,6 +10,8 @@ website:
     left:
       - text: March Madness Project
         href: project/marchmadnessproject.qmd
+      - text: HSR Visualization
+        href: danl-310-data-storytelling.qmd
       - text: Data Analysis
         menu: 
           - text: Beer markets analysis
