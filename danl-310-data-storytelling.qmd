@@ -77,9 +77,9 @@ A literature review, regression model, machine learning model, or formal statist
 # Big Idea
 
 Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail
-Only 16% view it unfavorably, the US has fallen behind in HSR construction when compared to contries that have built HSR. 
+Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR. 
 
-This project emphasizes the difference in the length of HSR other contries have managed to achieve, and are projected to achieve in the next 10 years while the US continues to have slow progress in HSR construction. 
+This project emphasizes the difference in the length of HSR other countries have managed to achieve, and are projected to achieve in the next 10 years while the US continues to have slow progress in HSR construction. 
 
 State the main message of your project in 2--3 sentences.
 
@@ -91,7 +91,7 @@ Your Big Idea should answer:
 
 # Guiding Question or Story Theme
 
-The guiding question of this project is: How has the length of HSR construction changed overtime.
+The guiding question of this project is: "How has the length of HSR lines by country changed overtime?"
 Examples:
 
 - How has X changed over time?

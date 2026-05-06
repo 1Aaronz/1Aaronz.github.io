@@ -1,15 +1,15 @@
 ---
-title: March Madness Project
+title: Data Analytics Capstone Title
 subtitle: "My Project"
 author:
-  - name: Aaron Zalen
+  - name: YOUR NAME 
     affiliation: SUNY Geneseo
     
 date: last-modified
 
 execute: 
   echo: true
-  eval: false
+  eval: true
   warning: false
   message: false
   fig-width: 10
@@ -26,876 +26,151 @@ format:
     highlight-style: atom-one
 ---
 
-## This page under construction! Here's a snippet of the project code:
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(ggthemes)
+library(hrbrthemes)
+library(rmarkdown)
+library(DT)
+library(dplyr)
+library(readr)
+library(purrr)
+library(tibble)
+library(ranger)  
+library(stringr)
+library(tidyr)
+library(glmnet)
+library(dplyr)
+library(stringdist)
+library(readr)
+library(purrr)
+library(tibble)
+# library(randomForest)
+library(stringr)
+library(tidyr)
+library(glmnet)
 
-```{.r}
-#| eval: false
+# Feel free to revise this ggplot theme_set
+theme_set(theme_ipsum()+
+          theme(strip.background =element_rect(fill="lightgray"),
+                axis.title.x = 
+                  element_text(angle = 0,
+                               size = rel(1.33),
+                               margin = ggplot2::margin(10,0,0,0)),
+                axis.title.y = 
+                  element_text(angle = 90,
+                               size = rel(1.33),
+                               margin = ggplot2::margin(0,10,0,0))
+                )
+          )
 
-library(ggplot2)
-library(patchwork)
-library(xgboost)
-library(ranger)
 
-calculate_brier_by_year_iterative_ranger <- function(
-    data,
-    team_season_stats,
-    years_to_evaluate = 2015:2025,
-    start_train_season = 2003,
-    seed = 123,
-    num.trees = 500,
-    mtry = 4,
-    min.node.size = 1
-) {
-  
-  all_brier_results <- data.frame()
-  all_model_info <- list()
-  
-  for (eval_year in years_to_evaluate) {
-    
-    cat("\nTraining Ranger RF on", start_train_season, "-", eval_year - 1, "evaluating on", eval_year, "\n")
-    
-    train_data <- build_training_data_balanced(
-      data = data,
-      team_season_stats = team_season_stats %>% filter(Season < eval_year),
-      start_season = start_train_season,
-      train_until_season = eval_year
-    )
-    
-    cat("Training data has", nrow(train_data), "games\n")
-    
-    predictors <- setdiff(names(train_data), c("Win", "Season"))
-    
-    train_data_rf <- train_data[, c(predictors, "Win")]
-    train_data_rf$Win <- factor(train_data_rf$Win, levels = c(0,1))
-    
-    set.seed(seed)
-    rf_model <- ranger(
-      dependent.variable.name = "Win",
-      data = train_data_rf,
-      num.trees = num.trees,
-      mtry = mtry,
-      min.node.size = min.node.size,
-      probability = TRUE,
-      num.threads = 1,
-      seed = seed,
-      importance = "impurity" 
-    )
-    
-    # Training Brier
-    train_pred <- predict(rf_model, data = train_data_rf)$predictions[, "1"]
-    y_train <- as.numeric(as.character(train_data_rf$Win))
-    train_brier <- mean((train_pred - y_train)^2)
-    cat("Training Brier:", round(train_brier,4), "\n")
-    
-    importance_matrix <- data.frame(
-      Feature = names(rf_model$variable.importance),
-      Importance = rf_model$variable.importance
-    ) %>% arrange(desc(Importance))
-    
-    # Evaluate tournament games
-    tourney_games <- data$MNCAATourneyCompactResults %>%
-      filter(Season == eval_year) %>%
-      select(WTeamID, LTeamID)
-    
-    if(nrow(tourney_games)==0) next
-    
-    set.seed(seed)
-    evaluation_games <- tourney_games %>%
-      rowwise() %>%
-      mutate(
-        winner_as_team1 = sample(c(TRUE,FALSE),1),
-        Team1 = ifelse(winner_as_team1, WTeamID, LTeamID),
-        Team2 = ifelse(winner_as_team1, LTeamID, WTeamID),
-        Actual_Win = ifelse(winner_as_team1,1,0)
-      ) %>% ungroup() %>% select(Team1, Team2, Actual_Win)
-    
-    predictions <- data.frame(
-      Actual_Win = evaluation_games$Actual_Win,
-      Pred_Prob = NA_real_
-    )
-    
-    for(i in 1:nrow(evaluation_games)){
-      game <- evaluation_games[i,]
-      pred_data <- prepare_prediction_data(
-        team1_id = game$Team1,
-        team2_id = game$Team2,
-        team_season_stats = team_season_stats %>% filter(Season == eval_year),
-        season = eval_year,
-        predictors = predictors,
-        diff_predictor_names = predictors,
-        non_diff_names = c()
-      )
-      if(is.null(pred_data)) next
-      predictions$Pred_Prob[i] <- predict(rf_model, data = pred_data)$predictions[,"1"]
-    }
-    
-    predictions <- predictions[!is.na(predictions$Pred_Prob),]
-    
-    if(nrow(predictions)==0) next
-    
-    predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
-    brier_score <- mean(predictions$Brier_Component)
-    
-    epsilon <- 1e-15
-    pred_clipped <- pmax(pmin(predictions$Pred_Prob, 1-epsilon), epsilon)
-    log_loss <- -mean(predictions$Actual_Win*log(pred_clipped) + (1-predictions$Actual_Win)*log(1-pred_clipped))
-    accuracy <- mean((predictions$Pred_Prob>=0.5)==predictions$Actual_Win)
-    
-    year_result <- data.frame(
-      Evaluation_Year = eval_year,
-      Brier_Score = brier_score,
-      LogLoss = log_loss,
-      Accuracy = accuracy,
-      N_Train_Games = nrow(train_data),
-      N_Valid_Predictions = nrow(predictions),
-      Train_Brier = train_brier
-    )
-    
-    all_brier_results <- rbind(all_brier_results, year_result)
-    
-    all_model_info[[as.character(eval_year)]] <- list(
-      model = rf_model,
-      predictions = predictions,
-      importance = importance_matrix
-    )
-    
-    cat("Year", eval_year, "| Brier:", round(brier_score,4), "| LogLoss:", round(log_loss,4), "| Accuracy:", round(accuracy,3), "\n")
-  }
-  
-  overall_brier <- weighted.mean(all_brier_results$Brier_Score, all_brier_results$N_Valid_Predictions)
-  cat("Overall Brier:", round(overall_brier,4), "\n")
-  
-  return(list(results=all_brier_results, models=all_model_info))
-}
-
-calculate_brier_by_year_iterative_lm <- function(
-    data,
-    team_season_stats,
-    years_to_evaluate = 2021:2025,
-    start_train_season = 2003,
-    seed = 123,
-    use_logistic = TRUE  # TRUE = logistic regression, FALSE = linear regression
-) {
-  
-  # Initialize results storage
-  all_brier_results <- data.frame()
-  all_model_info <- list()
-  
-  for (eval_year in years_to_evaluate) {
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║  Training model on", start_train_season, "-", eval_year - 1, 
-        "and evaluating on", eval_year, "║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n")
-    cat("\n")
-    
-    # Step 1: Build training data up to but not including eval_year
-    cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
-    train_data <- build_training_data_balanced(
-      data = data,
-      team_season_stats = team_season_stats %>% filter(Season < eval_year),
-      start_season = start_train_season,
-      train_until_season = eval_year
-    )
-    
-    cat("  ✓ Training data has", nrow(train_data), "games\n")
-    
-    # Step 2: Get predictors (excluding EN_prob for now - we'll train without it)
-    predictors <- setdiff(names(train_data), c("Win", "Season"))
-    
-    # Step 3: Train linear model (logistic or linear regression)
-    cat("→ Training", ifelse(use_logistic, "logistic regression", "linear regression"), "model...\n")
-    
-    if (use_logistic) {
-      # Logistic regression for binary outcomes
-      lm_model <- glm(
-        Win ~ .,
-        data = train_data[, c(predictors, "Win")],
-        family = binomial(link = "logit")
-      )
-      
-      cat("  ✓ Model converged:", lm_model$converged, "\n")
-      
-      # Get predictions on training data (for pseudo R-squared)
-      train_pred_prob <- predict(lm_model, type = "response")
-      train_accuracy <- mean((train_pred_prob >= 0.5) == train_data$Win)
-      cat("  ✓ Training accuracy:", round(train_accuracy, 3), "\n")
-      
-    } else {
-      # Linear regression (not ideal for binary outcomes, but can be used)
-      lm_model <- lm(
-        Win ~ .,
-        data = train_data[, c(predictors, "Win")]
-      )
-      
-      cat("  ✓ Linear regression trained\n")
-      cat("  ✓ R-squared:", round(summary(lm_model)$r.squared, 3), "\n")
-    }
-    
-    # Create prediction_models structure for evaluation
-    base_predictors <- get_model_predictors()
-    diff_predictor_names <- base_predictors
-    non_diff_names <- c()  # No EN_prob for linear model
-    
-    prediction_models <- list(
-      lm_model = lm_model,
-      predictors = predictors,
-      use_logistic = use_logistic
-    )
-    
-    # Step 4: Evaluate on tournament games from eval_year
-    cat("→ Evaluating on", eval_year, "tournament games...\n")
-    
-    # Get actual tournament games for eval_year
-    tourney_games <- data$MNCAATourneyCompactResults %>%
-      filter(Season == eval_year) %>%
-      select(WTeamID, LTeamID)
-    
-    # Count tournament games
-    n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games for", eval_year, "\n")
-    
-    if (n_total_games == 0) {
-      cat("  ⚠ No tournament games found for", eval_year, "\n")
-      next
-    }
-    
-    # Create game pairs for evaluation (random orientation)
-    set.seed(seed)
-    evaluation_games <- tourney_games %>%
-      rowwise() %>%
-      mutate(
-        winner_as_team1 = sample(c(TRUE, FALSE), 1),
-        Team1 = ifelse(winner_as_team1, WTeamID, LTeamID),
-        Team2 = ifelse(winner_as_team1, LTeamID, WTeamID),
-        Actual_Win = ifelse(winner_as_team1, 1, 0)
-      ) %>%
-      ungroup() %>%
-      select(Team1, Team2, Actual_Win) %>%
-      mutate(Season = eval_year)
-    
-    # Get predictions for each game
-    predictions <- data.frame(
-      Game_ID = 1:nrow(evaluation_games),
-      Actual_Win = evaluation_games$Actual_Win,
-      Pred_Prob = NA_real_
-    )
-    
-    games_with_errors <- 0
-    
-    for (i in 1:nrow(evaluation_games)) {
-      game <- evaluation_games[i, ]
-      
-      # Prepare prediction data (without EN_prob)
-      pred_data <- prepare_prediction_data(
-        team1_id = game$Team1,
-        team2_id = game$Team2,
-        team_season_stats = team_season_stats %>% filter(Season == eval_year),
-        season = eval_year,
-        predictors = predictors,
-        diff_predictor_names = diff_predictor_names,
-        non_diff_names = non_diff_names
-      )
-      
-      if (is.null(pred_data)) {
-        games_with_errors <- games_with_errors + 1
-        next
-      }
-      
-      # Get predictions from linear model
-      if (use_logistic) {
-        # Logistic regression gives probabilities directly
-        pred_prob <- predict(lm_model, newdata = pred_data, type = "response")
-      } else {
-        # Linear regression - clip to [0,1] to get pseudo-probabilities
-        pred_prob <- predict(lm_model, newdata = pred_data)
-        pred_prob <- pmax(pmin(pred_prob, 1), 0)  # Clip to [0,1]
-      }
-      
-      predictions$Pred_Prob[i] <- pred_prob
-    }
-    
-    # Remove any NA predictions
-    n_valid_predictions <- nrow(predictions[!is.na(predictions$Pred_Prob), ])
-    predictions <- predictions[!is.na(predictions$Pred_Prob), ]
-    
-    cat("  Successfully predicted", n_valid_predictions, "out of", n_total_games, "games\n")
-    
-    if (nrow(predictions) == 0) {
-      cat("  ⚠ No valid predictions for", eval_year, "\n")
-      next
-    }
-    
-    if (games_with_errors > 0) {
-      cat("  ⚠ Failed to predict", games_with_errors, "games\n")
-    }
-    
-    # Calculate metrics
-    predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
-    brier_score <- mean(predictions$Brier_Component)
-    
-    # Log Loss
-    epsilon <- 1e-15
-    pred_clipped <- pmax(pmin(predictions$Pred_Prob, 1 - epsilon), epsilon)
-    log_loss <- -mean(
-      predictions$Actual_Win * log(pred_clipped) + 
-        (1 - predictions$Actual_Win) * log(1 - pred_clipped)
-    )
-    
-    # Accuracy
-    predictions$Pred_Win <- ifelse(predictions$Pred_Prob >= 0.5, 1, 0)
-    accuracy <- mean(predictions$Pred_Win == predictions$Actual_Win)
-    
-    # Store results
-    year_result <- data.frame(
-      Evaluation_Year = eval_year,
-      Train_Start = start_train_season,
-      Train_End = eval_year - 1,
-      N_Train_Games = nrow(train_data),
-      N_Total_Games = n_total_games,
-      N_Valid_Predictions = n_valid_predictions,
-      Brier_Score = brier_score,
-      LogLoss = log_loss,
-      Accuracy = accuracy,
-      Model_Type = ifelse(use_logistic, "Logistic", "Linear")
-    )
-    
-    all_brier_results <- rbind(all_brier_results, year_result)
-    
-    # Store model info for later use if needed
-    all_model_info[[as.character(eval_year)]] <- list(
-      model = prediction_models,
-      train_data = train_data,
-      predictions = predictions
-    )
-    
-    cat("\n  ✓ Results for", eval_year, ":")
-    cat("\n    - Brier Score:", round(brier_score, 4))
-    cat("\n    - Log Loss:", round(log_loss, 4))
-    cat("\n    - Accuracy:", round(accuracy, 3))
-    cat("\n    - Total Games:", n_total_games)
-    cat("\n    - Valid Predictions:", n_valid_predictions)
-    cat("\n    - Train Games:", nrow(train_data))
-    cat("\n")
-  }
-  
-  # Calculate overall metrics across all evaluation years
-  if (nrow(all_brier_results) > 0) {
-    overall_brier <- weighted.mean(all_brier_results$Brier_Score, 
-                                   all_brier_results$N_Valid_Predictions)
-    overall_logloss <- weighted.mean(all_brier_results$LogLoss, 
-                                     all_brier_results$N_Valid_Predictions)
-    overall_accuracy <- weighted.mean(all_brier_results$Accuracy, 
-                                      all_brier_results$N_Valid_Predictions)
-    
-    attr(all_brier_results, "overall_brier") <- overall_brier
-    attr(all_brier_results, "overall_logloss") <- overall_logloss
-    attr(all_brier_results, "overall_accuracy") <- overall_accuracy
-    attr(all_brier_results, "total_valid_games") <- sum(all_brier_results$N_Valid_Predictions)
-    attr(all_brier_results, "total_games") <- sum(all_brier_results$N_Total_Games)
-    
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║                    OVERALL PERFORMANCE                        ║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), 
-        "over", sum(all_brier_results$N_Valid_Predictions), "valid predictions\n")
-    cat("Overall Log Loss:", round(overall_logloss, 4), "\n")
-    cat("Overall Accuracy:", round(overall_accuracy, 3), "\n")
-    cat("\n")
-  }
-  
-  # Return results and optionally models
-  return(list(
-    results = all_brier_results,
-    models = all_model_info
-  ))
-}
-
-calculate_brier_by_year_iterative_xgb <- function(
-    data,
-    team_season_stats,
-    years_to_evaluate = 2015:2025,
-    start_train_season = 2003,
-    seed = 123,
-    nrounds = 100,
-    max_depth = 6,
-    eta = 0.1,
-    subsample = 0.9,
-    colsample_bytree = 0.8,
-    min_child_weight = 1,
-    gamma = .1
-) {
-  
-  all_brier_results <- data.frame()
-  all_model_info <- list()
-  
-  for (eval_year in years_to_evaluate) {
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║  Training XGBoost on", start_train_season, "-", eval_year - 1, 
-        "and evaluating on", eval_year, "║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n\n")
-    
-
-    # BUILD TRAINING DATA========================
-    cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
-    
-    train_data <- build_training_data_balanced(
-      data = data,
-      team_season_stats = team_season_stats %>% dplyr::filter(Season < eval_year),
-      start_season = start_train_season,
-      train_until_season = eval_year
-    )
-    
-    cat("  ✓ Training data has", nrow(train_data), "games\n")
-    
-    predictors <- setdiff(names(train_data), c("Win", "Season"))
-    
-
-    # TRAIN XGBOOST ========================
-    cat("→ Training XGBoost model...\n")
-    
-    x_train <- as.matrix(train_data[, predictors])
-    y_train <- train_data$Win
-    
-    set.seed(seed)
-    train_idx <- sample(1:nrow(x_train), size = 0.9 * nrow(x_train))
-    
-    dtrain <- xgb.DMatrix(x_train[train_idx, ], label = y_train[train_idx])
-    dvalid <- xgb.DMatrix(x_train[-train_idx, ], label = y_train[-train_idx])
-    
-    params <- list(
-      objective = "binary:logistic",
-      eval_metric = "logloss",
-      max_depth = max_depth,
-      eta = eta,
-      subsample = subsample,
-      colsample_bytree = colsample_bytree,
-      min_child_weight = min_child_weight,
-      gamma = gamma,
-      seed = seed,
-      nthread = 1   # 🔥 fixes your infinite process issue
-    )
-    
-    set.seed(seed)
-    
-    xgb_model <- xgb.train(
-      params = params,
-      data = dtrain,
-      nrounds = nrounds,
-      watchlist = list(train = dtrain, valid = dvalid),
-      early_stopping_rounds = 10,
-      verbose = 0
-    )
-    
-    best_nrounds <- xgb_model$best_iteration
-    best_logloss <- xgb_model$best_score
-    
-    cat("  ✓ Best rounds:", best_nrounds)
-    cat("\n  ✓ Validation Log Loss:", round(best_logloss, 4), "\n")
-    
-    # Training diagnostics
-    train_pred <- predict(xgb_model, xgb.DMatrix(x_train))
-    train_brier <- mean((train_pred - y_train)^2)
-    cat("  ✓ Training Brier:", round(train_brier, 4), "\n")
-    
-    importance_matrix <- xgb.importance(feature_names = predictors, model = xgb_model)
-    
-    cat("  ✓ Top 3 features:\n")
-    for(i in 1:min(3, nrow(importance_matrix))) {
-      cat("    -", importance_matrix$Feature[i], ":", round(importance_matrix$Gain[i], 4), "\n")
-    }
-    
-    prediction_models <- list(
-      xgb_model = xgb_model,
-      predictors = predictors,
-      best_nrounds = best_nrounds,
-      params = params
-    )
-    
-    # EVALUATION ========================
-    cat("→ Evaluating on", eval_year, "tournament games...\n")
-    
-    tourney_games <- data$MNCAATourneyCompactResults %>%
-      dplyr::filter(Season == eval_year) %>%
-      dplyr::select(WTeamID, LTeamID)
-    
-    n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games\n")
-    
-    if (n_total_games == 0) next
-    
-    set.seed(seed)
-    
-    evaluation_games <- tourney_games %>%
-      dplyr::rowwise() %>%
-      dplyr::mutate(
-        winner_as_team1 = sample(c(TRUE, FALSE), 1),
-        Team1 = ifelse(winner_as_team1, WTeamID, LTeamID),
-        Team2 = ifelse(winner_as_team1, LTeamID, WTeamID),
-        Actual_Win = ifelse(winner_as_team1, 1, 0)
-      ) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(Team1, Team2, Actual_Win) %>%
-      dplyr::mutate(Season = eval_year)
-    
-    predictions <- data.frame(
-      Actual_Win = evaluation_games$Actual_Win,
-      Pred_Prob = NA_real_
-    )
-    
-    games_with_errors <- 0
-    
-    for (i in 1:nrow(evaluation_games)) {
-      game <- evaluation_games[i, ]
-      
-      pred_data <- prepare_prediction_data(
-        team1_id = game$Team1,
-        team2_id = game$Team2,
-        team_season_stats = team_season_stats %>% dplyr::filter(Season == eval_year),
-        season = eval_year,
-        predictors = predictors,
-        diff_predictor_names = predictors,
-        non_diff_names = c()
-      )
-      
-      if (is.null(pred_data)) {
-        games_with_errors <- games_with_errors + 1
-        next
-      }
-      
-      x_pred <- as.matrix(pred_data[, predictors, drop = FALSE])
-      predictions$Pred_Prob[i] <- predict(xgb_model, xgb.DMatrix(x_pred))
-    }
-    
-    predictions <- predictions[!is.na(predictions$Pred_Prob), ]
-    
-    n_valid_predictions <- nrow(predictions)
-    cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
-    
-    if (n_valid_predictions == 0) next
-    
-    # METRICS ========================
-    predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
-    brier_score <- mean(predictions$Brier_Component)
-    
-    epsilon <- 1e-15
-    pred_clipped <- pmax(pmin(predictions$Pred_Prob, 1 - epsilon), epsilon)
-    
-    log_loss <- -mean(
-      predictions$Actual_Win * log(pred_clipped) + 
-        (1 - predictions$Actual_Win) * log(1 - pred_clipped)
-    )
-    
-    accuracy <- mean((predictions$Pred_Prob >= 0.5) == predictions$Actual_Win)
-    
-    # STORE RESULTS ========================
-    year_result <- data.frame(
-      Evaluation_Year = eval_year,
-      Brier_Score = brier_score,
-      LogLoss = log_loss,
-      Accuracy = accuracy,
-      N_Train_Games = nrow(train_data),
-      N_Valid_Predictions = n_valid_predictions,
-      Best_Rounds = best_nrounds,
-      Validation_LogLoss = best_logloss,
-      Train_Brier = train_brier
-    )
-    
-    all_brier_results <- rbind(all_brier_results, year_result)
-    
-    all_model_info[[as.character(eval_year)]] <- list(
-      model = prediction_models,
-      predictions = predictions,
-      importance = importance_matrix
-    )
-    
-    cat("\n  ✓ Brier:", round(brier_score, 4),
-        "| LogLoss:", round(log_loss, 4),
-        "| Acc:", round(accuracy, 3), "\n")
-  }
-  
-
-  # OVERALL METRICS ========================
-  if (nrow(all_brier_results) > 0) {
-    overall_brier <- weighted.mean(all_brier_results$Brier_Score,
-                                   all_brier_results$N_Valid_Predictions)
-    
-    cat("\n══════════════════════════════════════════\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), "\n")
-    cat("══════════════════════════════════════════\n")
-  }
-  
-  return(list(
-    results = all_brier_results,
-    models = all_model_info
-  ))
-}
-
-calculate_brier_by_year_iterative_elo <- function(
-    data,
-    pairwise_lookup,
-    years_to_evaluate = 2015:2025,
-    seed = 123,
-    gamma = 1.0   # <-- NEW PARAM
-) {
-  
-  library(dplyr)
-  
-  all_brier_results <- data.frame()
-  all_model_info <- list()
-  
-  for (eval_year in years_to_evaluate) {
-    
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║        Evaluating ELO model on", eval_year, "tournament        ║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n\n")
-    
-    # ========================
-    # GET TOURNAMENT GAMES
-    # ========================
-    tourney_games <- data$MNCAATourneyCompactResults %>%
-      dplyr::filter(Season == eval_year) %>%
-      dplyr::select(WTeamID, LTeamID)
-    
-    n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games\n")
-    
-    if (n_total_games == 0) next
-    
-    # ========================
-    # RANDOMIZE GAME DIRECTION #we dont need to do this for consensus picks???
-    # ========================
-    set.seed(seed)
-    
-    evaluation_games <- tourney_games %>%
-      dplyr::rowwise() %>%
-      dplyr::mutate(
-        winner_as_team1 = sample(c(TRUE, FALSE), 1),
-        Team1 = ifelse(winner_as_team1, WTeamID, LTeamID),
-        Team2 = ifelse(winner_as_team1, LTeamID, WTeamID),
-        Actual_Win = ifelse(winner_as_team1, 1, 0)
-      ) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(Team1, Team2, Actual_Win)
-    
-    # ========================
-    # GET ELO PREDICTIONS
-    # ========================
-    predictions <- data.frame(
-      Actual_Win = evaluation_games$Actual_Win,
-      Pred_Prob = NA_real_
-    )
-    
-    for (i in 1:nrow(evaluation_games)) {
-      
-      game <- evaluation_games[i, ]
-      
-      p <- pairwise_lookup %>%
-        dplyr::filter(
-          year == eval_year,
-          TeamA == game$Team1,
-          TeamB == game$Team2
-        ) %>%
-        dplyr::pull(matchup_prob)
-      
-      if (length(p) == 0) {
-        p <- 0.5
-      }
-      
-      # ========================
-      # APPLY GAMMA SCALING
-      # ========================
-      p_raw <- pmax(pmin(p, 1 - 1e-10), 1e-10)
-      log_odds <- log(p_raw / (1 - p_raw))
-      p_scaled <- 1 / (1 + exp(-gamma * log_odds))
-      
-      predictions$Pred_Prob[i] <- p_scaled
-    }
-    
-    # ========================
-    # CLEAN PREDICTIONS
-    # ========================
-    predictions <- predictions[!is.na(predictions$Pred_Prob), ]
-    
-    n_valid_predictions <- nrow(predictions)
-    cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
-    
-    if (n_valid_predictions == 0) next
-    
-    # ========================
-    # METRICS
-    # ========================
-    predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
-    brier_score <- mean(predictions$Brier_Component)
-    
-    epsilon <- 1e-15
-    pred_clipped <- pmax(pmin(predictions$Pred_Prob, 1 - epsilon), epsilon)
-    
-    log_loss <- -mean(
-      predictions$Actual_Win * log(pred_clipped) + 
-        (1 - predictions$Actual_Win) * log(1 - pred_clipped)
-    )
-    
-    accuracy <- mean((predictions$Pred_Prob >= 0.5) == predictions$Actual_Win)
-    
-    # ========================
-    # STORE RESULTS
-    # ========================
-    year_result <- data.frame(
-      Evaluation_Year = eval_year,
-      Brier_Score = brier_score,
-      LogLoss = log_loss,
-      Accuracy = accuracy,
-      N_Valid_Predictions = n_valid_predictions
-    )
-    
-    all_brier_results <- rbind(all_brier_results, year_result)
-    
-    all_model_info[[as.character(eval_year)]] <- list(
-      predictions = predictions
-    )
-    
-    cat("\n  ✓ Brier:", round(brier_score, 4),
-        "| LogLoss:", round(log_loss, 4),
-        "| Acc:", round(accuracy, 3), "\n")
-  }
-  
-  # ========================
-  # OVERALL METRICS
-  # ========================
-  if (nrow(all_brier_results) > 0) {
-    
-    overall_brier <- weighted.mean(
-      all_brier_results$Brier_Score,
-      all_brier_results$N_Valid_Predictions
-    )
-    
-    cat("\n══════════════════════════════════════════\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), "\n")
-    cat("══════════════════════════════════════════\n")
-  }
-  
-  return(list(
-    results = all_brier_results,
-    models = all_model_info
-  ))
-}
-# run it ------------------------------------------------------------------
-evaluation_years <- 2021:2025
-
-brier_analysis_ranger <- calculate_brier_by_year_iterative_ranger(
-  data = data,
-  team_season_stats = team_season_stats,
-  years_to_evaluate = evaluation_years,
-  start_train_season = 2003,
-  seed = 123
-)
-
-print(brier_analysis_ranger$results)
-
-# Run with logistic regression (recommended for binary outcomes)
-brier_analysis_lr <- calculate_brier_by_year_iterative_lm(
-  data = data,
-  team_season_stats = team_season_stats,
-  years_to_evaluate = evaluation_years,
-  start_train_season = 2003,
-  use_logistic = TRUE
-)
-
-# Run with linear regression (for comparison)
-brier_analysis_linear <- calculate_brier_by_year_iterative_lm(
-  data = data,
-  team_season_stats = team_season_stats,
-  years_to_evaluate = evaluation_years,
-  start_train_season = 2003,
-  use_logistic = FALSE
-)
-
-# Run XGBoost
-brier_analysis_xgb <- calculate_brier_by_year_iterative_xgb(
-  data = data,
-  team_season_stats = team_season_stats,
-  years_to_evaluate = evaluation_years,
-  start_train_season = 2003,
-  seed = 123,
-  nrounds = 200,  # More rounds, early stopping will find optimal
-  max_depth = 6,
-  eta = 0.3,
-  subsample = 0.8,
-  colsample_bytree = 0.8
-)
-
-brier_analysis_elo <- calculate_brier_by_year_iterative_elo(
-  data = data,
-  pairwise_lookup = pairwise_lookup,
-  years_to_evaluate = evaluation_years
-)
-
-brier_analysis_elo_adj_underconf <- calculate_brier_by_year_iterative_elo(
-  data = data,
-  pairwise_lookup = pairwise_lookup,
-  years_to_evaluate = evaluation_years,
-  gamma=.25
-)
-
-# Compare results (selecting only common columns)
-comparison <- rbind(
-  brier_analysis_lr$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>%
-    mutate(Model = "Logistic Regression"),
-  brier_analysis_linear$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>%
-    mutate(Model = "Linear Regression"),
-  brier_analysis_ranger$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>%
-    mutate(Model = "Random Forest"),
-  brier_analysis_xgb$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>% 
-    mutate(Model= "xgboosted rf"),
-  brier_analysis_elo$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>% 
-    mutate(Model= "consensus"),
-  brier_analysis_elo_adj_underconf$results %>% 
-    select(Evaluation_Year, Brier_Score, LogLoss, Accuracy, N_Valid_Predictions) %>% 
-    mutate(Model= "consensus_underconf")
-) 
-
-# Visualize comparison
-p1 <- ggplot(comparison, aes(x = Evaluation_Year, y = Brier_Score, color = Model)) +
-  geom_line(size = 1) +
-  geom_point() +
-  #geom_smooth(method=lm, se=F)+
-  labs(title = "Model brier score comparison",
-       y = "Brier Score (lower is better)",
-       x = "Evaluation Year") +
-  theme_minimal()
-#baseline is .25 for 50/50
-p1
-
-# Compare accuracy
-p2 <- ggplot(comparison, aes(x = Evaluation_Year, y = Accuracy, color = Model)) +
-  geom_line(size = 1) +
-  geom_point() +
-  #geom_smooth(method=lm, se=F)+
-  labs(title = "Model Accuracy Comparison",
-       y = "Accuracy",
-       x = "Evaluation Year") +
-  theme_minimal()
-
-p2
-
-#log loss
-p3 <- ggplot(comparison, aes(x = Evaluation_Year, y = LogLoss, color = Model)) +
-  geom_line(size = 1) +
-  geom_point() +
-  labs(title = "Model Log Loss Comparison",
-       y = "Log Loss (lower is better)",
-       x = "Evaluation Year") +
-  theme_minimal()
-
-p3
-
+# Feel free to use below global options for color-blind-friendly scales
+# scale_colour_discrete <- function(...) scale_colour_viridis_d(...)
+# scale_fill_discrete <- function(...) scale_fill_viridis_d(...)
 ```
+
+## This page is currently under construction
+
+# Introduction
+
+Describe the real-world motivation for your project. Clearly state your research question and explain why it matters.
+
+Briefly preview your data, empirical approach, main findings, and contribution.
+
+March Madness is an annual tournament for division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN.
+
+The research question is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
+
+The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.
+
+# Background and Related Literature
+
+-64 teams compete for the title
+
+-Single elimination tournament.
+
+-Millions of people fill out brackets
+
+-Billions of dollars each year are gambled on the tournament
+
+# Data
+
+## Data Source
+
+Describe the data source clearly. Include the source name, link, and access date in the References section.
+
+## Unit of Observation
+
+Explain what each row in your dataset represents.
+
+## Key Variables
+
+Describe your outcome variable, main explanatory variables, and important control variables.
+
+The outcome variable is win probability.
+
+## Data Cleaning
+
+Explain major cleaning steps, sample restrictions, missing values, and variable construction.
+
+Kenpom had to be cleaned to be able to left join to team_season_stats.
+
+## Summary Statistics
+
+```{r summary-statistics}
+# Replace this example with your own data and summary statistics.
+# skim(your_data)
+```
+
+# Empirical Strategy / Methods
+
+Describe the method used to answer your research question. This may include regression, classification, clustering, forecasting, text analysis, or another data analytics method.
+
+Linear Regression Using PC1 and PC2:
+
+$$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$
+
+where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first explanatory variable, $PC_2X_{it}$ is the second explanatory variable, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.
+
+If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.
+
+# Results
+
+Present your main empirical findings using tables, figures, and written interpretation.
+
+```{r results-table}
+# Replace this example with your own table or model output.
+# modelsummary(list(model1, model2))
+```
+
+```{r results-figure}
+# Replace this example with your own figure.
+# ggplot(your_data, aes(x = x_variable, y = y_variable)) +
+#   geom_point() +
+#   labs(x = "X Variable", y = "Y Variable", title = "Main Result")
+```
+
+# Discussion and Implications
+
+Interpret your results. Explain what they imply for economics, business, policy, or society.
+
+Discuss limitations and clarify what your analysis can and cannot show.
+
+# Conclusion
+
+Summarize your research question, data, method, main findings, and key takeaway.
+
+Briefly suggest possible future extensions.
+
+# References
+
+List all sources cited in your project, including data sources, academic articles, reports, websites, packages, and tools.
+
+For online sources, include the full URL and date/time accessed.
+
+# Appendix
+
+Include additional tables, figures, robustness checks, code explanations, or variable definitions if needed.
