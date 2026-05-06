@@ -425,5 +425,110 @@
     "title": "Welcome To My Blog",
     "section": "",
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html",
+    "href": "danl-310-data-storytelling.html",
+    "title": "Your Data Storytelling Project Title",
+    "section": "",
+    "text": "Project Webpage: Insert link here\n\nThis project visualizes Global High Speed Rail (HSR) progress compared to the US.\nYour project should tell an interesting and coherent story using:\n\ndescriptive statistics,\ndata transformation, and\ndata visualization.\n\nA literature review, regression model, machine learning model, or formal statistical model is not required."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#key-variables",
+    "href": "danl-310-data-storytelling.html#key-variables",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Key Variables",
+    "text": "Key Variables\nDescribe the most important variables in your project.\nYou do not need to describe every variable. Focus on variables that are central to your story."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#unit-of-observation",
+    "href": "danl-310-data-storytelling.html#unit-of-observation",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Unit of Observation",
+    "text": "Unit of Observation\nExplain what each row in your dataset represents.\nExamples:\n\none person,\none city,\none school,\none transaction,\none game,\none company,\none observation by year, county, or category."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#data-source",
+    "href": "danl-310-data-storytelling.html#data-source",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Data Source",
+    "text": "Data Source\nDescribe your data source clearly.\nInclude:\n\nname of the dataset,\norganization or website that provides the data,\nlink to the source,\ndate accessed,\nbrief description of what the data contains, and\nwhy the dataset is suitable for your story."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#basic-summary",
+    "href": "danl-310-data-storytelling.html#basic-summary",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Basic Summary",
+    "text": "Basic Summary\n\n# Replace this example with your own summary statistics.\n\n# skim(cleaned_data)"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#important-counts-rates-or-group-summaries",
+    "href": "danl-310-data-storytelling.html#important-counts-rates-or-group-summaries",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Important Counts, Rates, or Group Summaries",
+    "text": "Important Counts, Rates, or Group Summaries\n\n# Example structure:\n\n# cleaned_data |&gt;\n#   group_by(group_variable) |&gt;\n#   summarize(\n#     n = n(),\n#     mean_value = mean(value_variable, na.rm = TRUE),\n#     median_value = median(value_variable, na.rm = TRUE)\n#   ) |&gt;\n#   arrange(desc(mean_value))"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#initial-observations",
+    "href": "danl-310-data-storytelling.html#initial-observations",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Initial Observations",
+    "text": "Initial Observations\nBriefly explain what the descriptive statistics show.\nFocus on patterns such as:\n\nlargest or smallest groups,\ntypical values,\nvariation across groups,\noutliers or unusual cases,\nmissing data issues, and\npatterns that set up your main story."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#visualization-1-main-pattern",
+    "href": "danl-310-data-storytelling.html#visualization-1-main-pattern",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Visualization 1: Main Pattern",
+    "text": "Visualization 1: Main Pattern\n\n# Replace this example with your own visualization.\n\n# cleaned_data |&gt;\n#   ggplot(aes(x = x_variable, y = y_variable)) +\n#   geom_col() +\n#   labs(\n#     title = \"Write a clear, message-driven title\",\n#     subtitle = \"Optional subtitle that provides context\",\n#     x = \"X-axis label\",\n#     y = \"Y-axis label\",\n#     caption = \"Source: Your data source\"\n#   )\n\nInterpretation:\nExplain what this visualization shows. What should the audience notice first? How does this figure begin the story?"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#visualization-2-comparison-or-contrast",
+    "href": "danl-310-data-storytelling.html#visualization-2-comparison-or-contrast",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Visualization 2: Comparison or Contrast",
+    "text": "Visualization 2: Comparison or Contrast\n\n# Replace this example with your own visualization.\n\nInterpretation:\nExplain the key comparison. What is similar, different, surprising, or important?"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#visualization-3-trend-relationship-or-deeper-pattern",
+    "href": "danl-310-data-storytelling.html#visualization-3-trend-relationship-or-deeper-pattern",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Visualization 3: Trend, Relationship, or Deeper Pattern",
+    "text": "Visualization 3: Trend, Relationship, or Deeper Pattern\n\n# Replace this example with your own visualization.\n\nInterpretation:\nExplain how this visualization deepens the story. How does it connect to your Big Idea?"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#optional-visualization-4-additional-evidence-1",
+    "href": "danl-310-data-storytelling.html#optional-visualization-4-additional-evidence-1",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Optional Visualization 4: Additional Evidence 1",
+    "text": "Optional Visualization 4: Additional Evidence 1\n\n# Optional additional figure.\n\nInterpretation:\nUse this only if it adds something meaningful to the story."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#optional-visualization-5-additional-evidence-2",
+    "href": "danl-310-data-storytelling.html#optional-visualization-5-additional-evidence-2",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Optional Visualization 5: Additional Evidence 2",
+    "text": "Optional Visualization 5: Additional Evidence 2\n\n# Optional additional figure.\n\nInterpretation:\nUse this only if it adds something meaningful to the story."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#shiny-app",
+    "href": "danl-310-data-storytelling.html#shiny-app",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Shiny App",
+    "text": "Shiny App\n\n  \n\nBriefly describe the Shiny app and dashboard that accompany this project."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#dashboard",
+    "href": "danl-310-data-storytelling.html#dashboard",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Dashboard",
+    "text": "Dashboard\n\nDashboard: Insert link here\n\nExplain how dashboard help users interact with or explore the project data."
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#limitations",
+    "href": "danl-310-data-storytelling.html#limitations",
+    "title": "Your Data Storytelling Project Title",
+    "section": "Limitations",
+    "text": "Limitations\nDiscuss what your data story can and cannot show.\nPossible limitations include:\n\nmissing data,\nlimited time period,\nmeasurement issues,\nsmall sample size,\ndata not representing all populations,\ndescriptive analysis cannot prove causality."
   }
 ]

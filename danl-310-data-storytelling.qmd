@@ -1,0 +1,433 @@
+---
+title: "Your Data Storytelling Project Title"
+subtitle: "DANL 310: Data Visualization and Presentation"
+author:
+  - name: Aaron Zalen
+    affiliation: SUNY Geneseo
+date: last-modified
+
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  fig-width: 9
+  fig-height: 6
+
+format:
+  html:
+    toc: true
+    toc-title: "Contents"
+    toc-depth: 4
+    toc-expand: 3
+    number-sections: false
+    code-fold: false
+    code-tools: true
+    highlight-style: atom-one
+---
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(skimr)
+library(hrbrthemes)
+library(rmarkdown)
+
+# Add other packages as needed.
+# Examples:
+# library(lubridate)
+# library(janitor)
+# library(scales)
+# library(viridis)
+# library(plotly)
+# library(DT)
+# library(sf)
+
+# Feel free to revise this theme.
+theme_set(
+  theme_ipsum() +
+    theme(
+      strip.background = element_rect(fill = "lightgray"),
+      axis.title.x = element_text(size = rel(1.33)),
+      axis.title.y = element_text(size = rel(1.33))
+    )
+)
+
+# Optional color-blind-friendly scales.
+# scale_colour_discrete <- function(...) scale_colour_viridis_d(...)
+# scale_fill_discrete <- function(...) scale_fill_viridis_d(...)
+```
+
+# This page is currently a work in progress
+# Project Overview
+
+- **Project Webpage:** [Insert link here](YOUR_PROJECT_URL)
+
+This project visualizes Global High Speed Rail (HSR) progress compared to the US.
+
+Your project should tell an interesting and coherent story using:
+
+- descriptive statistics,
+- data transformation, and
+- data visualization.
+
+A literature review, regression model, machine learning model, or formal statistical model is **not required**.
+
+
+# Big Idea
+
+Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail
+Only 16% view it unfavorably, the US has fallen behind in HSR construction when compared to contries that have built HSR. 
+
+This project emphasizes the difference in the length of HSR other contries have managed to achieve, and are projected to achieve in the next 10 years while the US continues to have slow progress in HSR construction. 
+
+State the main message of your project in 2--3 sentences.
+
+Your Big Idea should answer:
+
+- What is the most important thing your audience should remember?
+- Why is this story interesting, surprising, or important?
+- Who should care about this pattern, trend, or issue?
+
+# Guiding Question or Story Theme
+
+The guiding question of this project is: How has the length of HSR construction changed overtime.
+Examples:
+
+- How has X changed over time?
+- Which groups are most affected by X?
+- What patterns appear across locations, categories, or time periods?
+- What surprising contrast does the data reveal?
+
+# Background and Context
+
+Provide enough background so that a general audience can understand your topic.
+
+Use this section especially if your topic involves technical concepts, scientific knowledge, business context, policy context, sports rules, cultural background, or other information that may not be familiar to everyone.
+
+You do **not** need a formal literature review. The goal is to help your audience understand the story.
+
+# Data
+
+```{r data-import}
+# Replace this example with your own data import code.
+
+# your_data <- read_csv("your-data-file.csv")
+
+# paged_table(your_data)
+```
+
+
+## Key Variables
+
+Describe the most important variables in your project.
+
+You do **not** need to describe every variable. Focus on variables that are central to your story.
+
+
+
+## Unit of Observation
+
+Explain what each row in your dataset represents.
+
+Examples:
+
+- one person,
+- one city,
+- one school,
+- one transaction,
+- one game,
+- one company,
+- one observation by year, county, or category.
+
+
+
+## Data Source
+
+Describe your data source clearly.
+
+Include:
+
+- name of the dataset,
+- organization or website that provides the data,
+- link to the source,
+- date accessed,
+- brief description of what the data contains, and
+- why the dataset is suitable for your story.
+
+
+# Data Preparation and Transformation
+
+Describe the main steps you used to prepare the data for storytelling.
+
+This may include:
+
+- cleaning missing or invalid values,
+- renaming variables,
+- filtering observations,
+- creating new variables,
+- grouping and summarizing data,
+- reshaping data from wide to long format, or long to wide format,
+- joining multiple datasets, and
+- preparing data specifically for your Shiny app or dashboard.
+
+```{r data-preparation}
+# Replace this example with your own data cleaning and transformation code.
+
+# cleaned_data <- your_data |>
+#   rename(...) |>
+#   filter(...) |>
+#   mutate(...) |>
+#   group_by(...) |>
+#   summarize(...)
+```
+
+Briefly explain why these transformations were necessary for your story.
+
+# Descriptive Statistics
+
+Use descriptive statistics to help your audience understand the data before you tell the main story.
+
+## Basic Summary
+
+```{r summary-statistics}
+# Replace this example with your own summary statistics.
+
+# skim(cleaned_data)
+```
+
+## Important Counts, Rates, or Group Summaries
+
+```{r descriptive-summary}
+# Example structure:
+
+# cleaned_data |>
+#   group_by(group_variable) |>
+#   summarize(
+#     n = n(),
+#     mean_value = mean(value_variable, na.rm = TRUE),
+#     median_value = median(value_variable, na.rm = TRUE)
+#   ) |>
+#   arrange(desc(mean_value))
+```
+
+## Initial Observations
+
+Briefly explain what the descriptive statistics show.
+
+Focus on patterns such as:
+
+- largest or smallest groups,
+- typical values,
+- variation across groups,
+- outliers or unusual cases,
+- missing data issues, and
+- patterns that set up your main story.
+
+# Data Visualization and Storytelling
+
+This section is the main body of your project. Use visualizations to build a clear story.
+
+Each visualization should include:
+
+- a clear, message-driven title,
+- readable axis labels,
+- appropriate chart type,
+- thoughtful color choices,
+- colorblind-friendly colors,
+- a source note or caption when appropriate, and
+- a short written interpretation.
+
+Your webpage should feel like one coherent narrative, not a disconnected collection of plots.
+
+## Visualization 1: Main Pattern
+
+```{r visualization-1}
+# Replace this example with your own visualization.
+
+# cleaned_data |>
+#   ggplot(aes(x = x_variable, y = y_variable)) +
+#   geom_col() +
+#   labs(
+#     title = "Write a clear, message-driven title",
+#     subtitle = "Optional subtitle that provides context",
+#     x = "X-axis label",
+#     y = "Y-axis label",
+#     caption = "Source: Your data source"
+#   )
+```
+
+**Interpretation:**  
+Explain what this visualization shows. What should the audience notice first? How does this figure begin the story?
+
+## Visualization 2: Comparison or Contrast
+
+```{r visualization-2}
+# Replace this example with your own visualization.
+```
+
+**Interpretation:**  
+Explain the key comparison. What is similar, different, surprising, or important?
+
+## Visualization 3: Trend, Relationship, or Deeper Pattern
+
+```{r visualization-3}
+# Replace this example with your own visualization.
+```
+
+**Interpretation:**  
+Explain how this visualization deepens the story. How does it connect to your Big Idea?
+
+## Optional Visualization 4: Additional Evidence 1
+
+```{r visualization-4}
+# Optional additional figure.
+```
+
+**Interpretation:**  
+Use this only if it adds something meaningful to the story.
+
+
+## Optional Visualization 5: Additional Evidence 2
+
+```{r visualization-5}
+# Optional additional figure.
+```
+
+**Interpretation:**  
+Use this only if it adds something meaningful to the story.
+
+
+## Shiny App
+
+```{=html}
+<div style="display: flex; justify-content: center; margin: 1em 0;">
+  <iframe
+    src="YOUR_SHINY_APP_URL"
+    width="800"
+    height="800"
+    frameborder="0"
+    style="border: none;"
+  ></iframe>
+</div>
+```
+
+Briefly describe the Shiny app and dashboard that accompany this project.
+
+
+## Dashboard
+
+- **Dashboard:** [Insert link here](YOUR_DASHBOARD_URL)
+
+Explain how dashboard help users interact with or explore the project data.
+
+
+
+
+# Connecting the Dots
+
+Bring the visual evidence together.
+
+Explain how your descriptive statistics, transformations, and visualizations work together to answer your guiding question or support your story theme.
+
+You may discuss:
+
+- the strongest pattern in the data,
+- a surprising result,
+- differences across groups,
+- changes over time,
+- geographic or categorical variation,
+- practical, business, economic, social, cultural, or policy relevance,
+- why your audience should care.
+
+# Discussion
+
+Interpret the meaning of your findings in plain language.
+
+This project does **not** require regression, machine learning, or causal inference. Avoid claiming that one variable causes another unless your project design truly supports that claim.
+
+Use careful language such as:
+
+- The data suggest that...
+- The pattern is consistent with...
+- One possible explanation is...
+- This comparison shows that...
+- This trend raises questions about...
+
+## Limitations
+
+Discuss what your data story can and cannot show.
+
+Possible limitations include:
+
+- missing data,
+- limited time period,
+- measurement issues,
+- small sample size,
+- data not representing all populations,
+- descriptive analysis cannot prove causality.
+
+# Conclusion
+
+Summarize your project in one or two paragraphs.
+
+Return to your Big Idea and explain the main takeaway your audience should remember.
+
+A strong conclusion should answer:
+
+- What did the data reveal?
+- Why does it matter?
+- What should the audience remember after leaving your webpage?
+
+# Future Directions
+
+Briefly explain what you would explore next.
+
+Examples:
+
+- additional variables,
+- a longer time period,
+- different geographic areas,
+- more detailed group comparisons,
+- a dashboard or interactive visualization improvement,
+- a follow-up analysis using modeling, if appropriate.
+
+# References
+
+Public Policy Polling. (2024). National survey on high-speed rail (conducted for the U.S. High Speed Rail Coalition). https://www.ushsr.com/
+
+
+
+# Appendix
+
+Use the appendix for extra materials that are useful but not central to the story.
+
+Examples:
+
+- additional tables,
+- additional figures,
+- extra data cleaning details,
+- code that is too long for the main narrative.
+
+```{r appendix-code}
+# Optional extra code.
+```
+
+# Project Checklist
+
+Before submitting, check that your project includes the following:
+
+- [ ] A clear Big Idea or main message.
+- [ ] A clear guiding question or story theme.
+- [ ] A description of the data source and unit of observation.
+- [ ] Data transformation code and explanation.
+- [ ] Descriptive statistics that help set up the story.
+- [ ] Clear and readable visualizations.
+- [ ] Written interpretation after each major figure.
+- [ ] A coherent narrative connecting the figures together.
+- [ ] A conclusion explaining why the story matters.
+- [ ] A published project webpage on each member's personal GitHub website.
+- [ ] A published Shiny app using the project data.
+- [ ] A published dashboard using the project data.
+- [ ] No unnecessary regression, machine learning, or formal modeling section.
+- [ ] No major code errors, warnings, or redundant output.
