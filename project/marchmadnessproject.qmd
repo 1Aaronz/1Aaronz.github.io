@@ -1,8 +1,8 @@
 ---
-title: Data Analytics Capstone Title
-subtitle: "My Project"
+title: Data Analytics Capstone Project
+subtitle: "NCAA March Madness Prediction"
 author:
-  - name: YOUR NAME 
+  - name: Aaron Zalen 
     affiliation: SUNY Geneseo
     
 date: last-modified

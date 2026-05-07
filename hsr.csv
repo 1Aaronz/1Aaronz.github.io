@@ -1,0 +1,301 @@
+table_id,Line,Termini,Length,Type,Maximum speed,Opening,Status,country,Length_clean,Length_km,Opening_year
+1,Red line,Mersa Matruh–Ain Sokhna,660 km (410 mi),New,230 km/h (140 mph),2027,Under construction,Egypt,660 km (410 mi),660,2027
+2,Al Boraq,Tanger-Ville–Kenitra,186 km (116 mi)[43],New,320 km/h (200 mph),2018,Operational,Morocco,186 km (116 mi)[43],186,2018
+2,Al Boraq,Tanger-Ville–Casablanca,137 km (85 mi),Upgraded,220 km/h (140 mph),TBD[ba],Undergoing upgrade,Morocco,137 km (85 mi),137,
+2,Al Boraq,Kenitra–Rabat,55 km (34 mi),New,320 km/h (200 mph),2027,Under construction,Morocco,55 km (34 mi),55,2027
+2,Al Boraq,Kenitra-Marrakech,375 km (233 mi),New,320 km/h (200 mph),TBD[bb],Under construction,Morocco,375 km (233 mi),375,
+2,Al Boraq,Fez-Rabat[44],180 km (110 mi),New,320 km/h (200 mph),2030,Under construction,Morocco,180 km (110 mi),180,2030
+3,Shanghai maglev train,Longyang Road–Pudong International,30.5 km (19.0 mi),New (Maglev),431 km/h (268 mph),2004,Operational,China,30.5 km (19.0 mi),30.5,2004
+3,Beijing–Shanghai,Beijing south–Tianjin West / Shanghai Hongqiao,"1,318 km (819 mi)",New,350 km/h (220 mph),2011,Operational,China,1318 km (819 mi),1318,2011
+3,Beijing–Guangzhou[bc],Beijing west–Guangzhou,"2,230 km (1,390 mi)",New,350 km/h (220 mph),2012,Operational,China,2230 km (1390 mi),2230,2012
+3,Hangzhou–Fuzhou–Shenzhen,Hangzhou east–Shenzhen north,"1,495 km (929 mi)",New,350 km/h (220 mph),2013,Operational,China,1495 km (929 mi),1495,2013
+3,Huhanrong PDL,Shanghai Hongqiao–Chengdu,"2,078 km (1,291 mi)",New,350 km/h (220 mph),2014,Operational,China,2078 km (1291 mi),2078,2014
+3,Shanghai–Kunming,Shanghai Hongqiao–Kunming south,"2,066 km (1,284 mi)",New,350 km/h (220 mph),2016,Operational,China,2066 km (1284 mi),2066,2016
+3,Guangzhou–Kunming,Guangzhou south–Kunming south,"1,285 km (798 mi)",New,350 km/h (220 mph),2016,Operational,China,1285 km (798 mi),1285,2016
+3,Suifenhe–Manzhouli,Suifenhe–Manzhouli,714 km (444 mi),Upgraded,250 km/h (160 mph),2018,Operational,China,714 km (444 mi),714,2018
+3,Qingdao–Yinchuan,Qingdao north–Yinchuan,"1,762 km (1,095 mi)",Upgraded,350 km/h (220 mph),2018,Operational,China,1762 km (1095 mi),1762,2018
+3,Beijing–Lanzhou,Beijing–Lanzhou,"1,526 km (948 mi)",Upgraded,350 km/h (220 mph),2019,Operational,China,1526 km (948 mi),1526,2019
+3,Beijing–Harbin[bc],Beijing Chaoyang–Harbin / Dalian,"1,700 km (1,100 mi)",New,350 km/h (220 mph),2021,Operational,China,1700 km (1100 mi),1700,2021
+3,Eurasia Continental Bridge,Lianyungang–Ürümqi,"3,422 km (2,126 mi)",New,350 km/h (220 mph),2021,Operational,China,3422 km (2126 mi),3422,2021
+3,Coastal corridor (north extension)[bd],Dandong–Ningbo,"2,659 km (1,652 mi)",New,350 km/h (220 mph),2027,Mostly operational[be],China,2659 km (1652 mi),2659,2027
+3,Coastal corridor (south extension)[bd],Huizhou south–Dongxing,954 km (593 mi),New,350 km/h (220 mph),2028,Mostly operational[bf],China,954 km (593 mi),954,2028
+3,Hohhot–Nanning,Hohhot–Nanning,"2,779.7 km (1,727.2 mi)",New,350 km/h (220 mph),2028,Mostly operational[bg],China,2779.7 km (1727.2 mi),2779.7,2028
+3,Baotou (Yinchuan)–Hainan[bh],Baotou–Sanya / Xi'an north,"4,664 km (2,898 mi)",New,350 km/h (220 mph),2028,Mostly operational[bi],China,4664 km (2898 mi),4664,2028
+3,Lanzhou (Xining)–Guangzhou,Lanzhou west–Guangzhou,"2,282 km (1,418 mi)",New,350 km/h (220 mph),2028,Mostly operational[bj],China,2282 km (1418 mi),2282,2028
+3,Beijing–Hong Kong (Taipei),Beijing Fengtai–Hong Kong West Kawloon / Taipei[bk],"4,392 km (2,729 mi)",New,350 km/h (220 mph),2029,Mostly operational[bl],China,4392 km (2729 mi),4392,2029
+3,Shanghai–Chongqing–Chengdu,Shanghai Baoshan–Chengdu,"5,130 km (3,190 mi)",New,350 km/h (220 mph),2029,Partly operational[bm],China,5130 km (3190 mi),5130,2029
+3,Beijing–Kunming[bn],Beijing–Kunming / Chongqing,"3,795.7 km (2,358.5 mi)",New,350 km/h (220 mph),2030,Mostly operational[bo],China,3795.7 km (2358.5 mi),3795.7,2030
+3,Xiamen–Chongqing,Xiamen–Chongqing,937 km (582 mi),New,350 km/h (220 mph),TBD,Partly operational[bp],China,937 km (582 mi),937,
+3,Regional railways,Multiple lines,"1,611 km (1,001 mi)",New,350 km/h (220 mph),2008–2020,Operational,China,1611 km (1001 mi),1611,2008
+3,Intercity railways,Multiple lines,"7,210 km (4,480 mi)",New,250 km/h (160 mph),2008–2020,Operational,China,7210 km (4480 mi),7210,2008
+3,Class I railways,Multiple lines,"5,056.9 km (3,142.2 mi)",Upgraded,200 km/h (120 mph),2012–2019,Operational,China,5056.9 km (3142.2 mi),5056.9,2012
+4,Mumbai–Ahmedabad,Mumbai BKC–Sabarmati,508.18 km (315.77 mi),New,320 km/h (200 mph),2027–2028,Under construction,India,508.18 km (315.77 mi),508.18,2027
+5,Whoosh high-speed railway,Halim (Jakarta)–Tegalluar (Bandung),142.8 km (88.7 mi),New,350 km/h (220 mph),2023,Operational,Indonesia,142.8 km (88.7 mi),142.8,2023
+6,Tokaido Shinkansen,Tokyo–Shin-Osaka,515.4 km (320.3 mi),New,285 km/h (177 mph),1964,Operational,Japan,515.4 km (320.3 mi),515.4,1964
+6,San'y? Shinkansen,Shin-Osaka–Hakata,553.7 km (344.1 mi),New,300 km/h (190 mph),1972–1975,Operational,Japan,553.7 km (344.1 mi),553.7,1972
+6,T?hoku Shinkansen,Tokyo–Shin-Aomori,674.9 km (419.4 mi),New,320 km/h (200 mph),1982–2010,Operational,Japan,674.9 km (419.4 mi),674.9,1982
+6,J?etsu Shinkansen,Tokyo–Niigata,269.5 km (167.5 mi),New,275 km/h (171 mph),1982,Operational,Japan,269.5 km (167.5 mi),269.5,1982
+6,Hokuriku Shinkansen,Takasaki–Tsuruga,470.6 km (292.4 mi),New,260 km/h (160 mph),1997–2024,Operational,Japan,470.6 km (292.4 mi),470.6,1997
+6,Kyushu Shinkansen,Hakata–Kagoshima-Ch??,256.8 km (159.6 mi),New,260 km/h (160 mph),2004–2011,Operational,Japan,256.8 km (159.6 mi),256.8,2004
+6,Nishi Kyushu Shinkansen,Takeo-Onsen–Nagasaki,66 km (41 mi),New,260 km/h (160 mph),2022,Operational,Japan,66 km (41 mi),66,2022
+6,Hokkaido Shinkansen,Shin-Aomori–Shin-Hakodate-Hokuto,148.8 km (92.5 mi),New,260 km/h (160 mph),2016,Operational,Japan,148.8 km (92.5 mi),148.8,2016
+6,Hokkaido Shinkansen,Shin-Hakodate-Hokuto-Sapporo,212 km (132 mi),New,320 km/h (200 mph),2031+,Under Construction,Japan,212 km (132 mi),212,2031
+6,Ch?? Shinkansen,Shinagawa (Tokyo)–Nagoya,285.6 km (177.5 mi),New (Maglev),505 km/h (314 mph)[bq],2035+,Under construction,Japan,285.6 km (177.5 mi),285.6,2035
+7,Haramain HSR,Mecca–Medina,453 km (281 mi),New,300 km/h (190 mph),2018,Operational,Saudi_Arabia,453 km (281 mi),453,2018
+7,Saudi Landbridge Project,Jeddah–Riyadh,950 km (590 mi),New,250 km/h (160 mph)[45],2030,Under construction,Saudi_Arabia,950 km (590 mi),950,2030
+8,Gyeongbu HSR,Seoul–Busan,417.4 km (259.4 mi),New,305 km/h (190 mph),2004–2015,Operational,South_Korea,417.4 km (259.4 mi),417.4,2004
+8,Jeolla Line,Iksan–Yeosu Expo,180.4 km (112.1 mi),Upgraded,230 km/h (140 mph),2011,Operational,South_Korea,180.4 km (112.1 mi),180.4,2011
+8,Honam HSR,Osong–Mokpo,249.2 km (154.8 mi),New,305 km/h (190 mph),2015,Operational,South_Korea,249.2 km (154.8 mi),249.2,2015
+8,Suseo–Pyeongtaek HSR,Suseo–PyeongtaekJije,61.1 km (38.0 mi),New,305 km/h (190 mph),2016,Operational,South_Korea,61.1 km (38.0 mi),61.1,2016
+8,Suseo–Pyeongtaek HSR,PyeongtaekJije–Osong,46.4 km (28.8 mi),New,305 km/h (190 mph),2028,Under construction,South_Korea,46.4 km (28.8 mi),46.4,2028
+8,Gyeonggang Line,Seowonju–Gangneung,120.2 km (74.7 mi),New,250 km/h (160 mph),2017,Operational,South_Korea,120.2 km (74.7 mi),120.2,2017
+8,Gyeonggang Line,Yeoju–Seowonju,22.1 km (13.7 mi),New,250 km/h (160 mph),2027,Under construction,South_Korea,22.1 km (13.7 mi),22.1,2027
+8,Jungbunaeryuk Line,Bubal–Mungyeong,92.7 km (57.6 mi),New,230 km/h (140 mph),2021-2024,Operational,South_Korea,92.7 km (57.6 mi),92.7,2021
+8,Jungbunaeryuk Line,Mungyeong–Gimcheon,70.1 km (43.6 mi),Upgraded,250 km/h (160 mph),2032,Approved,South_Korea,70.1 km (43.6 mi),70.1,2032
+8,Jungang Line,Cheongnyangni–Moryang,185.4 km (115.2 mi)[br],Partly new,250 km/h (160 mph),2021–2024,Operational,South_Korea,185.4 km (115.2 mi)[br],185.4,2021
+8,Donghae Line,Taehwagang–Samcheok,242.3 km (150.6 mi),Partly new,200 km/h (120 mph),2025,Operational,South_Korea,242.3 km (150.6 mi),242.3,2025
+8,Donghae Line,Samcheok–Gangneung,45.2 km (28.1 mi),Upgraded,250 km/h (160 mph),Unknown,Approved,South_Korea,45.2 km (28.1 mi),45.2,
+8,Donghae Line,Gangneung–Jejin,111.7 km (69.4 mi),New,250 km/h (160 mph),2027,Under construction,South_Korea,111.7 km (69.4 mi),111.7,2027
+8,Seohae Line,Seohwaseong–Hongseong,90 km (56 mi),New,250 km/h (160 mph),2026,Under construction,South_Korea,90 km (56 mi),90,2026
+8,Janghang Line,Hongseong–Iksan,95.5 km (59.3 mi),Upgraded,250 km/h (160 mph),2027,Undergoing upgrade,South_Korea,95.5 km (59.3 mi),95.5,2027
+8,Gyeongjeon Line,Bujeon–Suncheon,165.8 km (103.0 mi),Upgraded,230 km/h (140 mph),2025,Undergoing upgrade,South_Korea,165.8 km (103.0 mi),165.8,2025
+8,Gyeongjeon Line,Imseong-ri–Boseong,82.5 km (51.3 mi),Upgraded,200 km/h (120 mph),2025,Undergoing upgrade,South_Korea,82.5 km (51.3 mi),82.5,2025
+8,Gyeongjeon Line,Suncheon–GwangjuSongjeong,121.5 km (75.5 mi),Upgraded,250 km/h (160 mph),2030,Undergoing upgrade,South_Korea,121.5 km (75.5 mi),121.5,2030
+8,Chuncheon-Sokcho Line,Chuncheon–Sokcho,93.7 km (58.2 mi),New,250 km/h (160 mph),2027,Under construction,South_Korea,93.7 km (58.2 mi),93.7,2027
+8,Nambunaeryuk Line,Gimcheon–Geoje,177.9 km (110.5 mi),New,250 km/h (160 mph),2030,Under construction,South_Korea,177.9 km (110.5 mi),177.9,2030
+8,Chungbuk Line,Osong–Bongyang,115 km (71 mi),Upgraded,250 km/h (160 mph),2031,Undergoing upgrade,South_Korea,115 km (71 mi),115,2031
+9,Taiwan HSR,Nangang–Zuoying,351 km (218 mi)[bs],New,300 km/h (190 mph),2007-2016[bt],Operational,Taiwan,351 km (218 mi)[bs],351,2007
+9,Taiwan HSR,Taipei–Yilan,56.4 km (35.0 mi),New,300 km/h (190 mph),2030,Under construction,Taiwan,56.4 km (35.0 mi),56.4,2030
+10,Northeastern HSR,Krung Thep Aphiwat Central–Nakhon Ratchasima–Nong Khai,606.01 km (376.56 mi),New,250 km/h (160 mph),2028[bu],Under construction,Thailand,606.01 km (376.56 mi),606.01,2028
+10,Eastern HSR,Don Mueang–U-Tapao,220 km (140 mi),New,250 km/h (160 mph),2029,Under construction,Thailand,220 km (140 mi),220,2029
+11,Polatl?–Konya,Polatl?–Konya,212 km (132 mi),New,250 km/h (160 mph),2011,Operational,Turkey,212 km (132 mi),212,2011
+11,Ankara–Istanbul,Sincan–Köseköy,313 km (194 mi),Partly new,250 km/h (160 mph),2014,Operational,Turkey,313 km (194 mi),313,2014
+11,Ankara–Istanbul,Other sections,20 km (12 mi),New,250 km/h (160 mph),2028,Under construction,Turkey,20 km (12 mi),20,2028
+11,Konya–Yenice railway,Konya–Karaman,102 km (63 mi),Upgraded,200 km/h (120 mph),2021,Operational,Turkey,102 km (63 mi),102,2021
+11,Konya–Yenice railway,Karaman–Uluk??la,135 km (84 mi),Upgraded,200 km/h (120 mph),2026,Undergoing upgrade,Turkey,135 km (84 mi),135,2026
+11,Ankara–Sivas,Kaya?–Sivas,394 km (245 mi),New,250 km/h (160 mph),2023,Operational,Turkey,394 km (245 mi),394,2023
+11,Band?rma–Bursa–Osmaneli line (in Turkish),Band?rma–Bursa–Osmaneli,201 km (125 mi),Partly new,200 km/h (120 mph),2025–2028,Undergoing upgrade,Turkey,201 km (125 mi),201,2025
+11,Istanbul–Kap?kule railway,Halkal?–Kap?kule,229 km (142 mi),Partly new,200 km/h (120 mph),2025–2028,Undergoing upgrade,Turkey,229 km (142 mi),229,2025
+11,Mersin–Adana–Gaziantep railway,Mersin–Gaziantep,311 km (193 mi),Upgraded,200 km/h (120 mph),2027,Undergoing upgrade,Turkey,311 km (193 mi),311,2027
+11,Polatl?–?zmir,Polatl?–Alsancak,505 km (314 mi),New,250 km/h (160 mph),2027,Under construction,Turkey,505 km (314 mi),505,2027
+11,Yerköy–Kayseri railway (in Turkish),Yerköy–Kayseri,142 km (88 mi),New,250 km/h (160 mph),2028,Under construction,Turkey,142 km (88 mi),142,2028
+11,K?r?kkale–Çorum–Samsun[46],K?r?kkale Delice–Samsun,293 km (182 mi),New,250 km/h (160 mph),2028,Under construction,Turkey,293 km (182 mi),293,2028
+11,Sivas-Zara line (in Turkish),Sivas-Zara,74 km (46 mi),New,250 km/h (160 mph),2028,Under construction,Turkey,74 km (46 mi),74,2028
+12,Tashkent–Bukhara,Tashkent–Bukhara,600 km (370 mi),New,250 km/h (160 mph),2011,Operational,Uzbekistan,600 km (370 mi),600,2011
+12,Bhukhara–Khiva,Bukhara-Khiva,465 km (289 mi),New,250 km/h (160 mph),2030,Under Construction,Uzbekistan,465 km (289 mi),465,2030
+13,Western Railway,Vienna–Salzburg,243 km (151 mi)[bv],Upgraded,230 km/h (140 mph),1990–2018,Operational,Austria,243 km (151 mi)[bv],243,1990
+13,New Lower Inn Valley Railway,Kundl–Baumkirchen,40.2 km (25.0 mi),New,220 km/h (140 mph),2012,Operational,Austria,40.2 km (25.0 mi),40.2,2012
+13,New Lower Inn Valley Railway,Brannenburg-Kundl,25 km (16 mi),New,250 km/h (160 mph),TBD,Under construction,Austria,25 km (16 mi),25,
+13,Koralm Railway,Graz–Klagenfurt,127 km (79 mi),New,250 km/h (160 mph),2025,Operational,Austria,127 km (79 mi),127,2025
+13,Marchegger eastern railway [de],Vienna–Slovenia border,38 km (24 mi),Upgraded,200 km/h (120 mph),2026,Undergoing upgrade,Austria,38 km (24 mi),38,2026
+13,Pottendorfer Line [de],Vienna–Wiener Neustadt,47 km (29 mi),Upgraded,200 km/h (120 mph),2029[47],Undergoing upgrade,Austria,47 km (29 mi),47,2029
+13,Semmering Base Tunnel,Gloggnitz–Mürzzuschlag,27.3 km (17.0 mi),New,230 km/h (140 mph),2030,Under construction,Austria,27.3 km (17.0 mi),27.3,2030
+13,North railway line,Gänserndorf–B?eclav,47 km (29 mi),Upgraded,200 km/h (120 mph),2030,Undergoing upgrade,Austria,47 km (29 mi),47,2030
+13,Brenner Base Tunnel,Innsbruck–Italy border,46 km (29 mi),New,250 km/h (160 mph),2032,Under construction,Austria,46 km (29 mi),46,2032
+14,Rail Baltica,Tallinn–Vilnius,870 km (540 mi),New,234 km/h (145 mph),2028[bw]–2030[bx]–2032[by],Under construction,Baltic_States,870 km (540 mi),870,2028
+15,HSL 1,LGV Nord–Bruxelles-Sud,88 km (55 mi),New,300 km/h (190 mph),1997,Operational,Belgium,88 km (55 mi),88,1997
+15,HSL 2+line 36N,Leuven–Liège-Guillemins,66 km (41 mi),New,300 km/h (190 mph),2002,Operational,Belgium,66 km (41 mi),66,2002
+15,HSL 2+line 36N,Leuven–Bruxelles-Nord,28.8 km (17.9 mi),Partly new,200 km/h (120 mph),2003–2006,Operational,Belgium,28.8 km (17.9 mi),28.8,2003
+15,HSL 3,Liège-Guillemins–Cologne-Aachen,42 km (26 mi),New,260 km/h (160 mph),2009,Operational,Belgium,42 km (26 mi),42,2009
+15,HSL 4,Antwerpen-Centraal–HSL Zuid,36 km (22 mi),New,300 km/h (190 mph),2009,Operational,Belgium,36 km (22 mi),36,2009
+15,Belgian railway line 50A,Brussels–Denderleeuw; Gent–Brugge,57.9 km (36.0 mi),Upgraded,200 km/h (120 mph),TBD,Undergoing upgrade,Belgium,57.9 km (36.0 mi),57.9,
+15,Diabolo project,N/A (connecting line),3 km (1.9 mi),Upgraded,200 km/h (120 mph),TBD,Undergoing upgrade,Belgium,3 km (1.9 mi),3,
+16,Line 001,Prague-Po?í?any,30 km (19 mi),Upgraded,320 km/h (200 mph),TBD,Undergoing upgrade,Czech_Republic,30 km (19 mi),30,
+16,Line 001,P?erov – Ostrava,25.594 km (15.903 mi),Upgraded,320 km/h (200 mph),TBD,Undergoing upgrade,Czech_Republic,25.594 km (15.903 mi),25.594,
+16,Line 002,Brno-Vranovice,83.796 km (52.068 mi),Upgraded,200 km/h (120 mph),TBD,Undergoing upgrade,Czech_Republic,83.796 km (52.068 mi),83.796,
+17,Øresund Line,Copenhagen Central–Swedish border,10 km (6.2 mi)[bz],New,200 km/h (120 mph),2000,Operational,Denmark,10 km (6.2 mi)[bz],10,2000
+17,Copenhagen–Ringsted Line,Copenhagen central–Ringsted,60 km (37 mi),New,200 km/h (120 mph),2019,Operational,Denmark,60 km (37 mi),60,2019
+17,Copenhagen–Fredericia/Taulov Line,Ringsted–Odense,96.4 km (59.9 mi)[bz],New,200 km/h (120 mph),2029,Undergoing upgrade,Denmark,96.4 km (59.9 mi)[bz],96.4,2029
+17,Fehmarn Belt fixed link,Ringsted–Rødby,8.3 km (5.2 mi)[bz],New,200 km/h (120 mph),2028,Under construction,Denmark,8.3 km (5.2 mi)[bz],8.3,2028
+17,Vestfyn Line,Odense–Middelfart,35 km (22 mi)[bz],New,250 km/h (160 mph),2028,Under construction,Denmark,35 km (22 mi)[bz],35,2028
+18,Kerava–Lahti railway,Kerava–Lahti,75.7 km (47.0 mi),New,220 km/h (140 mph),2006,Operational,Finland,75.7 km (47.0 mi),75.7,2006
+18,Rantarata,Helsinki central–Turku Harbour,63 km (39 mi)[ca],Upgraded,200 km/h (120 mph),1995,Operational,Finland,63 km (39 mi)[ca],63,1995
+18,Helsinki–Riihimäki Railway,Helsinki central–Riihimäki,71.4 km (44.4 mi),Upgraded,200 km/h (120 mph),1995,Operational,Finland,71.4 km (44.4 mi),71.4,1995
+18,Riihimäki–Tampere railway,Riihimäki–Tampere,116 km (72 mi),Upgraded,200 km/h (120 mph),1995,Operational,Finland,116 km (72 mi),116,1995
+18,Tampere–Seinäjoki railway,Lielax–Seinäjoki,156 km (97 mi),Upgraded,200 km/h (120 mph),2008[48],Operational,Finland,156 km (97 mi),156,2008
+18,Oulu Main Line,Seinäjoki–Lapua,23 km (14 mi),Upgraded,200 km/h (120 mph),2017,Operational,Finland,23 km (14 mi),23,2017
+18,Oulu Main Line,Lapua–Kokkola[49],110 km (68 mi),Upgraded,200 km/h (120 mph),2011,Operational,Finland,110 km (68 mi),110,2011
+18,Oulu Main Line,Kokkola–Ylivieska,79 km (49 mi),Upgraded,200 km/h (120 mph),2018,Operational,Finland,79 km (49 mi),79,2018
+18,Oulu Main Line,Ylivieska–Liminka,123 km (76 mi),Upgraded,200 km/h (120 mph),2015[50],Operational,Finland,123 km (76 mi),123,2015
+18,Savonia railway,Kinni-Otava,45 km (28 mi)[cb],Upgraded,200 km/h (120 mph),2006[51],Operational,Finland,45 km (28 mi)[cb],45,2006
+18,Riihimäki–Saint Petersburg railway,Riihimäki–Russian border,120 km (75 mi)[cc],Upgraded,200 km/h (120 mph),2010[cd]-2013[ce],Operational,Finland,120 km (75 mi)[cc],120,2010
+18,Helsinki–Turku high-speed railway,?,?,New?,300 km/h (190 mph),2031,Approved,Finland,?,,2031
+19,Orléans–Montauban railway,Orléans–Vierzon,70.399 km (43.744 mi)[52],Upgraded,200 km/h (120 mph),1967[cf],Operational,France,70.399 km (43.744 mi)[52],70.399,1967
+19,Paris–Bordeaux railway,Paris-Austerlitz–Bordeaux-Saint-Jean,331.08 km (205.72 mi)[53],Upgraded,220 km/h (140 mph),1973,Operational,France,331.08 km (205.72 mi)[53],331.08,1973
+19,LGV Sud-Est,"Paris Gare de Lyon, Paris–Gare de la Part-Dieu, Lyon",409 km (254 mi),New,300 km/h (190 mph),1981[cg]-1983[ch],Operational,France,409 km (254 mi),409,1981
+19,LGV Atlantique,"Gare Montparnasse, Paris–Le Mans/Tours",284 km (176 mi),New,300 km/h (190 mph),1989,Operational,France,284 km (176 mi),284,1989
+19,Mantes-la-Jolie–Cherbourg railway,Mantes–Cherbourg,85.267 km (52.982 mi)[54],Upgraded,200 km/h (120 mph),1989,Operational,France,85.267 km (52.982 mi)[54],85.267,1989
+19,Paris–Brest railway,Paris-Montparnasse–Brest,47.8 km (29.7 mi)[ci],Upgraded,220 km/h (140 mph)[55],1989[cj],Operational,France,47.8 km (29.7 mi)[ci],47.8,1989
+19,Strasbourg–Basel railway,Strasbourg–Basel[ck],141.3 km (87.8 mi)[56],Upgraded,220 km/h (140 mph),1990,Operational,France,141.3 km (87.8 mi)[56],141.3,1990
+19,Le Mans–Angers railway,Le Mans–Angers-Saint-Laud,73.8 km (45.9 mi)[57],Upgraded,220 km/h (140 mph),Unknown,Operational,France,73.8 km (45.9 mi)[57],73.8,1989
+19,Tours–Saint-Nazaire railway,Tours–Nantes,80.6 km (50.1 mi)[58],Upgraded,220 km/h (140 mph),Unknown,Operational,France,80.6 km (50.1 mi)[58],80.6,1989
+19,Savenay–Landerneau railway,Savenay–Quimper,42 km (26 mi)[59],Upgraded,220 km/h (140 mph),Unknown[cl],Operational,France,42 km (26 mi)[59],42,1989
+19,LGV Rhône-Alpes,Lyon-Saint-Exupéry–Valence,115 km (71 mi),New,300 km/h (190 mph),1992,Operational,France,115 km (71 mi),115,1992
+19,LGV Nord,"Channel Tunnel–Gare du Nord, Paris",333 km (207 mi),New,300 km/h (190 mph),1993,Operational,France,333 km (207 mi),333,1993
+19,LGV Interconnexion Est,"Aéroport Charles de Gaulle, Paris–Marne-la-Vallée–Chessy, Paris",90 km (56 mi),New,270 km/h (170 mph)[60],1994,Operational,France,90 km (56 mi),90,1994
+19,LGV Méditerranée,Avingnon–Marseille-Saint-Charles,216 km (134 mi),New,320 km/h (200 mph),2001,Operational,France,216 km (134 mi),216,2001
+19,LGV Est,"Gare de l'Est, Paris–Lorraine, Louvigny",406 km (252 mi),New,320 km/h (200 mph),2007[cm]-2016[cn],Operational,France,406 km (252 mi),406,2007
+19,LGV Rhin-Rhône,"Besançon Franche-Comté, Les Auxons–Belfort – Montbéliard, Paris",140 km (87 mi),New,320 km/h (200 mph),2011,Operational,France,140 km (87 mi),140,2011
+19,Perpignan–Barcelona HSR,Montpellier Sud–Perthus Tunnel,17.1 km (10.6 mi),New,300 km/h (190 mph),2013,Operational,France,17.1 km (10.6 mi),17.1,2013
+19,LGV Sud Europe Atlantique,Poitiers–Bordeaux-Saint-Jean,340 km (210 mi),New,320 km/h (200 mph),2017,Operational,France,340 km (210 mi),340,2017
+19,LGV Bretagne-Pays de la Loire,Sablé-sur-Sarthe–Rennes,214 km (133 mi),New,320 km/h (200 mph),2017,Operational,France,214 km (133 mi),214,2017
+19,Contournement Nîmes – Montpellier,Nîmes-Pont-du-Gard–Montpellier Sud,80 km (50 mi),New,220 km/h (140 mph),2018,Operational,France,80 km (50 mi),80,2018
+19,Lyon–Turin HSR,Lyon-Saint-Exupéry–Mont d'Ambin Base Tunnel,150 km (93 mi),New,220 km/h (140 mph),2032,Under construction,France,150 km (93 mi),150,2032
+19,LGV Bordeaux–Toulouse,Bordeaux-Saint-Jean–Toulouse,222 km (138 mi),New,320 km/h (200 mph),2032,Under construction,France,222 km (138 mi),222,2032
+20,Berlin–Hamburg Railway,Berlin–Hamburg,284.1 km (176.5 mi),Upgraded,230 km/h (140 mph),1931,Operational,Germany,284.1 km (176.5 mi),284.1,1931
+20,Wanne-Eickel–Hamburg railway,Hamburg–Wanne-Eickel,355 km (221 mi),Upgraded,200 km/h (120 mph),1978,Operational,Germany,355 km (221 mi),355,1978
+20,Augsburg–Nördlingen railway,Augsburg-Donauwörth,36.5 km (22.7 mi),Upgraded,200 km/h (120 mph),1978-1981,Operational,Germany,36.5 km (22.7 mi),36.5,1978
+20,Cologne–Duisburg railway,Cologne–Duisburg,64 km (40 mi),Upgraded,200 km/h (120 mph),1980s,Operational,Germany,64 km (40 mi),64,1980
+20,Hamm–Minden railway,Hamm–Minden,112 km (70 mi),Upgraded,200 km/h (120 mph),1980,Operational,Germany,112 km (70 mi),112,1980
+20,Würzburg–Aschaffenburg railway,Würzburg–Aschaffenburg,89.3 km (55.5 mi),Upgraded,200 km/h (120 mph),1982,Operational,Germany,89.3 km (55.5 mi),89.3,1982
+20,Hanover–Minden railway,Hannover–Minden,64.4 km (40.0 mi),Upgraded,200 km/h (120 mph),1984,Operational,Germany,64.4 km (40.0 mi),64.4,1984
+20,Dortmund–Hamm railway,Dortmund–Hamm,31 km (19 mi),Upgraded,200 km/h (120 mph),1986,Operational,Germany,31 km (19 mi),31,1986
+20,Hanover–Hamburg railway,Hannover–Hamburg,355.3 km (220.8 mi),Upgraded,200 km/h (120 mph),1987,Operational,Germany,355.3 km (220.8 mi),355.3,1987
+20,Waghäusel Saalbach–Graben-Neudorf railway,NA (Connecting link),7.94 km (4.93 mi),Upgraded,200 km/h (120 mph),1988,Operational,Germany,7.94 km (4.93 mi),7.94,1988
+20,Hanover–Würzburg,Hanover–Würzburg,327 km (203 mi),New,250 km/h (160 mph)[co],1991,Operational,Germany,327 km (203 mi),327,1991
+20,Mannheim–Stuttgart,Mannheim–Stuttgart,99 km (62 mi),New,250 km/h (160 mph)[cp],1991,Operational,Germany,99 km (62 mi),99,1991
+20,Rhine Railway,Mannheim–Rastatt,99 km (62 mi),Upgraded,200 km/h (120 mph),1991,Operational,Germany,99 km (62 mi),99,1991
+20,Ulm–Augsburg railway (old line),Augsburg-Oberhausen–Dinkelscherben,25.8 km (16.0 mi),Upgraded,200 km/h (120 mph),1992,Operational,Germany,25.8 km (16.0 mi),25.8,1992
+20,Frankfurt–Göttingen railway,Hanau–Hailer-Meerholz,19 km (12 mi)[cq],Upgraded,200 km/h (120 mph)[cr],1993,Operational,Germany,19 km (12 mi)[cq],19,1993
+20,Hanover–Berlin,Hannover–Berlin,258 km (160 mi),New,280 km/h (170 mph)[cs],1998,Operational,Germany,258 km (160 mi),258,1998
+20,Nuremberg–Würzburg railway,Nuremberg–Würzburg,102.2 km (63.5 mi),Upgraded,200 km/h (120 mph),1999,Operational,Germany,102.2 km (63.5 mi),102.2,1999
+20,Mannheim–Frankfurt railway,Mannheim–Frankfurt,74.8 km (46.5 mi),Upgraded,200 km/h (120 mph),1999,Operational,Germany,74.8 km (46.5 mi),74.8,1999
+20,Cologne–Frankfurt,Cologne–Frankfurt,180 km (110 mi),New,300 km/h (190 mph),2002,Operational,Germany,180 km (110 mi),180,2002
+20,Cologne–Aachen,Cologne–Düren,39.2 km (24.4 mi),Upgraded,250 km/h (160 mph),2002,Operational,Germany,39.2 km (24.4 mi),39.2,2002
+20,Cologne–Aachen,Düren-Eschweiler Hbf,17.7 km (11.0 mi),Upgraded,200 km/h (120 mph),2030,Undergoing upgrade,Germany,17.7 km (11.0 mi),17.7,2030
+20,Berlin–Halle railway,Berlin–Halle,161.6 km (100.4 mi),Upgraded,200 km/h (120 mph),2006,Operational,Germany,161.6 km (100.4 mi),161.6,2006
+20,Trebnitz–Leipzig railway,Bk–Leipzig,81.2 km (50.5 mi),Upgraded,200 km/h (120 mph),2006,Operational,Germany,81.2 km (50.5 mi),81.2,2006
+20,Nuremberg–Ingolstadt,Nuremberg–Ingolstadt,77.5 km (48.2 mi),New,300 km/h (190 mph),2006–2013,Operational,Germany,77.5 km (48.2 mi),77.5,2006
+20,Hamm–Warburg railway,Hamm–Warburg,131 km (81 mi),Upgraded,200 km/h (120 mph),2007,Operational,Germany,131 km (81 mi),131,2007
+20,Munich–Augsburg railway,Munich–Augsburg,61.9 km (38.5 mi),Upgraded,230 km/h (140 mph),2011[ct],Operational,Germany,61.9 km (38.5 mi),61.9,2011
+20,Leipzig–Dresden railway,Leipzig–Riesa,60 km (37 mi)[cu],Upgraded,200 km/h (120 mph),2014,Operational,Germany,60 km (37 mi)[cu],60,2014
+20,Leipzig–Dresden railway,Dresden–Riesa,54 km (34 mi)[cv],Upgraded,200 km/h (120 mph),2030[61],Undergoing upgrade,Germany,54 km (34 mi)[cv],54,2030
+20,Erfurt–Leipzig/Halle,Erfurt–Leipzig/Halle,123 km (76 mi),New,300 km/h (190 mph),2015,Operational,Germany,123 km (76 mi),123,2015
+20,Nuremberg–Erfurt,Ebensfeld–Erfurt,107 km (66 mi),New,300 km/h (190 mph),2017,Operational,Germany,107 km (66 mi),107,2017
+20,Nuremberg–Erfurt,Ebensfeld–Eltersdorf,83 km (52 mi),Upgraded,230 km/h (140 mph),2030,Undergoing upgrade[61],Germany,83 km (52 mi),83,2030
+20,Wendlingen–Ulm,Wendlingen–Ulm,59.5 km (37.0 mi),New,250 km/h (160 mph),2022,Operational,Germany,59.5 km (37.0 mi),59.5,2022
+20,Stuttgart–Wendlingen,Stuttgart–Wendlingen,25 km (16 mi),New,250 km/h (160 mph),2026,Under construction,Germany,25 km (16 mi),25,2026
+20,Mannheim–Saarbrücken railway,St. Ingbert–Ludwigshafen,82 km (51 mi),Upgraded,200 km/h (120 mph),2028[61],Undergoing upgrade,Germany,82 km (51 mi),82,2028
+20,Lübeck–Puttgarden railway,Lübeck–Puttgarden,88.6 km (55.1 mi),Partly new,200 km/h (120 mph),2030[61],Undergoing upgrade,Germany,88.6 km (55.1 mi),88.6,2030
+20,Berlin–Dresden railway,Berlin Südkreuz–Dresden HBF,174.2 km (108.2 mi),Upgraded,230 km/h (140 mph),2030[61],Undergoing upgrade,Germany,174.2 km (108.2 mi),174.2,2030
+20,Karlsruhe–Basel,Karlsruhe–Basel,182 km (113 mi),New,250 km/h (160 mph),2031,Under construction,Germany,182 km (113 mi),182,2031
+21,P.A.Th.E./P.,Bulgarian border[cw]–Thessaloniki–Larissa–Athens–Corinth–Patras,160 km (99 mi)[cx],Partly new,200 km/h (120 mph),2022,Mostly operational,Greece,160 km (99 mi)[cx],160,2022
+22,Florence–Rome,"Firenze Santa Maria Novella, Florence–Roma Termini",254 km (158 mi),New,250 km/h (160 mph),1992,Operational,Italy,254 km (158 mi),254,1992
+22,Turin–Milan,"Torino Porta Susa, Turin–Milano Centrale",148.3 km (92.1 mi),New,300 km/h (190 mph),2006,Operational,Italy,148.3 km (92.1 mi),148.3,2006
+22,Milan–Venice railway,Padua–Venice,25 km (16 mi)[cy],Upgraded,220 km/h (140 mph),2007,Operational,Italy,25 km (16 mi)[cy],25,2007
+22,Milan–Venice railway,Treviglio-Brescia,39.6 km (24.6 mi)[cz],New,250 km/h (160 mph),2016,Operational,Italy,39.6 km (24.6 mi)[cz],39.6,2016
+22,Milan–Venice railway,Brescia - Verona,45.4 km (28.2 mi),New,250 km/h (160 mph),2026,Under construction,Italy,45.4 km (28.2 mi),45.4,2026
+22,Milan–Venice railway,Verona-Padua,80 km (50 mi),New,250 km/h (160 mph),2029-2032,Under construction,Italy,80 km (50 mi),80,2029
+22,Milan–Bologna,Milano Centrale–Bologna Centrale,214.6 km (133.3 mi),New,300 km/h (190 mph),2008,Operational,Italy,214.6 km (133.3 mi),214.6,2008
+22,Naples–Salerno,Napoli Afragola–Salerno,29 km (18 mi),New,250 km/h (160 mph),2008,Operational,Italy,29 km (18 mi),29,2008
+22,Verona–Bologna railway,Verona–Bologna Centrale,115 km (71 mi),Upgraded,200 km/h (120 mph),2009,Operational,Italy,115 km (71 mi),115,2009
+22,Rome–Naples,Roma Termini–Napoli Centrale,204.6 km (127.1 mi),New,300 km/h (190 mph),2009,Operational,Italy,204.6 km (127.1 mi),204.6,2009
+22,Bologna–Ancona railway,Bologna–Ancona,153 km (95 mi)[da],Upgraded,200 km/h (120 mph),2015,Operational,Italy,153 km (95 mi)[da],153,2015
+22,Adriatic railway,Brindisi–Lecce,38.364 km (23.838 mi),Upgraded,200 km/h (120 mph),2018,Operational,Italy,38.364 km (23.838 mi),38.364,2018
+22,Adriatic railway,Pescara–Termoli,89.468 km (55.593 mi),Upgraded,200 km/h (120 mph),2026,Undergoing upgrade,Italy,89.468 km (55.593 mi),89.468,2026
+22,Milan–Verona,Milano Lambrate–Verona Porta Nuova,165 km (103 mi),New,300 km/h (190 mph),2023,Partly operational[db],Italy,165 km (103 mi),165,2023
+22,Tortona–Genoa,Genoa–Tortona,53 km (33 mi),New,250 km/h (160 mph),2026,Under construction,Italy,53 km (33 mi),53,2026
+22,Naples–Bari[62],Naples–Bari,147 km (91 mi),New,250 km/h (160 mph),2027,Under construction,Italy,147 km (91 mi),147,2027
+22,Salerno–Reggio di Calabria railway,Battipaglia–Romagnano,35 km (22 mi),Partly new,300 km/h (190 mph),2030,Under construction,Italy,35 km (22 mi),35,2030
+22,Alessandria–Piacenza railway,Tortona–Voghera,16 km (9.9 mi)[dc],Upgraded,200 km/h (120 mph),2026,Undergoing upgrade,Italy,16 km (9.9 mi)[dc],16,2026
+22,Palermo–Catania–Messina high-speed railway,Palermo–Catania–Messina,67 km (42 mi),New,250 km/h (160 mph),2029,Under construction,Italy,67 km (42 mi),67,2029
+22,Genoa–Ventimiglia railway,Andora–Finale Ligure,32 km (20 mi),Upgraded,200 km/h (120 mph),2030,Undergoing upgrade,Italy,32 km (20 mi),32,2030
+22,Brenner Base Tunnel+Verona-Brenner railway,Austrian border–Tunnel's south portal–Verona,198 km (123 mi),Partly new,250 km/h (160 mph),2032,Under construction,Italy,198 km (123 mi),198,2032
+22,Turin–Lyon high-speed railway,Turin–French border,57 km (35 mi),New,220 km/h (140 mph),2032,Under construction,Italy,57 km (35 mi),57,2032
+22,Venice–Trieste railway,Venice–Trieste,153 km (95 mi),Upgraded,200 km/h (120 mph),TBD,Undergoing upgrade,Italy,153 km (95 mi),153,
+22,Ionian Railway,Taranto-Metaponto,43.2 km (26.8 mi),Upgraded,200 km/h (120 mph),TBD,Undergoing upgrade,Italy,43.2 km (26.8 mi),43.2,
+23,HSL-Zuid,Amsterdam Centraal–Belgian border,125 km (78 mi),New,300 km/h (190 mph),2009,Operational,Netherlands,125 km (78 mi),125,2009
+23,Lelystad–Zwolle railway,Lelystad Centrum–Zwolle,50 km (31 mi),New,200 km/h (120 mph)[dd],2012,Operational,Netherlands,50 km (31 mi),50,2012
+24,Gardermoen Line,Oslo–Eidsvoll,64 km (40 mi),New,210 km/h (130 mph),1998,Operational,Norway,64 km (40 mi),64,1998
+24,Dovre Line,Langset-Kleverud,17 km (11 mi) (of 484 km (301 mi)),New,200 km/h (120 mph),2015,Operational,Norway,17 km (11 mi) (of 484 km (301 mi)),17,2015
+24,Dovre Line,Eidsvoll-Hamar(-Trondheim)[de],41 km (25 mi) (of 484 km (301 mi)),Upgraded,200 km/h (120 mph),2027,Undergoing upgrade,Norway,41 km (25 mi) (of 484 km (301 mi)),41,2027
+24,Dovre Line,Hamar-Brumunddal-Lillehammer,55 km (34 mi),Partly new,250 km/h (160 mph),2030[df]-2035[dg],Undergoing upgrade and construction,Norway,55 km (34 mi),55,2030
+24,Vestfold Line,Farriseidet–Porsgrunn,23.5 km (14.6 mi),Upgraded,200 km/h (120 mph),2018,Operational,Norway,23.5 km (14.6 mi),23.5,2018
+24,Vestfold Line,Drammen–Kobbervikdalen,9 km (5.6 mi),Partly new,200 km/h (120 mph),2025,Under construction,Norway,9 km (5.6 mi),9,2025
+24,Vestfold Line,Kobbervikdalen–Holm,24.7 km (15.3 mi),Partly new,200 km/h (120 mph),2001–2002,Operational,Norway,24.7 km (15.3 mi),24.7,2001
+24,Vestfold Line,Nykirke – Holm,14.1 km (8.8 mi),New,200 km/h (120 mph),2016,Operational,Norway,14.1 km (8.8 mi),14.1,2016
+24,Vestfold Line,Nykirke – Barkåker,13.6 km (8.5 mi),New,250 km/h (160 mph),2026,Under construction,Norway,13.6 km (8.5 mi),13.6,2026
+24,Vestfold Line,Tønsberg – Barkåker,7.7 km (4.8 mi),New,200 km/h (120 mph),2011,Operational,Norway,7.7 km (4.8 mi),7.7,2011
+24,Vestfold Line,Tønsberg–Larvik[63],40 km (25 mi),New,200 km/h (120 mph),2032,Under construction,Norway,40 km (25 mi),40,2032
+24,Follo Line,Oslo–Ski,22 km (14 mi),New,200 km/h (120 mph),2022,Operational,Norway,22 km (14 mi),22,2022
+24,Østfold Line,Ski–Fredrikstad,50 km (31 mi)[64],Partly new,250 km/h (160 mph),2029,Undergoing upgrade and construction,Norway,50 km (31 mi)[64],50,2029
+25,Warsaw–Gda?sk railway,Warszawa Wschodnia–Gda?sk G?ówny,150 km (93 mi)[65],Upgraded,200 km/h (120 mph),2014–2020,Operational,Poland,150 km (93 mi)[65],150,2014
+25,Grodzisk Mazowiecki–Zawiercie railway,Grodzisk Mazowiecki–Zawiercie,135.047 km (83.914 mi)[66],Upgraded,200 km/h (120 mph),1977[dh]–2011,Operational,Poland,135.047 km (83.914 mi)[66],135.047,1977
+25,Warsaw-Bia?ystok railway,Warszawa Wschodnia–Bia?ystok,224.1 km (139.2 mi),Upgraded,250 km/h (160 mph),2030[67],Undergoing upgrade,Poland,224.1 km (139.2 mi),224.1,2030
+25,Y-line,Warsaw–Lodz–Wroclaw/Poznan,140 km (87 mi)[di],New,350 km/h (220 mph),2032?,Approved,Poland,140 km (87 mi)[di],140,2032
+26,Linha do Norte,"Santa Apolónia, Lisbon–Campanhã, Porto",332 km (206 mi)[68],Upgraded,220 km/h (140 mph),1999,Operational,Portugal,332 km (206 mi)[68],332,1999
+26,Linha do Sul,"Campolide, Lisbon–Tunes, Silves",273.6 km (170.0 mi)[69],Upgraded,220 km/h (140 mph),2004,Operational,Portugal,273.6 km (170.0 mi)[69],273.6,2004
+26,Linha de Évora,Casa Branca–Évora,26.164 km (16.258 mi),Upgraded,200 km/h (120 mph),2010,Operational,Portugal,26.164 km (16.258 mi),26.164,2010
+26,Porto–Lisbon high-speed rail line,Porto-Campanhã – Lisbon-Santa Apolónia,290 km (180 mi),New,300 km/h (190 mph),2030,Under construction,Portugal,290 km (180 mi),290,2030
+26,Porto–Vigo high-speed rail line,"Porto – Vigo on Galicia, Spain borders",155.6 km (96.7 mi),New,250 km/h (160 mph),2032,Under construction,Portugal,155.6 km (96.7 mi),155.6,2032
+26,Lisbon–Madrid high-speed rail line,"Lisbon – Madrid on Extremadura, Spain borders",644 km (400 mi),New,300 km/h (190 mph),2030,Under construction,Portugal,644 km (400 mi),644,2030
+27,Saint Petersburg–Moscow railway,Moscow Leningradsky–Moskovsky (Saint Petersburg),650 km (400 mi),Upgraded,250 km/h (160 mph),1984,Operational,Russia,650 km (400 mi),650,1984
+27,Moscow–Saint Petersburg HSR,Moscow–Saint Petersburg,679 km (422 mi),New,360 km/h (220 mph),2029,Under construction,Russia,679 km (422 mi),679,2029
+27,Riihimäki–Saint Petersburg railway,Finnish border–St. Petersburg,197 km (122 mi),Upgraded,200 km/h (120 mph),2013,Service discontinued,Russia,197 km (122 mi),197,2013
+28,Budapest–Belgrade railway,Hungarian border–Belgrade,150 km (93 mi),Upgraded,200 km/h (120 mph),2025,Operational,Serbia,150 km (93 mi),150,2025
+28,Belgrade - Niš,Belgrade–Niš,228 km (142 mi),Upgraded,200 km/h (120 mph),2026,Undergoing upgrade,Serbia,228 km (142 mi),228,2026
+29,Madrid–Seville,Madrid Atocha–Seville–Santa Justa,471.8 km (293.2 mi),New,300 km/h (190 mph),1992,Operational,Spain,471.8 km (293.2 mi),471.8,1992
+29,Madrid–Levante,Madrid Atocha–Valencia-Joaquín Sorolla/Alicante,603 km (375 mi),New,300 km/h (190 mph),1997–2010–2022,Operational,Spain,603 km (375 mi),603,1997
+29,Madrid–Barcelona,Madrid Atocha–Barcelona Sants,620.9 km (385.8 mi),New,300 km/h (190 mph)[dj],2003–2008,Operational,Spain,620.9 km (385.8 mi),620.9,2003
+29,Zaragoza-Huesca branch of Madrid–Barcelona high-speed rail line,Zaragoza–Huesca,57 km (35 mi),New,200 km/h (120 mph),2005,Operational,Spain,57 km (35 mi),57,2005
+29,Madrid–Toledo,Madrid Atocha–Toledo,74 km (46 mi),New,300 km/h (190 mph),2005,Operational,Spain,74 km (46 mi),74,2005
+29,Madrid–Málaga,Cordoba–Málaga María Zambrano,154.5 km (96.0 mi),New,300 km/h (190 mph),2007,Operational,Spain,154.5 km (96.0 mi),154.5,2007
+29,Madrid–Galicia,Madrid Chamartín–Santiago de Compostela,415.7 km (258.3 mi),New,300 km/h (190 mph),2011–2021,Operational,Spain,415.7 km (258.3 mi),415.7,2011
+29,Perpignan–Barcelona,Perpignan–Barcelona Sants,175.5 km (109.1 mi)[dk],New,300 km/h (190 mph),2013,Operational,Spain,175.5 km (109.1 mi)[dk],175.5,2013
+29,Seville–Cádiz railway,Seville–Santa Justa–Cádiz,158.1 km (98.2 mi),Upgraded,220 km/h (140 mph),2015,Operational,Spain,158.1 km (98.2 mi),158.1,2015
+29,Atlantic Axis,A Coruña–Vigo-Urzáiz,155.6 km (96.7 mi),New,200 km/h (120 mph),2015,Operational,Spain,155.6 km (96.7 mi),155.6,2015
+29,Madrid–Asturias,"Madrid Chamartín–Lena, Asturias",342.3 km (212.7 mi),New,300 km/h (190 mph),2015–2023,Operational,Spain,342.3 km (212.7 mi),342.3,2015
+29,Valencia?Sant Vicenç de Calders railway,"Estació del Nord, Valencia–Sant Vicenç de Calders, El Vendrell",238 km (148 mi),Upgraded,220 km/h (140 mph),2018,Operational,Spain,238 km (148 mi),238,2018
+29,Andalusian Corridor,Antequera-Santa Ana–Granada,125.7 km (78.1 mi),New,300 km/h (190 mph),2019,Operational,Spain,125.7 km (78.1 mi),125.7,2019
+29,Andalusian Corridor,Antequera-Santa Ana-Cadiz,146 km (91 mi),partly new,300 km/h (190 mph),2030,Under construction,Spain,146 km (91 mi),146,2030
+29,Andalusian Corridor,Granada–Almería,75 km (47 mi),New,300 km/h (190 mph),2030,Under construction,Spain,75 km (47 mi),75,2030
+29,Alcázar de San Juan–Jaén,Grañena–Jaén,16.7 km (10.4 mi),Partly new,200 km/h (120 mph),2020,Operational,Spain,16.7 km (10.4 mi),16.7,2020
+29,Alcázar de San Juan–Jaén,Alcázar de San Juan–Mora,67.5 km (41.9 mi),Partly new,300 km/h (190 mph),TBD,Under construction,Spain,67.5 km (41.9 mi),67.5,
+29,Madrid–Extremadura high-speed rail line,Badajoz–Plasencia,192.6 km (119.7 mi),Partly new,200 km/h (120 mph),2022,Operational,Spain,192.6 km (119.7 mi),192.6,2022
+29,Madrid–Extremadura high-speed rail line,Plasencia–Talayuela (Oropesa),68.6 km (42.6 mi),Partly new,250 km/h (160 mph),2025,Under construction,Spain,68.6 km (42.6 mi),68.6,2025
+29,Madrid–Extremadura high-speed rail line,Oropesa–Toledo,127 km (79 mi),Partly new,200 km/h (120 mph),2030,Under construction,Spain,127 km (79 mi),127,2030
+29,LAV Venta de Baños-Burgos-Vitoria [es],Venta de Baños-Burgos,86 km (53 mi),New,300 km/h (190 mph),2022,Operational,Spain,86 km (53 mi),86,2022
+29,LAV Venta de Baños-Burgos-Vitoria [es],Burgos - Miranda de Ebro - Vitoria,51.8 km (32.2 mi),New,300 km/h (190 mph),2028,Under construction,Spain,51.8 km (32.2 mi),51.8,2028
+29,LAV Palencia–Santander [es],Palencia–Alar del Rey,78.4 km (48.7 mi),New,350 km/h (220 mph),TBD,Under construction,Spain,78.4 km (48.7 mi),78.4,
+29,LAV Palencia–Santander [es],Alar del Rey–Reinosa,44.4 km (27.6 mi),New,350 km/h (220 mph),TBD,Under construction,Spain,44.4 km (27.6 mi),44.4,
+29,Murcia–Almería,Murcia del Carmen–Almería,184 km (114 mi),New,300 km/h (190 mph),2026,Under construction,Spain,184 km (114 mi),184,2026
+29,Two Seas corridor,Castejon–Pamplona,150 km (93 mi),New,300 km/h (190 mph),2027,Under construction,Spain,150 km (93 mi),150,2027
+29,Two Seas corridor,Zaragoza–Castejon,150 km (93 mi),New,300 km/h (190 mph),2033,Under construction,Spain,150 km (93 mi),150,2033
+29,Basque Y,Bilbao–Vitoria-Gasteiz/San Sebastián,172 km (107 mi),New,220 km/h (140 mph),2027,Under construction,Spain,172 km (107 mi),172,2027
+30,Southern Main Line,Malmö–Katrineholm,336 km (209 mi)[dl],Upgraded,200 km/h (120 mph),1990,Operational,Sweden,336 km (209 mi)[dl],336,1990
+30,Western Main Line,Stockholm–Gothenburg,312 km (194 mi)[dm],Upgraded,200 km/h (120 mph),1995,Operational,Sweden,312 km (194 mi)[dm],312,1995
+30,West Coast Line,Lund–Gothenburg,232 km (144 mi)[dn],"Upgraded, partly new",200 km/h (120 mph),1985–2023,Operational,Sweden,232 km (144 mi)[dn],232,1985
+30,East Coast Line,Stockholm–Gävle,142 km (88 mi)[do],"Upgraded, partly new",200 km/h (120 mph),1997–2017,Operational,Sweden,142 km (88 mi)[do],142,1997
+30,East Coast Line,Söderhamn–Enånger,105 km (65 mi),Partly new,200 km/h (120 mph),1999,Operational,Sweden,105 km (65 mi),105,1999
+30,East Coast Line,Enånger–Sundsvall and Gävle north bypass,210 km (130 mi),Partly new,200 km/h (120 mph),2030[dp]–2040,Under construction,Sweden,210 km (130 mi),210,2030
+30,Ådalen Line,Kramfors–Härnösand,30 km (19 mi)[dq],Partly new,200 km/h (120 mph),2012,Operational,Sweden,30 km (19 mi)[dq],30,2012
+30,Svealand Line,Södertälje South–Folkesta,86 km (53 mi),New,200 km/h (120 mph),1997,Operational,Sweden,86 km (53 mi),86,1997
+30,Mälaren Line,Solhem-Västerås; Harksta–Kolbäck; Arboga–Hovsta,155 km (96 mi),"Upgraded, partly new",200 km/h (120 mph),2005,Operational,Sweden,155 km (96 mi),155,2005
+30,Bothnia Line,Höga Kusten Airport–Umeå,190 km (120 mi),New,250 km/h (160 mph)[dr],2010,Operational,Sweden,190 km (120 mi),190,2010
+30,Norway/Vänern Line,Gothenburg–Öxnered,80 km (50 mi),"Upgraded, partly new",200 km/h (120 mph),2012,Operational,Sweden,80 km (50 mi),80,2012
+30,Haparanda Line,Kalix–Haparanda,43 km (27 mi),Partly new,250 km/h (160 mph)[dr],2012,Operational,Sweden,43 km (27 mi),43,2012
+30,North Bothnia Line,Umeå–Luleå,270 km (170 mi),New,250 km/h (160 mph),2026–2038+,Under construction,Sweden,270 km (170 mi),270,2026
+30,The East Link,Järna–Linköping,160 km (99 mi),New,250 km/h (160 mph),2035,Under construction,Sweden,160 km (99 mi),160,2035
+30,Gothenburg–Borås Double Tracks,Gothenburg–Borås,60 km (37 mi),New,250 km/h (160 mph),2039–2041[70],,Sweden,60 km (37 mi),60,2039
+30,Hässleholm–Lund Quad Tracks,Hässleholm–Lund,60 km (37 mi),New,250 km/h (160 mph),?2040[71][72],,Sweden,60 km (37 mi),60,2040
+30,Stockholm–Uppsala Quad Tracks,Stockholm–Uppsala,?,New?,250 km/h (160 mph)?,?2040?,,Sweden,?,,2040
+31,Solothurn–Wanzwil railway,NA (Connecting line),12 km (7.5 mi),New,200 km/h (120 mph),2004,Operational,Switzerland,12 km (7.5 mi),12,2004
+31,Mattstetten–Rothrist new line,Olten–Bern,45 km (28 mi),New,200 km/h (120 mph),2007,Operational,Switzerland,45 km (28 mi),45,2007
+31,Lötschberg Base Tunnel,NA (Connecting line),34 km (21 mi),New,250 km/h (160 mph)[ds],2007,Operational,Switzerland,34 km (21 mi),34,2007
+31,Gotthard Base Tunnel,NA (Connecting line),57 km (35 mi),New,200 km/h (120 mph)[dt],2016,Operational,Switzerland,57 km (35 mi),57,2016
+31,Ceneri Base Tunnel,NA (Connecting line),15.4 km (9.6 mi),New,200 km/h (120 mph)[du],2020,Operational,Switzerland,15.4 km (9.6 mi),15.4,2020
+31,Simplon Railway,Vallorbe–Domodossola,232.5 km (144.5 mi),Upgraded,200 km/h (120 mph),2030,Undergoing upgrade,Switzerland,232.5 km (144.5 mi),232.5,2030
+32,Great Western Main Line,London Paddington–Bristol Temple Meads,190.2 km (118.2 mi),Upgraded,201 km/h (125 mph),1976[73],Operational,United_Kingdom,190.2 km (118.2 mi),190.2,1976
+32,South Wales Main Line,London Paddington–Pilning,34.5 km (21.4 mi)[dv],Upgraded,201 km/h (125 mph)[dw],1976,Operational,United_Kingdom,34.5 km (21.4 mi)[dv],34.5,1976
+32,East Coast Main Line,London King's Cross–Edinburgh,552.7 km (343.4 mi)[dx],Upgraded,201 km/h (125 mph)[dy],1978,Operational,United_Kingdom,552.7 km (343.4 mi)[dx],552.7,1978
+32,Cross Country Route,York–Bristol Temple Meads,56 km (35 mi),Upgraded,201 km/h (125 mph),1982,Operational,United_Kingdom,56 km (35 mi),56,1982
+32,West Coast Main Line,"Glasgow central–Euston, London",442 km (275 mi)[dz],Upgraded,201 km/h (125 mph),2005,Operational,United_Kingdom,442 km (275 mi)[dz],442,2005
+32,High Speed 1,Fawkham Junction–Channel Tunnel,74 km (46 mi),New,300 km/h (190 mph)[ea],2003,Operational,United_Kingdom,74 km (46 mi),74,2003
+32,High Speed 1,"St Pancras, London–Ebbsfleet",39.4 km (24.5 mi),New,230 km/h (140 mph)[eb],2007,Operational,United_Kingdom,39.4 km (24.5 mi),39.4,2007
+32,Midland Main Line,"St Pancras, London / Derby / Nottingham / Chesterfield",100 km (62 mi)[ec],Upgraded,201 km/h (125 mph)[ed],2009,Operational,United_Kingdom,100 km (62 mi)[ec],100,2009
+32,High Speed 2,"Euston, London–Birmingham Curzon Street",230 km (140 mi),New,360 km/h (220 mph),Uncertain (originally 2033),Under construction,United_Kingdom,230 km (140 mi),230,2033
+32,High Speed 2,Crewe-Manchester,153 km (95 mi),New,300 km/h (190 mph)[ee],2040+,"Suspended, revived as a private initiative",United_Kingdom,153 km (95 mi),153,2040
+33,Northeast Corridor,"Boston–Washington, D.C.",80.3 km (50 mi)[ef],Upgraded,260 km/h (160 mph),1969,Operational,United_States,80.3 km (50 mi)[ef],80.3,1969
+33,Brightline,Orlando Airport–Cocoa,56.3 km (35 mi)[eg],New[eh],201 km/h (125 mph)[ei],2023,Operational,United_States,56.3 km (35 mi)[eg],56.3,2023
+33,California HSR,San Francisco–Los Angeles[ej],275 km (171 mi)[ek],New[el],354 km/h (220 mph)[em],2031–2033[en],Under construction,United_States,275 km (171 mi)[ek],275,2031
+33,Brightline West,Las Vegas–Los Angeles[eo],351 km (218 mi),New,322 km/h (200 mph),2029,Under construction,United_States,351 km (218 mi),351,2029

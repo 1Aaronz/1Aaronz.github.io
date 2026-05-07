@@ -32,6 +32,13 @@ library(tidyverse)
 library(skimr)
 library(hrbrthemes)
 library(rmarkdown)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggthemes)
+library(maps)
 
 # Add other packages as needed.
 # Examples:
@@ -59,9 +66,10 @@ theme_set(
 ```
 
 # This page is currently a work in progress
+
 # Project Overview
 
-- **Project Webpage:** [Insert link here](YOUR_PROJECT_URL)
+- **Project Webpage:** [HSR Visualization project](https://1aaronz.github.io/danl-310-data-storytelling.html)
 
 This project visualizes Global High Speed Rail (HSR) progress compared to the US.
 
@@ -73,88 +81,46 @@ Your project should tell an interesting and coherent story using:
 
 A literature review, regression model, machine learning model, or formal statistical model is **not required**.
 
-
 # Big Idea
 
-Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail
-Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR. 
+Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR.
 
-This project emphasizes the difference in the length of HSR other countries have managed to achieve, and are projected to achieve in the next 10 years while the US continues to have slow progress in HSR construction. 
-
-State the main message of your project in 2--3 sentences.
-
-Your Big Idea should answer:
-
-- What is the most important thing your audience should remember?
-- Why is this story interesting, surprising, or important?
-- Who should care about this pattern, trend, or issue?
+This project emphasizes the difference in the length of HSR other countries have managed to achieve while the US continues to have slow progress in HSR construction. This project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future.
 
 # Guiding Question or Story Theme
 
 The guiding question of this project is: "How has the length of HSR lines by country changed overtime?"
-Examples:
-
-- How has X changed over time?
-- Which groups are most affected by X?
-- What patterns appear across locations, categories, or time periods?
-- What surprising contrast does the data reveal?
 
 # Background and Context
 
-Provide enough background so that a general audience can understand your topic.
-
-Use this section especially if your topic involves technical concepts, scientific knowledge, business context, policy context, sports rules, cultural background, or other information that may not be familiar to everyone.
-
-You do **not** need a formal literature review. The goal is to help your audience understand the story.
+What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high speed rail is defined as "the length of track where passenger trains can reliably go at least 200 kilometers per hour". In the case of the United States, the North East Corridor line can in theory carry high speed rail much further than what the dataset for this project provides, however only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project.
 
 # Data
 
 ```{r data-import}
-# Replace this example with your own data import code.
+hsr <- read.csv("hsr.csv") %>% 
+  select(Line, Length_km, Opening_year, country, Status, Maximum.speed)
 
-# your_data <- read_csv("your-data-file.csv")
-
-# paged_table(your_data)
+paged_table(hsr)
 ```
-
 
 ## Key Variables
 
-Describe the most important variables in your project.
+Line: Name of high speed rail line
 
-You do **not** need to describe every variable. Focus on variables that are central to your story.
+Length_KM: Length of the high speed rail line in Kilometers
 
+country: Name of the country the rail line belongs to
 
+Opening_year: The year the high speed rail on the line became operational
 
 ## Unit of Observation
 
-Explain what each row in your dataset represents.
-
-Examples:
-
-- one person,
-- one city,
-- one school,
-- one transaction,
-- one game,
-- one company,
-- one observation by year, county, or category.
-
-
+Each row represents one rail line capable of carrying high-speed rail.
 
 ## Data Source
 
-Describe your data source clearly.
-
-Include:
-
-- name of the dataset,
-- organization or website that provides the data,
-- link to the source,
-- date accessed,
-- brief description of what the data contains, and
-- why the dataset is suitable for your story.
-
+The data was scraped from tables from wikipedia on 4/30/2026
 
 # Data Preparation and Transformation
 
@@ -174,15 +140,53 @@ This may include:
 ```{r data-preparation}
 # Replace this example with your own data cleaning and transformation code.
 
-# cleaned_data <- your_data |>
-#   rename(...) |>
-#   filter(...) |>
-#   mutate(...) |>
-#   group_by(...) |>
-#   summarize(...)
+hsr_all <- read.csv("hsr_all.csv")
+# ------------------------------------------------------------
+# 5. CLEAN LENGTH COLUMN
+# ------------------------------------------------------------
+if ("Length" %in% names(hsr_all)) {
+  hsr_all <- hsr_all %>%
+    mutate(
+      Length_clean = gsub(",", "", Length),
+      Length_km = as.numeric(str_extract(Length_clean, "[0-9.]+"))
+    )
+}
+
+# ------------------------------------------------------------
+# 6. CLEAN OPENING YEAR (ROBUST FIX)
+# ------------------------------------------------------------
+if ("Opening" %in% names(hsr_all)) {
+  hsr_all <- hsr_all %>%
+    mutate(
+      Opening_year = as.numeric(str_extract(Opening, "\\d{4}"))
+    )
+}
+
+hsr <- hsr_all %>% 
+  select(Line, Length_km, Opening_year, country, Status, Maximum.speed)
 ```
 
-Briefly explain why these transformations were necessary for your story.
+The the length and opening year columns had to have the characters removed from them and set as numeric columns.
+
+```{r}
+hsr_2026 <- hsr %>% 
+  filter(Opening_year<=2026) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+
+hsr_2000 <- hsr %>% 
+  filter(Opening_year<=2000) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+hsr_2000 <- hsr_2000 %>%
+  mutate(
+    country = as.character(country),
+    is_us = country == "United_States")
+```
+
+additional cleaning for certain years and creating a flag for the US to highlight on the maps.
 
 # Descriptive Statistics
 
@@ -191,9 +195,7 @@ Use descriptive statistics to help your audience understand the data before you 
 ## Basic Summary
 
 ```{r summary-statistics}
-# Replace this example with your own summary statistics.
-
-# skim(cleaned_data)
+skim(hsr)
 ```
 
 ## Important Counts, Rates, or Group Summaries
@@ -201,14 +203,15 @@ Use descriptive statistics to help your audience understand the data before you 
 ```{r descriptive-summary}
 # Example structure:
 
-# cleaned_data |>
-#   group_by(group_variable) |>
-#   summarize(
-#     n = n(),
-#     mean_value = mean(value_variable, na.rm = TRUE),
-#     median_value = median(value_variable, na.rm = TRUE)
-#   ) |>
-#   arrange(desc(mean_value))
+hsr |>
+  group_by(country) |>
+  filter(Opening_year<=2026) %>% 
+  summarize(
+    n = n(),
+    mean_HSR_line = mean(Length_km, na.rm = TRUE),
+    Total_HSR_km = sum(Length_km, na.rm = TRUE)
+  ) |>
+  arrange(desc(Total_HSR_km))
 ```
 
 ## Initial Observations
@@ -223,6 +226,8 @@ Focus on patterns such as:
 - outliers or unusual cases,
 - missing data issues, and
 - patterns that set up your main story.
+
+China appears as a big outlier in total HSR kilometers. The US is only seen much further down the list, almost all countries that have any HSR are ahead of the US.
 
 # Data Visualization and Storytelling
 
@@ -240,42 +245,154 @@ Each visualization should include:
 
 Your webpage should feel like one coherent narrative, not a disconnected collection of plots.
 
-## Visualization 1: Main Pattern
+## Visualization 1: HSR by country in 2000
 
 ```{r visualization-1}
 # Replace this example with your own visualization.
 
-# cleaned_data |>
-#   ggplot(aes(x = x_variable, y = y_variable)) +
-#   geom_col() +
-#   labs(
-#     title = "Write a clear, message-driven title",
-#     subtitle = "Optional subtitle that provides context",
-#     x = "X-axis label",
-#     y = "Y-axis label",
-#     caption = "Source: Your data source"
-#   )
+hsr_2000 <- hsr_2000 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2000, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    ifelse(x == "United_States", "United_States", x)
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
+                     "red", "black"),
+      face = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
+                    "bold", "plain")
+    )
+  ) +
+  labs(
+    title = "Total Operational High Speed Rail Per Country in 2000",
+    y = "",
+    x= "Total HSR in Km",
+    subtitle = "Countries Ahead of the US: 13"
+  )+
+  scale_fill_viridis_d()
 ```
 
-**Interpretation:**  
+**Interpretation:**\
 Explain what this visualization shows. What should the audience notice first? How does this figure begin the story?
 
-## Visualization 2: Comparison or Contrast
+## Visualization 2: HSR by Country in 2026
 
 ```{r visualization-2}
-# Replace this example with your own visualization.
+hsr_2026 <- hsr_2026 %>%
+  left_join(
+    hsr_2000 %>% select(country, total_km) %>% rename(km_2000 = total_km),
+    by = "country"
+  ) %>%
+  mutate(
+    km_2000 = ifelse(is.na(km_2000), 0, km_2000),
+    new_hsr = km_2000 == 0
+  )
+
+hsr_2026 <- hsr_2026 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2026, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    x
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(
+        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) == "United_States",
+        "red",
+        "black"
+      ),
+      face = ifelse(
+        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) %in% 
+          hsr_2026$country[hsr_2026$new_hsr],
+        "bold",
+        "plain"
+      )
+    )
+  ) +
+  labs(
+    title = "Total Operational High Speed Rail Per Country in 2026",
+    y = "",
+    x = "Total HSR in Km",
+    subtitle = "Countries with no HSR in 2000 are Bolded | Countries Ahead of the US: 26"
+  ) +
+  scale_fill_viridis_d()
 ```
 
-**Interpretation:**  
+**Interpretation:**\
 Explain the key comparison. What is similar, different, surprising, or important?
 
-## Visualization 3: Trend, Relationship, or Deeper Pattern
+## Visualization 3: Future Prospects, the 10 year projection of new HSR  by country
 
 ```{r visualization-3}
-# Replace this example with your own visualization.
+hsr_clean <- hsr_2026 %>%
+  mutate(
+    country = dplyr::recode(country,
+                     "United_States" = "United States of America",
+                     "United_Kingdom" = "United Kingdom",
+                     "South_Korea" = "South Korea",
+                     "Saudi_Arabia" = "Saudi Arabia",
+                     "Russia" = "Russia"
+    )
+  )
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+us_value <- hsr_clean %>%
+  filter(country == "United States of America") %>%
+  pull(total_km)
+
+world_hsr <- world %>%
+  left_join(hsr_clean, by = c("name" = "country")) %>%
+  mutate(
+    status = case_when(
+      name == "United States of America" ~ "United States",
+      total_km > us_value ~ "Above US",
+      TRUE ~ "Below US"   # <- THIS is the key fix
+    )
+  )
+
+ggplot(world_hsr) +
+  geom_sf(aes(fill = status), color = "white", linewidth = 0.2) +
+  scale_fill_manual(
+    values = c(
+      "Above US" = "#D55E00",
+      "Below US" = "#999999",
+      "United States" = "#0072B2"
+    )
+  ) +
+  labs(
+    title = "Countries With More Operational High Speed Rail than the US (2026)",
+    fill = ""
+  )+
+  theme_map()+
+  theme(title = element_text(size=15),
+        axis.text = element_blank(),
+        legend.position = c(0, 0.5), 
+        legend.justification = c(0, 0.5),
+        legend.text = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5))
 ```
 
-**Interpretation:**  
+**Interpretation:**\
 Explain how this visualization deepens the story. How does it connect to your Big Idea?
 
 ## Optional Visualization 4: Additional Evidence 1
@@ -284,9 +401,8 @@ Explain how this visualization deepens the story. How does it connect to your Bi
 # Optional additional figure.
 ```
 
-**Interpretation:**  
+**Interpretation:**\
 Use this only if it adds something meaningful to the story.
-
 
 ## Optional Visualization 5: Additional Evidence 2
 
@@ -294,9 +410,8 @@ Use this only if it adds something meaningful to the story.
 # Optional additional figure.
 ```
 
-**Interpretation:**  
+**Interpretation:**\
 Use this only if it adds something meaningful to the story.
-
 
 ## Shiny App
 
@@ -314,15 +429,11 @@ Use this only if it adds something meaningful to the story.
 
 Briefly describe the Shiny app and dashboard that accompany this project.
 
-
 ## Dashboard
 
 - **Dashboard:** [Insert link here](YOUR_DASHBOARD_URL)
 
 Explain how dashboard help users interact with or explore the project data.
-
-
-
 
 # Connecting the Dots
 
@@ -396,7 +507,7 @@ Examples:
 
 Public Policy Polling. (2024). National survey on high-speed rail (conducted for the U.S. High Speed Rail Coalition). https://www.ushsr.com/
 
-
+Wikipedia contributors. (n.d.). List of high-speed railway lines. In Wikipedia. Retrieved May 6, 2026, from https://en.wikipedia.org/wiki/List_of_high-speed_railway_lines
 
 # Appendix
 
@@ -409,8 +520,132 @@ Examples:
 - extra data cleaning details,
 - code that is too long for the main narrative.
 
+Code to scrape the data
+
 ```{r appendix-code}
-# Optional extra code.
+library(rvest)
+library(dplyr)
+library(purrr)
+library(stringr)
+library(xml2)
+# ------------------------------------------------------------
+# 1. SCRAPE PAGE
+# ------------------------------------------------------------
+url <- "https://en.wikipedia.org/wiki/High-speed_rail_by_country"
+page <- read_html(url)
+
+nodes <- xml_find_all(page, "//h2 | //h3 | //table")
+
+tables <- list()
+current_name <- NULL
+i <- 1
+
+for (node in nodes) {
+  
+  # update section name
+  if (xml_name(node) %in% c("h2", "h3")) {
+    current_name <- xml_text(node, trim = TRUE)
+  }
+  
+  # store table under current section name
+  if (xml_name(node) == "table") {
+    df <- html_table(node, fill = TRUE)
+    
+    df <- as.data.frame(df, stringsAsFactors = FALSE)
+    df[] <- lapply(df, as.character)  # 🔥 FIX TYPE CONSISTENCY
+    
+    tables[[i]] <- df
+    names(tables)[i] <- current_name
+    i <- i + 1
+  }
+}
+
+# ------------------------------------------------------------
+# 3. MANUAL COUNTRY ASSIGNMENT
+# ------------------------------------------------------------
+egypt <- tables[[5]]
+morocco <- tables[[6]]
+china <- tables[[7]]
+india <- tables[[8]]
+indonesia <- tables[[9]]
+japan <- tables[[10]]
+saudi_arabia <- tables[[11]]
+south_korea <- tables[[12]]
+taiwan <- tables[[13]]
+thailand <- tables[[14]]
+turkey <- tables[[15]]
+uzbekistan <- tables[[16]]
+austria <- tables[[17]]
+baltic_states <- tables[[18]]
+belgium <- tables[[19]]
+czech_republic <- tables[[20]]
+denmark <- tables[[21]]
+finland <- tables[[22]]
+france <- tables[[23]]
+germany <- tables[[24]]
+greece <- tables[[25]]
+italy <- tables[[26]]
+netherlands <- tables[[27]]
+norway <- tables[[28]]
+poland <- tables[[29]]
+portugal <- tables[[30]]
+russia <- tables[[31]]
+serbia <- tables[[32]]
+spain <- tables[[33]]
+sweden <- tables[[34]]
+switzerland <- tables[[35]]
+united_kingdom <- tables[[36]]
+united_states <- tables[[37]]
+
+hsr_list <- list(
+  Egypt = egypt,
+  Morocco = morocco,
+  China = china,
+  India = india,
+  Indonesia = indonesia,
+  Japan = japan,
+  Saudi_Arabia = saudi_arabia,
+  South_Korea = south_korea,
+  Taiwan = taiwan,
+  Thailand = thailand,
+  Turkey = turkey,
+  Uzbekistan = uzbekistan,
+  Austria = austria,
+  Baltic_States = baltic_states,
+  Belgium = belgium,
+  Czech_Republic = czech_republic,
+  Denmark = denmark,
+  Finland = finland,
+  France = france,
+  Germany = germany,
+  Greece = greece,
+  Italy = italy,
+  Netherlands = netherlands,
+  Norway = norway,
+  Poland = poland,
+  Portugal = portugal,
+  Russia = russia,
+  Serbia = serbia,
+  Spain = spain,
+  Sweden = sweden,
+  Switzerland = switzerland,
+  United_Kingdom = united_kingdom,
+  United_States = united_states
+)
+
+# ------------------------------------------------------------
+# 4. COMBINE ALL TABLES (SAFE)
+# ------------------------------------------------------------
+hsr_all <- bind_rows(
+  lapply(names(hsr_list), function(country) {
+    df <- hsr_list[[country]]
+    df$country <- country
+    df
+  }),
+  .id = "table_id"
+)
+
+# write.csv(hsr_all, "hsr_all.csv")
 ```
 
 # Project Checklist
