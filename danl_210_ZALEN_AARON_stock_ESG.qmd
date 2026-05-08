@@ -7,7 +7,7 @@ format:
     toc: true
     theme: cosmo
 execute:
-  eval: false
+  engine: knitr
 ---
 
 ## Introduction
@@ -34,15 +34,23 @@ Data sources include:
 
 ## Descriptive Statistics
 
-```{.python}
-#| echo: true
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from IPython.display import display, Markdown
 
 # Load and prepare ESG data
-esg_data = pd.read_csv("C:/Users/aaron/Documents/DANL 210/projectdata/danl_210_ZALEN_AARON_ESG.csv")
+url_2024 = "https://bcdanl.github.io/data/esg_proj_2024_data.csv"
+esg_data = pd.read_csv(url_2024)
+
+# Rename columns to match expected names (note: use actual column names from CSV)
+esg_data = esg_data.rename(columns={
+    "Environmental": "Environmental_Risk",   
+    "Social": "Social_Risk",                
+    "Governance": "Governance_Risk",      
+    "Total_ESG": "Total_ESG_Risk"         
+})
 
 # Download and process stock data
 stock_data = pd.read_csv("https://bcdanl.github.io/data/stock_history_2023.csv")
@@ -53,16 +61,8 @@ stock_returns = stock_data.groupby('Symbol')['Close'].apply(
 
 # Merge datasets
 merged = pd.merge(esg_data, stock_returns, on='Symbol', how='inner')
-### ESG Risk Profiles
 
-#| echo: false
-import pandas as pd
-from IPython.display import display, Markdown
-
-# Load ESG data
-esg_data = pd.read_csv("C:/Users/aaron/Documents/DANL 210/projectdata/danl_210_ZALEN_AARON_ESG.csv")
-
-# Summary statistics
+# ESG Risk Profiles - Summary statistics
 esg_summary = esg_data.agg({
     'Symbol': 'nunique',
     'Total_ESG_Risk': 'mean',
@@ -83,7 +83,7 @@ display(esg_summary)
 
 **Risk Distribution by Category**
 
-```{.python}
+```{python}
 #| fig-cap: "Distribution of ESG Risk Components"
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -113,7 +113,7 @@ Social risk has a higher standard deviation than government risk, and averages a
 
 ## Correlation Analysis
 
-```{.python}
+```{python}
 #| label: corr-heatmap
 #| fig-cap: "ESG Risk-Financial Performance Correlation"
 import seaborn as sns
@@ -137,7 +137,7 @@ plt.show()
 
 It appears that ESG scores and average annual return are minimally correlated. For all ESG scores besides governance, there is a slight positive correlation, meaning the stock is actually associated with a higher annual return for higher scores. The only negatively correlated metric is governance, with a slight negative correlation to annual returns
 
-```{.python}
+```{python}
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -166,7 +166,6 @@ for _, row in merged.nsmallest(3, 'Annual_Return').iterrows():
 
 plt.tight_layout()
 plt.show()
-
 ```
 
 ## Conclusion

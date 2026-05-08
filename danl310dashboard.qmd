@@ -1,0 +1,227 @@
+---
+title: "HSR Visualization"
+editor: visual
+format: dashboard
+---
+
+```{r setup}
+#| include: false
+
+
+library(tidyverse)
+library(skimr)
+library(hrbrthemes)
+library(rmarkdown)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggthemes)
+library(maps)
+
+# Add other packages as needed.
+# Examples:
+# library(lubridate)
+# library(janitor)
+# library(scales)
+# library(viridis)
+# library(plotly)
+# library(DT)
+# library(sf)
+
+# Feel free to revise this theme.
+theme_set(
+  theme_ipsum() +
+    theme(
+      strip.background = element_rect(fill = "lightgray"),
+      axis.title.x = element_text(size = rel(1.33)),
+      axis.title.y = element_text(size = rel(1.33))
+    )
+)
+
+hsr <- read.csv("hsr.csv") %>% 
+  select(Line, Length_km, Opening_year, country, Status, Maximum.speed)
+
+hsr_2026 <- hsr %>% 
+  filter(Opening_year<=2026) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+
+hsr_2000 <- hsr %>% 
+  filter(Opening_year<=2000) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+hsr_2000 <- hsr_2000 %>%
+  mutate(
+    country = as.character(country),
+    is_us = country == "United_States")
+
+hsr_map_data <- hsr %>%
+  filter(Opening_year <= 2026) %>%
+  group_by(country) %>%
+  summarise(total_km = sum(Length_km), .groups = 'drop') %>%
+  mutate(
+    country = dplyr::recode(country,
+                     "United_States" = "United States of America",
+                     "United_Kingdom" = "United Kingdom",
+                     "South_Korea" = "South Korea",
+                     "Saudi_Arabia" = "Saudi Arabia",
+                     "Russia" = "Russia"
+    )
+  )
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+us_value <- hsr_map_data %>%
+  filter(country == "United States of America") %>%
+  pull(total_km)
+```
+
+# Bar Graphs
+
+## US versus leading country in HSR km
+
+Comparison of high-speed rail infrastructure across countries
+
+## Row {height=20%}
+
+### Column
+#### 2000 comparison
+In **2000**, Japan had **31× more HSR km** than the US.
+
+### Column
+#### 2026 comparison
+In **2026**, China has **245× more HSR km** than the US.
+
+### Charts
+## Column
+```{r}
+#| title: Total Operational High Speed Rail Per Country in 2000
+hsr_2000 <- hsr_2000 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2000, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    ifelse(x == "United_States", "United_States", x)
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
+                     "red", "black"),
+      face = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
+                    "bold", "plain")
+    )
+  ) +
+  labs(
+    y = "",
+    x= "Total HSR in Km",
+    subtitle = "Countries Ahead of the US: 13"
+  )+
+  scale_fill_viridis_d()
+```
+
+```{r}
+#| title: Total Operational High Speed Rail Per Country in 2026
+hsr_2026 <- hsr_2026 %>%
+  left_join(
+    hsr_2000 %>% select(country, total_km) %>% rename(km_2000 = total_km),
+    by = "country"
+  ) %>%
+  mutate(
+    km_2000 = ifelse(is.na(km_2000), 0, km_2000),
+    new_hsr = km_2000 == 0
+  )
+
+hsr_2026 <- hsr_2026 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2026, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    x
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(
+        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) == "United_States",
+        "red",
+        "black"
+      ),
+      face = ifelse(
+        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) %in% 
+          hsr_2026$country[hsr_2026$new_hsr],
+        "bold",
+        "plain"
+      )
+    )
+  ) +
+  labs(
+    y = "",
+    x = "Total HSR in Km",
+    subtitle = "Countries with no HSR in 2000 are Bolded | Countries Ahead of the US: 26"
+  ) +
+  scale_fill_viridis_d()
+```
+
+# World Map
+
+## Row
+
+```{r}
+#| title: Countries With More Operational High Speed Rail than the US (2026)
+#| echo: false
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+us_value <- hsr_map_data %>%
+  filter(country == "United States of America") %>%
+  pull(total_km)
+
+world_hsr <- world %>%
+  left_join(hsr_map_data, by = c("name" = "country")) %>%
+  mutate(
+    status = case_when(
+      name == "United States of America" ~ "United States",
+      total_km > us_value ~ "Above US",
+      TRUE ~ "Below US" 
+    )
+  )
+
+ggplot(world_hsr) +
+  geom_sf(aes(fill = status), color = "white", linewidth = 0.2) +
+  scale_fill_manual(
+    values = c(
+      "Above US" = "#D55E00",
+      "Below US" = "#999999",
+      "United States" = "#0072B2"
+    )
+  ) +
+  labs(
+    fill = ""
+  )+
+  theme_map()+
+  theme(title = element_text(size=15),
+        axis.text = element_blank(),
+        legend.position = c(0, 0.5), 
+        legend.justification = c(0, 0.5),
+        legend.text = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5))
+```

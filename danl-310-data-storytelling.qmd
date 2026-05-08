@@ -283,7 +283,7 @@ ggplot(hsr_2000, aes(
 ```
 
 **Interpretation:**\
-Explain what this visualization shows. What should the audience notice first? How does this figure begin the story?
+This gives us an initial view of what the landscape for HSR initially looked like in 2000. High speed rail was exclusive to European countries, Japan, and the US, with Japan leading the pack at nearly 2500km. Germany was a close second, followed by France. While the US was among only 16 countries with HSR in 2000, the US had only a small amount, less than 100km.
 
 ## Visualization 2: HSR by Country in 2026
 
@@ -338,11 +338,71 @@ ggplot(hsr_2026, aes(
 ```
 
 **Interpretation:**\
-Explain the key comparison. What is similar, different, surprising, or important?
+Between 2000 and 2026, 13 more countries jumped ahead of the US in HSR km. Most notably is China, which went from having no HSR in 2000, to nearly 35000 km in 2026, beating out all other countries by a long-shot. The US only gained 50km of HSR between 2000 and 2026, with the opening of the Bright-line in Florida. Out of all the countries that have HSR, Denmark is the only country the US is ahead of.
 
-## Visualization 3: Future Prospects, the 10 year projection of new HSR  by country
+## Visualization 3: Future Prospects, the 10 year projection of new HSR by country
 
 ```{r visualization-3}
+hsr_2036 <- hsr %>% 
+  filter(Opening_year<=2037) %>% 
+  filter(Opening_year>=2027) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+hsr_2036 <- hsr_2036 %>%
+  filter(!is.na(total_km))
+
+# 2036 plot --------------------------------------------------------------
+hsr_2036 <- hsr_2036 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2036, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    x
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(
+        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) == "United_States",
+        "red",
+        "black"
+      ),
+      face = ifelse(
+        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) %in% 
+          hsr_2036$country[hsr_2036$total_km],
+        "bold",
+        "plain"
+      )
+    )
+  ) +
+  labs(
+    title = "10 Year Projection of New HSR by Country",
+    y = "",
+    x = "Total HSR in Km",
+    subtitle = "HSR planned between 2027-2037"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 2500, 5000, 10000, 20000, 25000),
+    limits = c(0, 30000),
+  expand=c(0,0))+
+  scale_fill_viridis_d()
+
+```
+
+**Interpretation:**\
+The United States is set to make some progress within the next 10 years. The opening of California HSR and the Bright line west, both expected within the next 10 years, are set to add 626 more km of HSR to the US. Even with this boost, 11 countries are still set to outpace the US in new construction. China plans to nearly double their already extensive HSR network in the next 10 years.
+
+## Visualization 4: World map of HSR compared to the US
+
+```{r visualization-4}
 hsr_clean <- hsr_2026 %>%
   mutate(
     country = dplyr::recode(country,
@@ -366,7 +426,7 @@ world_hsr <- world %>%
     status = case_when(
       name == "United States of America" ~ "United States",
       total_km > us_value ~ "Above US",
-      TRUE ~ "Below US"   # <- THIS is the key fix
+      TRUE ~ "Below US" 
     )
   )
 
@@ -390,24 +450,6 @@ ggplot(world_hsr) +
         legend.justification = c(0, 0.5),
         legend.text = element_text(size = 12),
         plot.title = element_text(hjust = 0.5))
-```
-
-**Interpretation:**\
-Explain how this visualization deepens the story. How does it connect to your Big Idea?
-
-## Optional Visualization 4: Additional Evidence 1
-
-```{r visualization-4}
-# Optional additional figure.
-```
-
-**Interpretation:**\
-Use this only if it adds something meaningful to the story.
-
-## Optional Visualization 5: Additional Evidence 2
-
-```{r visualization-5}
-# Optional additional figure.
 ```
 
 **Interpretation:**\
@@ -465,6 +507,8 @@ Use careful language such as:
 - This comparison shows that...
 - This trend raises questions about...
 
+HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While global adoption is only set to increase, the US has stalled behind the rest of the world in building HSR.
+
 ## Limitations
 
 Discuss what your data story can and cannot show.
@@ -520,17 +564,18 @@ Examples:
 - extra data cleaning details,
 - code that is too long for the main narrative.
 
-Code to scrape the data
+#### Appendix A: Initial code to scrape the data
 
 ```{r appendix-code}
+#| eval: FALSE
+
 library(rvest)
 library(dplyr)
 library(purrr)
 library(stringr)
 library(xml2)
-# ------------------------------------------------------------
-# 1. SCRAPE PAGE
-# ------------------------------------------------------------
+
+#SCRAPE PAGE---------------------------------------------------------
 url <- "https://en.wikipedia.org/wiki/High-speed_rail_by_country"
 page <- read_html(url)
 
@@ -552,7 +597,7 @@ for (node in nodes) {
     df <- html_table(node, fill = TRUE)
     
     df <- as.data.frame(df, stringsAsFactors = FALSE)
-    df[] <- lapply(df, as.character)  # 🔥 FIX TYPE CONSISTENCY
+    df[] <- lapply(df, as.character)
     
     tables[[i]] <- df
     names(tables)[i] <- current_name
@@ -560,9 +605,7 @@ for (node in nodes) {
   }
 }
 
-# ------------------------------------------------------------
-# 3. MANUAL COUNTRY ASSIGNMENT
-# ------------------------------------------------------------
+#MANUAL COUNTRY ASSIGNMENT---------------------------------------------------
 egypt <- tables[[5]]
 morocco <- tables[[6]]
 china <- tables[[7]]
@@ -633,9 +676,7 @@ hsr_list <- list(
   United_States = united_states
 )
 
-# ------------------------------------------------------------
-# 4. COMBINE ALL TABLES (SAFE)
-# ------------------------------------------------------------
+#COMBINE ALL TABLES---------------------------------------------------------
 hsr_all <- bind_rows(
   lapply(names(hsr_list), function(country) {
     df <- hsr_list[[country]]
