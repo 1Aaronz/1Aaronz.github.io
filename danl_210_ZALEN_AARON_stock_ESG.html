@@ -152,7 +152,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -304,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="960"></p>
 <figcaption>Distribution of ESG Risk Components</figcaption>
 </figure>
 </div>
@@ -398,7 +397,7 @@ Text(5, -15, 'RCL')</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid figure-img" width="1344"></p>
+<p><img src="danl_210_ZALEN_AARON_stock_ESG_files/figure-html/unnamed-chunk-4-5.png" class="img-fluid figure-img" width="1344"></p>
 </figure>
 </div>
 </div>
@@ -878,167 +877,180 @@ Text(5, -15, 'RCL')</code></pre>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">  engine: knitr</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### Background</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>This analysis examines the relationship between ESG risk scores and financial performance for major corporations. ESG measurements are a key metric for weighing the sustainability of a given company.</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### Statement of the Problem</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>The primary questions I aim to answer are as follows:</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>1<span class="sc">\.</span> Is there a correlation between total ESG risk and stock returns?</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: FALSE</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="fu">use_python</span>(</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"C:/Users/aaron/AppData/Local/Python/pythoncore-3.14-64/python.exe"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">required =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>2<span class="sc">\.</span> Which risk pillar (Environmental, Social, or Governance) most impacts performance?</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Collection</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>Data sources include:</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="sc">\-</span> ESG risk scores from Yahoo Finance</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>-Historical stock prices from bcdanl.github.io/data/stock_history_2023.csv</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descriptive Statistics</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare ESG data</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>url_2024 <span class="op">=</span> <span class="st">"https://bcdanl.github.io/data/esg_proj_2024_data.csv"</span></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>esg_data <span class="op">=</span> pd.read_csv(url_2024)</span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename columns to match expected names (note: use actual column names from CSV)</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>esg_data <span class="op">=</span> esg_data.rename(columns<span class="op">=</span>{</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Environmental"</span>: <span class="st">"Environmental_Risk"</span>,   </span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Social"</span>: <span class="st">"Social_Risk"</span>,                </span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Governance"</span>: <span class="st">"Governance_Risk"</span>,      </span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Total_ESG"</span>: <span class="st">"Total_ESG_Risk"</span>         </span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Download and process stock data</span></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>stock_data <span class="op">=</span> pd.read_csv(<span class="st">"https://bcdanl.github.io/data/stock_history_2023.csv"</span>)</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>stock_data[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(stock_data[<span class="st">'Date'</span>])</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>stock_returns <span class="op">=</span> stock_data.groupby(<span class="st">'Symbol'</span>)[<span class="st">'Close'</span>].<span class="bu">apply</span>(</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: x.iloc[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>x.iloc[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>).reset_index().rename(columns<span class="op">=</span>{<span class="st">'Close'</span>:<span class="st">'Annual_Return'</span>})</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="fu">py_config</span>()</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Background</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>This analysis examines the relationship between ESG risk scores and financial performance for major corporations. ESG measurements are a key metric for weighing the sustainability of a given company.</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="fu">### Statement of the Problem</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>The primary questions I aim to answer are as follows:</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>1<span class="sc">\.</span> Is there a correlation between total ESG risk and stock returns?</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>2<span class="sc">\.</span> Which risk pillar (Environmental, Social, or Governance) most impacts performance?</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Collection</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>Data sources include:</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="sc">\-</span> ESG risk scores from Yahoo Finance</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>-Historical stock prices from bcdanl.github.io/data/stock_history_2023.csv</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descriptive Statistics</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare ESG data</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>url_2024 <span class="op">=</span> <span class="st">"https://bcdanl.github.io/data/esg_proj_2024_data.csv"</span></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>esg_data <span class="op">=</span> pd.read_csv(url_2024)</span>
 <span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge datasets</span></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> pd.merge(esg_data, stock_returns, on<span class="op">=</span><span class="st">'Symbol'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="co"># ESG Risk Profiles - Summary statistics</span></span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>esg_summary <span class="op">=</span> esg_data.agg({</span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: <span class="st">'nunique'</span>,</span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total_ESG_Risk'</span>: <span class="st">'mean'</span>,</span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Environmental_Risk'</span>: <span class="st">'mean'</span>,</span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Social_Risk'</span>: <span class="st">'mean'</span>,</span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Governance_Risk'</span>: <span class="st">'mean'</span></span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>}).rename({</span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: <span class="st">'Companies'</span>,</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total_ESG_Risk'</span>: <span class="st">'Avg_Total_Risk'</span>,</span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Environmental_Risk'</span>: <span class="st">'Avg_Environmental'</span>,</span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Social_Risk'</span>: <span class="st">'Avg_Social'</span>,</span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Governance_Risk'</span>: <span class="st">'Avg_Governance'</span></span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>}).to_frame().T</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename columns to match expected names (note: use actual column names from CSV)</span></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>esg_data <span class="op">=</span> esg_data.rename(columns<span class="op">=</span>{</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Environmental"</span>: <span class="st">"Environmental_Risk"</span>,   </span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Social"</span>: <span class="st">"Social_Risk"</span>,                </span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Governance"</span>: <span class="st">"Governance_Risk"</span>,      </span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Total_ESG"</span>: <span class="st">"Total_ESG_Risk"</span>         </span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Download and process stock data</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>stock_data <span class="op">=</span> pd.read_csv(<span class="st">"https://bcdanl.github.io/data/stock_history_2023.csv"</span>)</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>stock_data[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(stock_data[<span class="st">'Date'</span>])</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>stock_returns <span class="op">=</span> stock_data.groupby(<span class="st">'Symbol'</span>)[<span class="st">'Close'</span>].<span class="bu">apply</span>(</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: x.iloc[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>x.iloc[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>).reset_index().rename(columns<span class="op">=</span>{<span class="st">'Close'</span>:<span class="st">'Annual_Return'</span>})</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge datasets</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> pd.merge(esg_data, stock_returns, on<span class="op">=</span><span class="st">'Symbol'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
 <span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### Overall ESG Risk Profile"</span>))</span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>display(esg_summary)</span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>**Risk Distribution by Category**</span>
-<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Distribution of ESG Risk Components"</span></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>melted <span class="op">=</span> esg_data.melt(</span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'Symbol'</span>],</span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>    value_vars<span class="op">=</span>[<span class="st">'Environmental_Risk'</span>, <span class="st">'Social_Risk'</span>, <span class="st">'Governance_Risk'</span>],</span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="st">'Risk_Type'</span>,</span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>    value_name<span class="op">=</span><span class="st">'Score'</span></span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(data<span class="op">=</span>melted, x<span class="op">=</span><span class="st">'Score'</span>, hue<span class="op">=</span><span class="st">'Risk_Type'</span>, fill<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of ESG Risk Components'</span>)</span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Risk Score'</span>)</span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="co"># ESG Risk Profiles - Summary statistics</span></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>esg_summary <span class="op">=</span> esg_data.agg({</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: <span class="st">'nunique'</span>,</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total_ESG_Risk'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Environmental_Risk'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Social_Risk'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Governance_Risk'</span>: <span class="st">'mean'</span></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>}).rename({</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: <span class="st">'Companies'</span>,</span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Total_ESG_Risk'</span>: <span class="st">'Avg_Total_Risk'</span>,</span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Environmental_Risk'</span>: <span class="st">'Avg_Environmental'</span>,</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Social_Risk'</span>: <span class="st">'Avg_Social'</span>,</span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Governance_Risk'</span>: <span class="st">'Avg_Governance'</span></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>}).to_frame().T</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### Overall ESG Risk Profile"</span>))</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>display(esg_summary)</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>**Risk Distribution by Category**</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Distribution of ESG Risk Components"</span></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>When comparing the various risk scores to each other, we see that they follow different types of data distribution.</span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>Environmental risk has a right scew, so while most companies have a small environmental risk, the companies that do have a high environmental risk tend to have a disproportionately high risk.</span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>Government risk has a low standard deviation, with most companies falling around 5.</span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>Social risk has a higher standard deviation than government risk, and averages a bit higher at around 10.</span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlation Analysis</span></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: corr-heatmap</span></span>
-<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "ESG Risk-Financial Performance Correlation"</span></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> merged[[<span class="st">'Total_ESG_Risk'</span>, </span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Environmental_Risk'</span>, </span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Social_Risk'</span>, </span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Governance_Risk'</span>,</span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Annual_Return'</span>]].corr()</span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>sns.heatmap(corr_matrix, </span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>           annot<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>           cmap<span class="op">=</span><span class="st">'coolwarm'</span>,</span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>           vmin<span class="op">=-</span><span class="dv">1</span>, </span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ESG Risk vs. Financial Returns'</span>)</span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>It appears that ESG scores and average annual return are minimally correlated. For all ESG scores besides governance, there is a slight positive correlation, meaning the stock is actually associated with a higher annual return for higher scores. The only negatively correlated metric is governance, with a slight negative correlation to annual returns</span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>sns.regplot(</span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>merged,</span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>    scatter_kws<span class="op">=</span>{<span class="st">'s'</span>: <span class="dv">80</span>, <span class="st">'alpha'</span>: <span class="fl">0.7</span>, <span class="st">'color'</span>: <span class="st">'steelblue'</span>},</span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>    line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'red'</span>, <span class="st">'linestyle'</span>: <span class="st">'--'</span>},</span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>ax</span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Total ESG Risk vs. Annual Returns'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Total ESG Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>melted <span class="op">=</span> esg_data.melt(</span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'Symbol'</span>],</span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>    value_vars<span class="op">=</span>[<span class="st">'Environmental_Risk'</span>, <span class="st">'Social_Risk'</span>, <span class="st">'Governance_Risk'</span>],</span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="st">'Risk_Type'</span>,</span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>    value_name<span class="op">=</span><span class="st">'Score'</span></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(data<span class="op">=</span>melted, x<span class="op">=</span><span class="st">'Score'</span>, hue<span class="op">=</span><span class="st">'Risk_Type'</span>, fill<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of ESG Risk Components'</span>)</span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Risk Score'</span>)</span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>When comparing the various risk scores to each other, we see that they follow different types of data distribution.</span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>Environmental risk has a right scew, so while most companies have a small environmental risk, the companies that do have a high environmental risk tend to have a disproportionately high risk.</span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>Government risk has a low standard deviation, with most companies falling around 5.</span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>Social risk has a higher standard deviation than government risk, and averages a bit higher at around 10.</span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlation Analysis</span></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: corr-heatmap</span></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "ESG Risk-Financial Performance Correlation"</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> merged[[<span class="st">'Total_ESG_Risk'</span>, </span>
+<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Environmental_Risk'</span>, </span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Social_Risk'</span>, </span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Governance_Risk'</span>,</span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Annual_Return'</span>]].corr()</span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>sns.heatmap(corr_matrix, </span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>           annot<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>           cmap<span class="op">=</span><span class="st">'coolwarm'</span>,</span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>           vmin<span class="op">=-</span><span class="dv">1</span>, </span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ESG Risk vs. Financial Returns'</span>)</span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>It appears that ESG scores and average annual return are minimally correlated. For all ESG scores besides governance, there is a slight positive correlation, meaning the stock is actually associated with a higher annual return for higher scores. The only negatively correlated metric is governance, with a slight negative correlation to annual returns</span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> merged.nlargest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>    ax.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>                xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">5</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> merged.nsmallest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>    ax.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>                xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="op">-</span><span class="dv">15</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>This analysis reveals nuanced relationships between ESG risks and financial performance. Surprisingly, environmental and social risks demonstrated weak positive correlations, potentially indicating under-pricing of risks. While total ESG risk showed minimal overall correlation to returns, the component-level analysis proves more valuable, particularly the right-skewed distribution of environmental risks highlighting significant outliers.The findings suggest ESG measurements are not a significant indicator of stock performance.</span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>sns.regplot(</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>merged,</span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Total_ESG_Risk'</span>,</span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Annual_Return'</span>,</span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>    scatter_kws<span class="op">=</span>{<span class="st">'s'</span>: <span class="dv">80</span>, <span class="st">'alpha'</span>: <span class="fl">0.7</span>, <span class="st">'color'</span>: <span class="st">'steelblue'</span>},</span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>    line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'red'</span>, <span class="st">'linestyle'</span>: <span class="st">'--'</span>},</span>
+<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>ax</span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Total ESG Risk vs. Annual Returns'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Total ESG Risk Score'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Annual Return (%)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>)</span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> merged.nlargest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>    ax.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>                xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">5</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> merged.nsmallest(<span class="dv">3</span>, <span class="st">'Annual_Return'</span>).iterrows():</span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>    ax.annotate(row[<span class="st">'Symbol'</span>], (row[<span class="st">'Total_ESG_Risk'</span>], row[<span class="st">'Annual_Return'</span>]),</span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>                xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="op">-</span><span class="dv">15</span>), textcoords<span class="op">=</span><span class="st">'offset points'</span>)</span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>This analysis reveals nuanced relationships between ESG risks and financial performance. Surprisingly, environmental and social risks demonstrated weak positive correlations, potentially indicating under-pricing of risks. While total ESG risk showed minimal overall correlation to returns, the component-level analysis proves more valuable, particularly the right-skewed distribution of environmental risks highlighting significant outliers.The findings suggest ESG measurements are not a significant indicator of stock performance.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

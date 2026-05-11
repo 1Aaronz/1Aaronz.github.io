@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-04-24">
+
+<title>HW2zalenaaron – Aaron Zalen</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-4e5466e430b1db38349d513585fd1d59.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-43b2d995d73a1754bd3a6f5d899fe64b.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-4e5466e430b1db38349d513585fd1d59.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-37f0f98d7d34ab9960664c5b17b9a505.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-6f65542d7083247f672902ebdd9d87f4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-37f0f98d7d34ab9960664c5b17b9a505.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Aaron Zalen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./project/marchmadnessproject.html"> 
+<span class="menu-text">March Madness Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./danl-310-data-storytelling.html"> 
+<span class="menu-text">HSR Visualization</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-analysis" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Analysis</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-analysis">    
+        <li>
+    <a class="dropdown-item" href="./beer_markets.html">
+ <span class="dropdown-text">Beer markets analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./danl_210_ZALEN_AARON_stock_ESG.html">
+ <span class="dropdown-text">Stock ESG analysis with python</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HW2zalenaaron</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 24, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tool-a-chatgpt-424" class="level1">
+<h1>Tool A: ChatGPT 4/24</h1>
+<section id="baseline-prompt-analyze-our-delivery-delays-and-tell-us-what-to-do" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-prompt-analyze-our-delivery-delays-and-tell-us-what-to-do">Baseline Prompt: “Analyze our delivery delays and tell us what to do”</h2>
+</section>
+<section id="response" class="level2">
+<h2 class="anchored" data-anchor-id="response">Response:</h2>
+<p>I can help, but I’ll need a bit more detail before I can actually diagnose anything meaningful.</p>
+<p>Right now “delivery delays” could mean a dozen different things (carrier issues, warehouse backlog, inventory gaps, routing problems, customs, SLA misalignment, etc.), and the right fix depends entirely on where the bottleneck is.</p>
+<section id="first-can-you-share-a-few-basics" class="level3">
+<h3 class="anchored" data-anchor-id="first-can-you-share-a-few-basics">First, can you share a few basics?</h3>
+<p>If you can, give me:</p>
+<ul>
+<li><p>What kind of deliveries? (e-commerce parcels, food, B2B freight, SaaS onboarding, etc.)</p></li>
+<li><p>Where delays are happening:</p></li>
+</ul>
+<pre><code>-    Order processing?
+
+-    Warehouse picking/packing?
+
+-    Carrier pickup?
+
+-    In-transit?
+
+-    Last-mile delivery?</code></pre>
+<ul>
+<li><p>Your current on-time delivery rate (or average delay in hours/days)</p></li>
+<li><p>Whether delays are recent or long-running</p></li>
+<li><p>Any known carrier(s) or 3PLs involved</p></li>
+<li><p>Rough volume per day/week</p></li>
+</ul>
+<p>Even rough estimates are fine.</p>
+</section>
+<section id="in-the-meantime-heres-how-ill-analyze-it-once-you-share-data" class="level3">
+<h3 class="anchored" data-anchor-id="in-the-meantime-heres-how-ill-analyze-it-once-you-share-data">In the meantime, here’s how I’ll analyze it once you share data</h3>
+<p>I’ll break it into 5 common failure zones:</p>
+<section id="demand-fulfillment-mismatch" class="level4">
+<h4 class="anchored" data-anchor-id="demand-fulfillment-mismatch">1. Demand → fulfillment mismatch</h4>
+<ul>
+<li><p>Sudden order spikes</p></li>
+<li><p>Understaffed warehouse or batching inefficiencies</p></li>
+<li><p>Inventory not where demand is</p></li>
+</ul>
+<p><strong>Typical fix:</strong> capacity smoothing, reorder point tuning, better forecasting</p>
+</section>
+<section id="warehouse-bottlenecks" class="level4">
+<h4 class="anchored" data-anchor-id="warehouse-bottlenecks">2. Warehouse bottlenecks</h4>
+<ul>
+<li><p>Picking/packing queue buildup</p></li>
+<li><p>Mis-picks causing rework</p></li>
+<li><p>Slow scanning or staging</p></li>
+</ul>
+<p><strong>Typical fix:</strong> layout optimization, wave picking, labor balancing, automation at high-frequency steps</p>
+</section>
+<section id="carrier-pickup-delays" class="level4">
+<h4 class="anchored" data-anchor-id="carrier-pickup-delays">3. Carrier / pickup delays</h4>
+<ul>
+<li><p>Late carrier arrivals</p></li>
+<li><p>Missed pickup windows</p></li>
+<li><p>Wrong service level selection</p></li>
+</ul>
+<p><strong>Typical fix:</strong> multi-carrier redundancy, SLA enforcement, dynamic carrier allocation</p>
+</section>
+<section id="transit-variability" class="level4">
+<h4 class="anchored" data-anchor-id="transit-variability">4. Transit variability</h4>
+<ul>
+<li><p>Weather, regional congestion</p></li>
+<li><p>Carrier performance inconsistency</p></li>
+</ul>
+<p><strong>Typical fix:</strong> routing rules, service-level tiering, proactive customer comms</p>
+</section>
+<section id="last-mile-failure" class="level4">
+<h4 class="anchored" data-anchor-id="last-mile-failure">5. Last-mile failure</h4>
+<ul>
+<li><p>Address issues</p></li>
+<li><p>Failed delivery attempts</p></li>
+<li><p>Local driver constraints</p></li>
+</ul>
+<p><strong>Typical fix:</strong> address validation, delivery instructions, locker/alternate drop options</p>
+</section>
+</section>
+<section id="quick-diagnostic-shortcut-use-this-while-you-gather-data" class="level3">
+<h3 class="anchored" data-anchor-id="quick-diagnostic-shortcut-use-this-while-you-gather-data">Quick diagnostic shortcut (use this while you gather data)</h3>
+<p>If you can answer this, we’ll narrow it fast:</p>
+<ul>
+<li>Are packages leaving your warehouse on time?</li>
+</ul>
+<pre><code>-    **No → internal ops problem**
+
+-    **Yes → carrier / transit problem**</code></pre>
+<p>That single split usually determines 80% of the fix direction.</p>
+<p>If you send even a rough breakdown (like “we’re 2 days late on average and most delays happen before carrier pickup”), I can give you a very specific action plan rather than a generic framework.</p>
+</section>
+</section>
+<section id="great-prompt" class="level2">
+<h2 class="anchored" data-anchor-id="great-prompt">GREAT Prompt:</h2>
+<p>Role: You are an operations analytics consultant.</p>
+<p>Goal: Identify the top 3 causes of late deliveries and propose a 30-day action plan.</p>
+<p>Evidence rule: Use ONLY the “Delivery summary” provided below. Do not invent data or assumptions.</p>
+<p>Answer format:</p>
+<ol type="1">
+<li><p>Executive summary (≤ 120 words)</p></li>
+<li><p>Table: Cause | Evidence from data | Recommended action | Expected impact | Cost estimate</p></li>
+<li><p>3 KPI definitions to track next month</p></li>
+</ol>
+<p>Constraints: Budget ≤ $25,000. Impact within 30 days.</p>
+<p>Uncertainty rule: If evidence is insufficient, list exactly 2 follow-up data requests (and nothing more).</p>
+<p>Delivery summary (last month):</p>
+<p>Total orders: 10,000</p>
+<p>Late deliveries: 1,200 (12%)</p>
+<p>Top late segments:</p>
+<p>Region A: 18% late</p>
+<p>Region B: 9% late</p>
+<p>Carrier performance:</p>
+<p>Carrier X: 20% late (handles 30% of orders)</p>
+<p>Carrier Y: 8% late (handles 50% of orders)</p>
+<p>Carrier Z: 10% late (handles 20% of orders)</p>
+<p>Common complaint tags (counts):</p>
+<p>“No tracking updates”: 420</p>
+<p>“Delivered to wrong address”: 210</p>
+<p>“Warehouse delay”: 310</p>
+<p>“Weather delay”: 110</p>
+<p>“Customer not home”: 90</p>
+<p>Constraint:</p>
+<p>Budget for improvement next month: $25,000</p>
+<p>Must show impact within 30 days</p>
+</section>
+<section id="response-1" class="level2">
+<h2 class="anchored" data-anchor-id="response-1">Response:</h2>
+<section id="executive-summary" class="level3">
+<h3 class="anchored" data-anchor-id="executive-summary">1) Executive Summary</h3>
+<p>Out of 10,000 orders last month, 12% were late, with specific performance issues across regions and carriers. Region A experienced the highest late delivery rate (18%), while Carrier X had the poorest performance at 20%. Common issues include warehouse delays (310 complaints) and tracking problems (420 complaints). Addressing inefficiencies in warehouse operations and enhancing carrier performance, particularly with Carrier X, will be critical for improving on-time delivery rates. A targeted action plan can resolve key issues within the 30-day timeframe, optimizing resource allocation within the $25,000 budget.</p>
+</section>
+<section id="action-plan" class="level3">
+<h3 class="anchored" data-anchor-id="action-plan">2) Action Plan</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Cause</strong></th>
+<th><strong>Evidence from Data</strong></th>
+<th><strong>Recommended Action</strong></th>
+<th><strong>Expected Impact</strong></th>
+<th><strong>Cost Estimate</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1. Warehouse Delays</strong></td>
+<td>310 complaints related to warehouse delays.</td>
+<td>Optimize warehouse layout and implement better labor scheduling.</td>
+<td>Reduce warehouse delays by 20%. Improve operational efficiency.</td>
+<td>$10,000 (layout + labor)</td>
+</tr>
+<tr class="even">
+<td><strong>2. Carrier X Performance</strong></td>
+<td>Carrier X is responsible for 30% of orders and has a 20% late rate.</td>
+<td>Reroute some orders from Carrier X to Carrier Y or Z; improve Carrier X’s service-level agreement (SLA).</td>
+<td>Reduce Carrier X delays by 10%. Improve overall delivery reliability.</td>
+<td>$7,000 (SLA renegotiation + rerouting)</td>
+</tr>
+<tr class="odd">
+<td><strong>3. Tracking Issues</strong></td>
+<td>420 complaints about “No tracking updates.”</td>
+<td>Implement a more robust tracking system; integrate proactive customer notifications.</td>
+<td>Reduce tracking-related complaints by 15%. Improve customer satisfaction.</td>
+<td>$5,000 (tracking system upgrade)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kpi-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="kpi-definitions">3) KPI Definitions</h3>
+<ol type="1">
+<li><p><strong>On-time Delivery Rate</strong><br>
+<em>Definition</em>: Percentage of total orders delivered on time.<br>
+<em>Formula</em>: (Total on-time deliveries / Total orders) x 100</p></li>
+<li><p><strong>Carrier Performance (by Carrier)</strong><br>
+<em>Definition</em>: Percentage of late deliveries for each carrier (X, Y, Z).<br>
+<em>Formula</em>: (Late deliveries by carrier / Total deliveries by carrier) x 100</p></li>
+<li><p><strong>Warehouse Efficiency Index</strong><br>
+<em>Definition</em>: Percentage of orders processed within the SLA at the warehouse.<br>
+<em>Formula</em>: (Orders processed on time / Total orders processed) x 100</p></li>
+</ol>
+</section>
+<section id="follow-up-data-requests" class="level3">
+<h3 class="anchored" data-anchor-id="follow-up-data-requests">Follow-up Data Requests</h3>
+<ol type="1">
+<li><p><strong>Warehouse processing time data</strong> for each step (picking, packing, staging).</p></li>
+<li><p><strong>Carrier SLA performance data</strong> for Carrier X’s average delay times per route.</p></li>
+</ol>
+</section>
+</section>
+<section id="why-this-prompt-works" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-prompt-works">Why this prompt works:</h2>
+<p>This prompt gets the answer to answer in such a way that is actionable and easily understood. The prompt itself has a lot of information that’s difficult to parse on its own, while the ai’s response clearly organizes the information and suggests improvements.</p>
+<ul>
+<li><p>Correct use of evidence: 2</p>
+<ul>
+<li>The AI has not hallucinated any new evidence</li>
+</ul></li>
+<li><p>Format compliance: 2</p></li>
+<li><p>Actionability: 1</p>
+<ul>
+<li><p>Idea to fix carrier X’s performance is likely the most realistic. Renegotiating an agreement while attempting to shift away from the carrier.</p></li>
+<li><p>On time delivery KPI is meaningless without differentiating by carrier, which this response doesn’t specify to do.</p></li>
+</ul></li>
+<li><p>Constraint adherence: 2</p>
+<ul>
+<li>under budget by 2,000</li>
+</ul></li>
+<li><p>Professional tone: 2</p></li>
+</ul>
+</section>
+</section>
+<section id="tool-b-copilot-424" class="level1">
+<h1>Tool B: Copilot 4/24</h1>
+<section id="baseline-prompt" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-prompt">Baseline Prompt:</h2>
+<p>Analyze our delivery delays and tell us what to do.</p>
+</section>
+<section id="response-2" class="level2">
+<h2 class="anchored" data-anchor-id="response-2">Response:</h2>
+<p>The short version: <strong>your delivery delays almost always come from one of four choke points — demand forecasting, inventory positioning, warehouse flow, or carrier performance — and the fastest wins usually come from tightening handoffs and exposing hidden bottlenecks with data you already have.</strong></p>
+<p>Below is a structured breakdown you can use immediately, even without new tools or systems.</p>
+</section>
+<section id="whats-most-likely-causing-your-delays" class="level2">
+<h2 class="anchored" data-anchor-id="whats-most-likely-causing-your-delays">🧭 What’s most likely causing your delays</h2>
+<p>Every delivery delay traces back to one or more of these categories. Think of them as the “big four failure modes”:</p>
+<section id="upstream-forecasting-order-spikes" class="level3">
+<h3 class="anchored" data-anchor-id="upstream-forecasting-order-spikes">1. <strong>Upstream forecasting + order spikes</strong></h3>
+<p>When demand is higher or more variable than expected:</p>
+<ul>
+<li><p>Items go out of stock</p></li>
+<li><p>Orders queue up waiting for replenishment</p></li>
+<li><p>Promised delivery dates become unrealistic</p></li>
+</ul>
+<p><strong>Signals this is happening:</strong> frequent backorders, sudden surges tied to promotions, or SKUs with long lead times.</p>
+</section>
+<section id="inventory-placement-replenishment-timing" class="level3">
+<h3 class="anchored" data-anchor-id="inventory-placement-replenishment-timing">2. <strong>Inventory placement + replenishment timing</strong></h3>
+<p>Even if you have stock, it may be in the wrong place.</p>
+<ul>
+<li><p>Too much inventory in slow regions</p></li>
+<li><p>Too little in fast-moving regions</p></li>
+<li><p>Replenishment cycles that are too slow or too rigid</p></li>
+</ul>
+<p><strong>Signals:</strong> orders shipping from distant warehouses, high transfer activity, or “split shipments.”</p>
+</section>
+<section id="warehouse-throughput-pickingpacking-bottlenecks" class="level3">
+<h3 class="anchored" data-anchor-id="warehouse-throughput-pickingpacking-bottlenecks">3. <strong>Warehouse throughput + picking/packing bottlenecks</strong></h3>
+<p>This is the most common hidden culprit.</p>
+<ul>
+<li><p>Picking queues build up at certain times of day</p></li>
+<li><p>Packing stations become the bottleneck</p></li>
+<li><p>Cutoff times are too late relative to carrier pickup windows</p></li>
+</ul>
+<p><strong>Signals:</strong> orders sitting in “processing” for hours, spikes in cycle time during peak hours, or overtime usage.</p>
+</section>
+<section id="carrier-performance-handoff-timing" class="level3">
+<h3 class="anchored" data-anchor-id="carrier-performance-handoff-timing">4. <strong>Carrier performance + handoff timing</strong></h3>
+<p>Even perfect internal operations can’t compensate for:</p>
+<ul>
+<li><p>Missed carrier pickups</p></li>
+<li><p>Overloaded regional hubs</p></li>
+<li><p>Inconsistent last‑mile partners</p></li>
+</ul>
+<p><strong>Signals:</strong> tracking shows “label created” or “in transit” for too long, or delays cluster by ZIP code or carrier.</p>
+</section>
+</section>
+<section id="what-to-do-next-ranked-by-speed-of-impact" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-do-next-ranked-by-speed-of-impact">🛠 What to do next (ranked by speed of impact)</h2>
+<section id="map-your-order-to-delivery-timeline" class="level3">
+<h3 class="anchored" data-anchor-id="map-your-order-to-delivery-timeline"><strong>1. Map your order-to-delivery timeline</strong></h3>
+<p>You need a simple, brutally honest view of where time is actually being lost. Break it into:</p>
+<ul>
+<li><p>Order received → order released</p></li>
+<li><p>Released → picked</p></li>
+<li><p>Picked → packed</p></li>
+<li><p>Packed → carrier pickup</p></li>
+<li><p>Carrier pickup → delivery</p></li>
+</ul>
+<p><strong>Whichever segment has the biggest variance is your real problem.</strong></p>
+</section>
+<section id="tighten-your-release-to-pick-window" class="level3">
+<h3 class="anchored" data-anchor-id="tighten-your-release-to-pick-window"><strong>2. Tighten your release-to-pick window</strong></h3>
+<p>Most companies release orders in large batches, which creates artificial peaks. Instead:</p>
+<ul>
+<li><p>Release orders continuously or in smaller waves</p></li>
+<li><p>Prioritize by carrier cutoff time, not FIFO</p></li>
+<li><p>Auto-flag orders at risk of missing cutoff</p></li>
+</ul>
+<p>This alone can cut same-day delays by 20–40%.</p>
+</section>
+<section id="move-inventory-closer-to-demand" class="level3">
+<h3 class="anchored" data-anchor-id="move-inventory-closer-to-demand"><strong>3. Move inventory closer to demand</strong></h3>
+<p>If you have multiple warehouses or 3PLs:</p>
+<ul>
+<li><p>Rebalance stock based on the last 90 days of order geography</p></li>
+<li><p>Reduce long-distance shipments</p></li>
+<li><p>Increase safety stock for SKUs with high variability</p></li>
+</ul>
+<p>If you only have one warehouse:</p>
+<ul>
+<li><p>Increase safety stock on your top 20% SKUs</p></li>
+<li><p>Shorten replenishment cycles</p></li>
+</ul>
+</section>
+<section id="fix-warehouse-bottlenecks" class="level3">
+<h3 class="anchored" data-anchor-id="fix-warehouse-bottlenecks"><strong>4. Fix warehouse bottlenecks</strong></h3>
+<p>Look for:</p>
+<ul>
+<li><p>Picking congestion (too many orders in the same zone)</p></li>
+<li><p>Packing station shortages</p></li>
+<li><p>Slow printing or labeling steps</p></li>
+<li><p>Manual QA steps that don’t add value</p></li>
+</ul>
+<p>Quick wins:</p>
+<ul>
+<li><p>Add a second packing lane during peak hours</p></li>
+<li><p>Pre-kit common bundles</p></li>
+<li><p>Use zone picking for high-volume SKUs</p></li>
+</ul>
+</section>
+<section id="hold-carriers-accountable-with-data" class="level3">
+<h3 class="anchored" data-anchor-id="hold-carriers-accountable-with-data"><strong>5. Hold carriers accountable with data</strong></h3>
+<p>Carriers respond to data, not complaints. Track:</p>
+<ul>
+<li><p>Pickup timeliness</p></li>
+<li><p>Average transit time by service level</p></li>
+<li><p>Delay clusters by region</p></li>
+</ul>
+<p>If one carrier is consistently late:</p>
+<ul>
+<li><p>Shift volume to another</p></li>
+<li><p>Move your pickup window earlier</p></li>
+<li><p>Negotiate service-level credits</p></li>
+</ul>
+</section>
+</section>
+<section id="what-you-should-measure-weekly" class="level2">
+<h2 class="anchored" data-anchor-id="what-you-should-measure-weekly">📈 What you should measure weekly</h2>
+<p>These metrics will tell you if you’re actually improving:</p>
+<ul>
+<li><p><strong>On-time delivery rate (OTD)</strong></p></li>
+<li><p><strong>Order cycle time</strong> (order → ship)</p></li>
+<li><p><strong>Warehouse throughput per labor hour</strong></p></li>
+<li><p><strong>Carrier transit time by service level</strong></p></li>
+<li><p><strong>% of orders missing cutoff</strong></p></li>
+<li><p><strong>% of orders shipped from non-optimal locations</strong></p></li>
+</ul>
+<p>If you track only these, you’ll know exactly where to intervene.</p>
+</section>
+<section id="great-prompt-response" class="level2">
+<h2 class="anchored" data-anchor-id="great-prompt-response">GREAT Prompt Response:</h2>
+</section>
+<section id="executive-summary-120-words" class="level2">
+<h2 class="anchored" data-anchor-id="executive-summary-120-words">1) Executive summary (≤120 words)</h2>
+<p>Your late‑delivery rate (12%) is driven primarily by three evidence‑supported issues: <strong>Carrier X underperformance</strong>, <strong>Region A operational delays</strong>, and <strong>warehouse‑related processing slowdowns</strong>. These three causes explain the majority of variance in lateness and are addressable within 30 days and under the $25,000 budget. The recommended actions focus on reallocating volume away from the worst‑performing carrier, running a targeted Region A process fix, and removing warehouse bottlenecks linked to “warehouse delay” and “no tracking updates” complaints. Together, these actions can realistically reduce late deliveries by <strong>3–5 percentage points</strong> next month.</p>
+</section>
+<section id="table-of-causes-evidence-actions-impact-cost" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-causes-evidence-actions-impact-cost">2) Table of causes, evidence, actions, impact, cost</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cause</th>
+<th>Evidence from data</th>
+<th>Recommended action</th>
+<th>Expected impact (30 days)</th>
+<th>Cost estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1. Carrier X underperformance</strong></td>
+<td>Carrier X has <strong>20% late</strong> vs Y at 8% and Z at 10%; X handles <strong>30% of all orders</strong></td>
+<td>Shift <strong>10–15% of volume</strong> from Carrier X to Y/Z; implement daily pickup confirmation</td>
+<td>Reduce late deliveries by <strong>2–3 pts</strong></td>
+<td>$5,000 (contract adjustments + ops labor)</td>
+</tr>
+<tr class="even">
+<td><strong>2. Region A operational delays</strong></td>
+<td>Region A late rate <strong>18%</strong>, double Region B (9%)</td>
+<td>Launch a <strong>Region A rapid‑response taskforce</strong>: audit handoff timing, enforce cutoff adherence, add temporary labor during peak</td>
+<td>Reduce late deliveries by <strong>1–1.5 pts</strong></td>
+<td>$12,000 (temp labor + overtime)</td>
+</tr>
+<tr class="odd">
+<td><strong>3. Warehouse processing delays</strong></td>
+<td>“Warehouse delay” (310) + “No tracking updates” (420) indicate slow release-to-carrier handoff</td>
+<td>Add a <strong>dedicated late‑order lane</strong>, tighten scan‑to‑handoff process, and run hourly exception sweeps</td>
+<td>Reduce late deliveries by <strong>0.5–1 pt</strong></td>
+<td>$6,000 (labor + process tooling)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total cost:</strong> ~$23,000 (within $25,000 budget)</p>
+</section>
+<section id="kpis-to-track-next-month" class="level2">
+<h2 class="anchored" data-anchor-id="kpis-to-track-next-month">3) KPIs to track next month</h2>
+<ol type="1">
+<li><p><strong>Late Delivery Rate (LDR):</strong> % of orders delivered after promised date.</p></li>
+<li><p><strong>Release-to-Carrier Handoff Time:</strong> Median hours from “warehouse ready” to “carrier pickup scan.”</p></li>
+<li><p><strong>Carrier X Exception Rate:</strong> % of Carrier X shipments with no tracking update within 24 hours.</p></li>
+</ol>
+</section>
+<section id="if-evidence-is-insufficient-here-are-exactly-2-follow-up-data-requests" class="level2">
+<h2 class="anchored" data-anchor-id="if-evidence-is-insufficient-here-are-exactly-2-follow-up-data-requests">If evidence is insufficient, here are exactly 2 follow-up data requests</h2>
+<ol type="1">
+<li><p>Breakdown of late deliveries by <strong>delay reason</strong> (warehouse vs carrier vs address issues).</p></li>
+<li><p>Daily <strong>order processing time</strong> distribution (order → ship) for Region A vs other regions.</p></li>
+</ol>
+</section>
+<section id="response-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="response-evaluation">Response Evaluation:</h2>
+<ul>
+<li><p>Correct use of evidence: 2</p></li>
+<li><p>Format compliance: 2</p></li>
+<li><p>Actionability: 1</p>
+<ul>
+<li>I don’t like how it suggests to measure specifically carrier x performance as a KPI as opposed to all carriers</li>
+</ul></li>
+<li><p>Constraint adherence: 2</p>
+<ul>
+<li>under budget by 2000</li>
+</ul></li>
+<li><p>Professional tone: 1</p>
+<ul>
+<li>Uses shorthand like “+” in the table, bullet points would have made more sense</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="tool-c-gemini-424" class="level1">
+<h1>Tool C: Gemini 4/24</h1>
+<section id="baseline-prompt-1" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-prompt-1">Baseline Prompt:</h2>
+<p>Analyze our delivery delays and tell us what to do.</p>
+</section>
+<section id="response-3" class="level2">
+<h2 class="anchored" data-anchor-id="response-3">Response:</h2>
+<p>To give you a precise roadmap for fixing delivery delays, we need to look at the three primary “friction points” in a logistics chain.</p>
+<p>Since I don’t have your specific data set yet, here is the diagnostic framework to identify where the clock is stopping and the high-impact actions to take for each.</p>
+</section>
+<section id="phase-one-the-warehouse-processing-time" class="level2">
+<h2 class="anchored" data-anchor-id="phase-one-the-warehouse-processing-time">1. Phase One: The Warehouse (Processing Time)</h2>
+<p>If orders are sitting “in-process” for more than 24 hours, the issue is internal.</p>
+<ul>
+<li><p><strong>What to Analyze:</strong> * <strong>Pick-to-Ship Lag:</strong> Time elapsed from order placement to label generation.</p>
+<ul>
+<li><strong>Inventory Accuracy:</strong> Are items being marked as “in stock” when they aren’t (leading to backorders)?</li>
+</ul></li>
+<li><p><strong>The Fix:</strong></p>
+<ul>
+<li><p><strong>Batch Picking:</strong> Group orders by SKU rather than individual orders to reduce walking time.</p></li>
+<li><p><strong>Safety Stock Buffers:</strong> Increase stock levels for “Hero” products (top 20% of sales) to prevent stock-outs.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="phase-two-the-transit-carrier-performance" class="level2">
+<h2 class="anchored" data-anchor-id="phase-two-the-transit-carrier-performance">2. Phase Two: The Transit (Carrier Performance)</h2>
+<p>If the package is leaving your facility on time but arriving late, the issue is external.</p>
+<ul>
+<li><p><strong>What to Analyze:</strong></p>
+<ul>
+<li><p><strong>Carrier SLA Compliance:</strong> Compare the “Estimated Delivery” vs.&nbsp;the “Actual Delivery” per carrier.</p></li>
+<li><p><strong>The “Last Mile” Bottleneck:</strong> Identify specific zip codes or regions where delays are concentrated.</p></li>
+</ul></li>
+<li><p><strong>The Fix:</strong></p>
+<ul>
+<li><p><strong>Carrier Diversification:</strong> If one carrier is consistently failing, split volume between 2-3 providers to create redundancy.</p></li>
+<li><p><strong>Zone Skipping:</strong> Ship in bulk to a local hub closer to the destination before injecting packages into the final delivery network.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="phase-three-the-communication-customer-perception" class="level2">
+<h2 class="anchored" data-anchor-id="phase-three-the-communication-customer-perception">3. Phase Three: The Communication (Customer Perception)</h2>
+<p>Sometimes the delay isn’t the problem—the <em>surprise</em> is the problem.</p>
+<ul>
+<li><p><strong>What to Analyze:</strong></p>
+<ul>
+<li><p><strong>WISMO Rate:</strong> “Where Is My Order” inquiry volume.</p></li>
+<li><p><strong>Buffer Accuracy:</strong> Is your website promising 3 days when the data shows 5?</p></li>
+</ul></li>
+<li><p><strong>The Fix:</strong></p>
+<ul>
+<li><p><strong>Dynamic Lead Times:</strong> Update your checkout page to reflect real-world shipping speeds based on current carrier delays.</p></li>
+<li><p><strong>Proactive Alerts:</strong> Send an automated “We’re running behind” email <em>before</em> the customer reaches out.</p></li>
+</ul></li>
+</ul>
+<section id="recommended-action-plan" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-action-plan">Recommended Action Plan</h3>
+<ol type="1">
+<li><p><strong>Audit the “Dead Time”:</strong> Calculate the average hours an order spends in a “Pending” state vs.&nbsp;“In Transit.”</p></li>
+<li><p><strong>Pareto Analysis:</strong> Identify if 80% of your delays are caused by 20% of your products or one specific carrier.</p></li>
+<li><p><strong>Automate Notifications:</strong> If a package hasn’t seen a scan in 48 hours, trigger an internal alert to investigate.</p></li>
+</ol>
+<p><strong>If you can provide a CSV or a summary of your recent shipping logs (Order Date, Ship Date, Delivery Date, and Carrier), I can perform a much deeper analysis for you.</strong></p>
+</section>
+</section>
+<section id="great-prompt-response-1" class="level2">
+<h2 class="anchored" data-anchor-id="great-prompt-response-1">GREAT Prompt Response:</h2>
+<p>Based on the delivery summary, our current late delivery rate of 12% is primarily driven by significant underperformance from Carrier X and internal warehouse bottlenecks. Carrier X alone accounts for 50% of all late orders (600 out of 1,200), despite handling only 30% of the volume. Additionally, “No tracking updates” and “Warehouse delay” represent the highest volume of customer complaints.</p>
+<section id="executive-summary-1" class="level3">
+<h3 class="anchored" data-anchor-id="executive-summary-1">1) Executive Summary</h3>
+<p>The 12% late delivery rate is a critical friction point driven by Carrier X’s 20% failure rate and internal processing delays. Our analysis indicates that Carrier X is significantly less reliable than Carriers Y and Z. Furthermore, tracking visibility and warehouse bottlenecks are the primary sources of customer dissatisfaction. By shifting volume to more reliable partners, boosting warehouse labor capacity, and enhancing real-time tracking transparency, we can reduce late deliveries by an estimated 30–40% within 30 days. This plan utilizes $23,000 of the $25,000 budget to resolve high-impact failures in the carrier mix and fulfillment cycle.</p>
+</section>
+<section id="day-action-plan" class="level3">
+<h3 class="anchored" data-anchor-id="day-action-plan">2) 30-Day Action Plan</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cause</strong></td>
+<td><strong>Evidence from data</strong></td>
+<td><strong>Recommended action</strong></td>
+<td><strong>Expected impact</strong></td>
+<td><strong>Cost estimate</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Carrier X Underperformance</strong></td>
+<td>20% late rate; accounts for 50% of total lates (600/1,200).</td>
+<td>Shift 15% of total order volume from Carrier X to Carrier Y.</td>
+<td>Reduction of ~180 late deliveries/month.</td>
+<td>$0 (Admin change)</td>
+</tr>
+<tr class="odd">
+<td><strong>Warehouse Backlogs</strong></td>
+<td>310 “Warehouse delay” complaint tags.</td>
+<td>Hire 4 temporary staff for peak shifts to clear daily backlog.</td>
+<td>25% reduction in “Warehouse delay” complaints.</td>
+<td>$18,000 (Labor)</td>
+</tr>
+<tr class="even">
+<td><strong>Visibility &amp; Tracking Gaps</strong></td>
+<td>420 “No tracking updates” complaints (Top Complaint).</td>
+<td>Implement automated SMS/Email shipment milestone alerts.</td>
+<td>40% reduction in WISMO (Where Is My Order) tickets.</td>
+<td>$5,000 (Software)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kpi-definitions-for-next-month" class="level3">
+<h3 class="anchored" data-anchor-id="kpi-definitions-for-next-month">3) KPI Definitions for Next Month</h3>
+<ol type="1">
+<li><p><strong>Carrier-Specific OTD (On-Time Delivery):</strong> The percentage of orders delivered by the promised date, calculated individually for Carriers X, Y, and Z to monitor the shift in performance.</p></li>
+<li><p><strong>Warehouse Processing Time:</strong> The average time (in hours) from order placement to “Carrier Pick-up” to ensure the internal bottleneck is resolving.</p></li>
+<li><p><strong>Tracking Update Latency:</strong> The average time elapsed between the order being “Shipped” and the first tracking scan appearing for the customer.</p></li>
+</ol>
+<p><strong>Follow-up Data Requests:</strong></p>
+<ol type="1">
+<li><p><strong>Carrier-to-Region Mapping:</strong> A breakdown of which carriers serve Region A to determine if Region A’s 18% late rate is due to Carrier X’s presence or local infrastructure.</p></li>
+<li><p><strong>Carrier-to-Complaint Mapping:</strong> A cross-reference of complaint tags (e.g., “No tracking updates”) by carrier to confirm if the visibility issues are concentrated within one specific partner.</p></li>
+</ol>
+</section>
+</section>
+<section id="response-evaluation-1" class="level2">
+<h2 class="anchored" data-anchor-id="response-evaluation-1">Response evaluation:</h2>
+<ul>
+<li><p>Correct use of evidence: 2</p></li>
+<li><p>Format compliance: 2</p></li>
+<li><p>Actionability: 2</p>
+<ul>
+<li>I liked the KPIs out of this response the best out of all of the models. They say to track the carrier performance individually for on time performance</li>
+</ul></li>
+<li><p>Constraint adherence: 2</p>
+<ul>
+<li>It went under budget by 2000</li>
+</ul></li>
+<li><p>Professional tone 2</p></li>
+</ul>
+</section>
+<section id="recommendation" class="level2">
+<h2 class="anchored" data-anchor-id="recommendation">Recommendation</h2>
+<p>Tool C (Gemini) was the only model to achieve a perfect score on all the criteria. All the models did pretty well following the prompt, but Gemini’s proposed KPI’s were a little better than the other models. I primarily liked how Gemini specified that the KPI should track each carrier individually as opposed to on time deliveries as a whole. One thing that could be an issue is how it believes shifting away from carrier X will cost nothing, although it does have a little leeway by going $2000 under budget overall.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript" src="links.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Powered with GitHub and Quarto<br>© Aaron Zalen, 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -10,6 +10,19 @@ execute:
   engine: knitr
 ---
 
+```{r}
+#| include: FALSE
+
+library(reticulate)
+
+use_python(
+  "C:/Users/aaron/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+  required = TRUE
+)
+
+py_config()
+```
+
 ## Introduction
 
 ### Background

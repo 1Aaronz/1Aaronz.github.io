@@ -1,0 +1,560 @@
+---
+title: "HW2zalenaaron"
+output: html_document
+date: "2026-04-24"
+---
+
+# Tool A: ChatGPT 4/24
+
+## Baseline Prompt: "Analyze our delivery delays and tell us what to do"
+
+## Response:
+
+I can help, but I’ll need a bit more detail before I can actually diagnose anything meaningful.
+
+Right now “delivery delays” could mean a dozen different things (carrier issues, warehouse backlog, inventory gaps, routing problems, customs, SLA misalignment, etc.), and the right fix depends entirely on where the bottleneck is.
+
+### First, can you share a few basics?
+
+If you can, give me:
+
+- What kind of deliveries? (e-commerce parcels, food, B2B freight, SaaS onboarding, etc.)
+
+- Where delays are happening:
+
+```         
+-    Order processing?
+
+-    Warehouse picking/packing?
+
+-    Carrier pickup?
+
+-    In-transit?
+
+-    Last-mile delivery?
+```
+
+- Your current on-time delivery rate (or average delay in hours/days)
+
+- Whether delays are recent or long-running
+
+- Any known carrier(s) or 3PLs involved
+
+- Rough volume per day/week
+
+Even rough estimates are fine.
+
+### In the meantime, here’s how I’ll analyze it once you share data
+
+I’ll break it into 5 common failure zones:
+
+#### 1. Demand → fulfillment mismatch
+
+- Sudden order spikes
+
+- Understaffed warehouse or batching inefficiencies
+
+- Inventory not where demand is
+
+**Typical fix:** capacity smoothing, reorder point tuning, better forecasting
+
+#### 2. Warehouse bottlenecks
+
+- Picking/packing queue buildup
+
+- Mis-picks causing rework
+
+- Slow scanning or staging
+
+**Typical fix:** layout optimization, wave picking, labor balancing, automation at high-frequency steps
+
+#### 3. Carrier / pickup delays
+
+- Late carrier arrivals
+
+- Missed pickup windows
+
+- Wrong service level selection
+
+**Typical fix:** multi-carrier redundancy, SLA enforcement, dynamic carrier allocation
+
+#### 4. Transit variability
+
+- Weather, regional congestion
+
+- Carrier performance inconsistency
+
+**Typical fix:** routing rules, service-level tiering, proactive customer comms
+
+#### 5. Last-mile failure
+
+- Address issues
+
+- Failed delivery attempts
+
+- Local driver constraints
+
+**Typical fix:** address validation, delivery instructions, locker/alternate drop options
+
+### Quick diagnostic shortcut (use this while you gather data)
+
+If you can answer this, we’ll narrow it fast:
+
+- Are packages leaving your warehouse on time?
+
+```         
+-    **No → internal ops problem**
+
+-    **Yes → carrier / transit problem**
+```
+
+That single split usually determines 80% of the fix direction.
+
+If you send even a rough breakdown (like “we’re 2 days late on average and most delays happen before carrier pickup”), I can give you a very specific action plan rather than a generic framework.
+
+## GREAT Prompt:
+
+Role: You are an operations analytics consultant.
+
+Goal: Identify the top 3 causes of late deliveries and propose a 30-day action plan.
+
+Evidence rule: Use ONLY the “Delivery summary” provided below. Do not invent data or assumptions.
+
+Answer format:
+
+1)  Executive summary (≤ 120 words)
+
+2)  Table: Cause \| Evidence from data \| Recommended action \| Expected impact \| Cost estimate
+
+3)  3 KPI definitions to track next month
+
+Constraints: Budget ≤ \$25,000. Impact within 30 days.
+
+Uncertainty rule: If evidence is insufficient, list exactly 2 follow-up data requests (and nothing more).
+
+Delivery summary (last month):
+
+Total orders: 10,000
+
+Late deliveries: 1,200 (12%)
+
+Top late segments:
+
+Region A: 18% late
+
+Region B: 9% late
+
+Carrier performance:
+
+Carrier X: 20% late (handles 30% of orders)
+
+Carrier Y: 8% late (handles 50% of orders)
+
+Carrier Z: 10% late (handles 20% of orders)
+
+Common complaint tags (counts):
+
+“No tracking updates”: 420
+
+“Delivered to wrong address”: 210
+
+“Warehouse delay”: 310
+
+“Weather delay”: 110
+
+“Customer not home”: 90
+
+Constraint:
+
+Budget for improvement next month: \$25,000
+
+Must show impact within 30 days
+
+## Response:
+
+### 1) Executive Summary
+
+Out of 10,000 orders last month, 12% were late, with specific performance issues across regions and carriers. Region A experienced the highest late delivery rate (18%), while Carrier X had the poorest performance at 20%. Common issues include warehouse delays (310 complaints) and tracking problems (420 complaints). Addressing inefficiencies in warehouse operations and enhancing carrier performance, particularly with Carrier X, will be critical for improving on-time delivery rates. A targeted action plan can resolve key issues within the 30-day timeframe, optimizing resource allocation within the \$25,000 budget.
+
+### 2) Action Plan
+
+| **Cause** | **Evidence from Data** | **Recommended Action** | **Expected Impact** | **Cost Estimate** |
+|---------------|---------------|---------------|---------------|---------------|
+| **1. Warehouse Delays** | 310 complaints related to warehouse delays. | Optimize warehouse layout and implement better labor scheduling. | Reduce warehouse delays by 20%. Improve operational efficiency. | \$10,000 (layout + labor) |
+| **2. Carrier X Performance** | Carrier X is responsible for 30% of orders and has a 20% late rate. | Reroute some orders from Carrier X to Carrier Y or Z; improve Carrier X's service-level agreement (SLA). | Reduce Carrier X delays by 10%. Improve overall delivery reliability. | \$7,000 (SLA renegotiation + rerouting) |
+| **3. Tracking Issues** | 420 complaints about “No tracking updates.” | Implement a more robust tracking system; integrate proactive customer notifications. | Reduce tracking-related complaints by 15%. Improve customer satisfaction. | \$5,000 (tracking system upgrade) |
+
+### 3) KPI Definitions
+
+1.  **On-time Delivery Rate**\
+    *Definition*: Percentage of total orders delivered on time.\
+    *Formula*: (Total on-time deliveries / Total orders) x 100
+
+2.  **Carrier Performance (by Carrier)**\
+    *Definition*: Percentage of late deliveries for each carrier (X, Y, Z).\
+    *Formula*: (Late deliveries by carrier / Total deliveries by carrier) x 100
+
+3.  **Warehouse Efficiency Index**\
+    *Definition*: Percentage of orders processed within the SLA at the warehouse.\
+    *Formula*: (Orders processed on time / Total orders processed) x 100
+
+### Follow-up Data Requests
+
+1.  **Warehouse processing time data** for each step (picking, packing, staging).
+
+2.  **Carrier SLA performance data** for Carrier X’s average delay times per route.
+
+## Why this prompt works: 
+
+This prompt gets the answer to answer in such a way that is actionable and easily understood. The prompt itself has a lot of information that's difficult to parse on its own, while the ai's response clearly organizes the information and suggests improvements.
+
+- Correct use of evidence: 2
+
+  - The AI has not hallucinated any new evidence
+
+- Format compliance: 2
+
+- Actionability: 1
+
+  - Idea to fix carrier X's performance is likely the most realistic. Renegotiating an agreement while attempting to shift away from the carrier.
+
+  - On time delivery KPI is meaningless without differentiating by carrier, which this response doesn't specify to do.
+
+- Constraint adherence: 2
+
+  - under budget by 2,000
+
+- Professional tone: 2
+
+# Tool B: Copilot 4/24
+
+## Baseline Prompt:
+
+Analyze our delivery delays and tell us what to do.
+
+## Response:
+
+The short version: **your delivery delays almost always come from one of four choke points — demand forecasting, inventory positioning, warehouse flow, or carrier performance — and the fastest wins usually come from tightening handoffs and exposing hidden bottlenecks with data you already have.**
+
+Below is a structured breakdown you can use immediately, even without new tools or systems.
+
+## 🧭 What’s most likely causing your delays
+
+Every delivery delay traces back to one or more of these categories. Think of them as the “big four failure modes”:
+
+### 1. **Upstream forecasting + order spikes**
+
+When demand is higher or more variable than expected:
+
+- Items go out of stock
+
+- Orders queue up waiting for replenishment
+
+- Promised delivery dates become unrealistic
+
+**Signals this is happening:** frequent backorders, sudden surges tied to promotions, or SKUs with long lead times.
+
+### 2. **Inventory placement + replenishment timing**
+
+Even if you have stock, it may be in the wrong place.
+
+- Too much inventory in slow regions
+
+- Too little in fast-moving regions
+
+- Replenishment cycles that are too slow or too rigid
+
+**Signals:** orders shipping from distant warehouses, high transfer activity, or “split shipments.”
+
+### 3. **Warehouse throughput + picking/packing bottlenecks**
+
+This is the most common hidden culprit.
+
+- Picking queues build up at certain times of day
+
+- Packing stations become the bottleneck
+
+- Cutoff times are too late relative to carrier pickup windows
+
+**Signals:** orders sitting in “processing” for hours, spikes in cycle time during peak hours, or overtime usage.
+
+### 4. **Carrier performance + handoff timing**
+
+Even perfect internal operations can’t compensate for:
+
+- Missed carrier pickups
+
+- Overloaded regional hubs
+
+- Inconsistent last‑mile partners
+
+**Signals:** tracking shows “label created” or “in transit” for too long, or delays cluster by ZIP code or carrier.
+
+## 🛠 What to do next (ranked by speed of impact)
+
+### **1. Map your order-to-delivery timeline**
+
+You need a simple, brutally honest view of where time is actually being lost. Break it into:
+
+- Order received → order released
+
+- Released → picked
+
+- Picked → packed
+
+- Packed → carrier pickup
+
+- Carrier pickup → delivery
+
+**Whichever segment has the biggest variance is your real problem.**
+
+### **2. Tighten your release-to-pick window**
+
+Most companies release orders in large batches, which creates artificial peaks. Instead:
+
+- Release orders continuously or in smaller waves
+
+- Prioritize by carrier cutoff time, not FIFO
+
+- Auto-flag orders at risk of missing cutoff
+
+This alone can cut same-day delays by 20–40%.
+
+### **3. Move inventory closer to demand**
+
+If you have multiple warehouses or 3PLs:
+
+- Rebalance stock based on the last 90 days of order geography
+
+- Reduce long-distance shipments
+
+- Increase safety stock for SKUs with high variability
+
+If you only have one warehouse:
+
+- Increase safety stock on your top 20% SKUs
+
+- Shorten replenishment cycles
+
+### **4. Fix warehouse bottlenecks**
+
+Look for:
+
+- Picking congestion (too many orders in the same zone)
+
+- Packing station shortages
+
+- Slow printing or labeling steps
+
+- Manual QA steps that don’t add value
+
+Quick wins:
+
+- Add a second packing lane during peak hours
+
+- Pre-kit common bundles
+
+- Use zone picking for high-volume SKUs
+
+### **5. Hold carriers accountable with data**
+
+Carriers respond to data, not complaints. Track:
+
+- Pickup timeliness
+
+- Average transit time by service level
+
+- Delay clusters by region
+
+If one carrier is consistently late:
+
+- Shift volume to another
+
+- Move your pickup window earlier
+
+- Negotiate service-level credits
+
+## 📈 What you should measure weekly
+
+These metrics will tell you if you’re actually improving:
+
+- **On-time delivery rate (OTD)**
+
+- **Order cycle time** (order → ship)
+
+- **Warehouse throughput per labor hour**
+
+- **Carrier transit time by service level**
+
+- **% of orders missing cutoff**
+
+- **% of orders shipped from non-optimal locations**
+
+If you track only these, you’ll know exactly where to intervene.
+
+## GREAT Prompt Response:
+
+## 1) Executive summary (≤120 words)
+
+Your late‑delivery rate (12%) is driven primarily by three evidence‑supported issues: **Carrier X underperformance**, **Region A operational delays**, and **warehouse‑related processing slowdowns**. These three causes explain the majority of variance in lateness and are addressable within 30 days and under the \$25,000 budget. The recommended actions focus on reallocating volume away from the worst‑performing carrier, running a targeted Region A process fix, and removing warehouse bottlenecks linked to “warehouse delay” and “no tracking updates” complaints. Together, these actions can realistically reduce late deliveries by **3–5 percentage points** next month.
+
+## 2) Table of causes, evidence, actions, impact, cost
+
+| Cause | Evidence from data | Recommended action | Expected impact (30 days) | Cost estimate |
+|---------------|---------------|---------------|---------------|---------------|
+| **1. Carrier X underperformance** | Carrier X has **20% late** vs Y at 8% and Z at 10%; X handles **30% of all orders** | Shift **10–15% of volume** from Carrier X to Y/Z; implement daily pickup confirmation | Reduce late deliveries by **2–3 pts** | \$5,000 (contract adjustments + ops labor) |
+| **2. Region A operational delays** | Region A late rate **18%**, double Region B (9%) | Launch a **Region A rapid‑response taskforce**: audit handoff timing, enforce cutoff adherence, add temporary labor during peak | Reduce late deliveries by **1–1.5 pts** | \$12,000 (temp labor + overtime) |
+| **3. Warehouse processing delays** | “Warehouse delay” (310) + “No tracking updates” (420) indicate slow release-to-carrier handoff | Add a **dedicated late‑order lane**, tighten scan‑to‑handoff process, and run hourly exception sweeps | Reduce late deliveries by **0.5–1 pt** | \$6,000 (labor + process tooling) |
+
+**Total cost:** \~\$23,000 (within \$25,000 budget)
+
+## 3) KPIs to track next month
+
+1.  **Late Delivery Rate (LDR):** % of orders delivered after promised date.
+
+2.  **Release-to-Carrier Handoff Time:** Median hours from “warehouse ready” to “carrier pickup scan.”
+
+3.  **Carrier X Exception Rate:** % of Carrier X shipments with no tracking update within 24 hours.
+
+## If evidence is insufficient, here are exactly 2 follow-up data requests
+
+1.  Breakdown of late deliveries by **delay reason** (warehouse vs carrier vs address issues).
+
+2.  Daily **order processing time** distribution (order → ship) for Region A vs other regions.
+
+## Response Evaluation:
+
+- Correct use of evidence: 2
+
+- Format compliance: 2
+
+- Actionability: 1
+
+  - I don't like how it suggests to measure specifically carrier x performance as a KPI as opposed to all carriers
+
+- Constraint adherence: 2
+
+  - under budget by 2000
+
+- Professional tone: 1
+
+  - Uses shorthand like "+" in the table, bullet points would have made more sense
+
+# Tool C: Gemini 4/24
+
+## Baseline Prompt:
+
+Analyze our delivery delays and tell us what to do.
+
+## Response:
+
+To give you a precise roadmap for fixing delivery delays, we need to look at the three primary "friction points" in a logistics chain.
+
+Since I don't have your specific data set yet, here is the diagnostic framework to identify where the clock is stopping and the high-impact actions to take for each.
+
+## 1. Phase One: The Warehouse (Processing Time)
+
+If orders are sitting "in-process" for more than 24 hours, the issue is internal.
+
+- **What to Analyze:** \* **Pick-to-Ship Lag:** Time elapsed from order placement to label generation.
+
+  - **Inventory Accuracy:** Are items being marked as "in stock" when they aren't (leading to backorders)?
+
+- **The Fix:**
+
+  - **Batch Picking:** Group orders by SKU rather than individual orders to reduce walking time.
+
+  - **Safety Stock Buffers:** Increase stock levels for "Hero" products (top 20% of sales) to prevent stock-outs.
+
+## 2. Phase Two: The Transit (Carrier Performance)
+
+If the package is leaving your facility on time but arriving late, the issue is external.
+
+- **What to Analyze:**
+
+  - **Carrier SLA Compliance:** Compare the "Estimated Delivery" vs. the "Actual Delivery" per carrier.
+
+  - **The "Last Mile" Bottleneck:** Identify specific zip codes or regions where delays are concentrated.
+
+- **The Fix:**
+
+  - **Carrier Diversification:** If one carrier is consistently failing, split volume between 2-3 providers to create redundancy.
+
+  - **Zone Skipping:** Ship in bulk to a local hub closer to the destination before injecting packages into the final delivery network.
+
+## 3. Phase Three: The Communication (Customer Perception)
+
+Sometimes the delay isn't the problem—the *surprise* is the problem.
+
+- **What to Analyze:**
+
+  - **WISMO Rate:** "Where Is My Order" inquiry volume.
+
+  - **Buffer Accuracy:** Is your website promising 3 days when the data shows 5?
+
+- **The Fix:**
+
+  - **Dynamic Lead Times:** Update your checkout page to reflect real-world shipping speeds based on current carrier delays.
+
+  - **Proactive Alerts:** Send an automated "We’re running behind" email *before* the customer reaches out.
+
+### Recommended Action Plan
+
+1.  **Audit the "Dead Time":** Calculate the average hours an order spends in a "Pending" state vs. "In Transit."
+
+2.  **Pareto Analysis:** Identify if 80% of your delays are caused by 20% of your products or one specific carrier.
+
+3.  **Automate Notifications:** If a package hasn't seen a scan in 48 hours, trigger an internal alert to investigate.
+
+**If you can provide a CSV or a summary of your recent shipping logs (Order Date, Ship Date, Delivery Date, and Carrier), I can perform a much deeper analysis for you.**
+
+## GREAT Prompt Response:
+
+Based on the delivery summary, our current late delivery rate of 12% is primarily driven by significant underperformance from Carrier X and internal warehouse bottlenecks. Carrier X alone accounts for 50% of all late orders (600 out of 1,200), despite handling only 30% of the volume. Additionally, "No tracking updates" and "Warehouse delay" represent the highest volume of customer complaints.
+
+### 1) Executive Summary
+
+The 12% late delivery rate is a critical friction point driven by Carrier X’s 20% failure rate and internal processing delays. Our analysis indicates that Carrier X is significantly less reliable than Carriers Y and Z. Furthermore, tracking visibility and warehouse bottlenecks are the primary sources of customer dissatisfaction. By shifting volume to more reliable partners, boosting warehouse labor capacity, and enhancing real-time tracking transparency, we can reduce late deliveries by an estimated 30–40% within 30 days. This plan utilizes \$23,000 of the \$25,000 budget to resolve high-impact failures in the carrier mix and fulfillment cycle.
+
+### 2) 30-Day Action Plan
+
+|  |  |  |  |  |
+|---------------|---------------|---------------|---------------|---------------|
+| **Cause** | **Evidence from data** | **Recommended action** | **Expected impact** | **Cost estimate** |
+| **Carrier X Underperformance** | 20% late rate; accounts for 50% of total lates (600/1,200). | Shift 15% of total order volume from Carrier X to Carrier Y. | Reduction of \~180 late deliveries/month. | \$0 (Admin change) |
+| **Warehouse Backlogs** | 310 "Warehouse delay" complaint tags. | Hire 4 temporary staff for peak shifts to clear daily backlog. | 25% reduction in "Warehouse delay" complaints. | \$18,000 (Labor) |
+| **Visibility & Tracking Gaps** | 420 "No tracking updates" complaints (Top Complaint). | Implement automated SMS/Email shipment milestone alerts. | 40% reduction in WISMO (Where Is My Order) tickets. | \$5,000 (Software) |
+
+### 3) KPI Definitions for Next Month
+
+1.  **Carrier-Specific OTD (On-Time Delivery):** The percentage of orders delivered by the promised date, calculated individually for Carriers X, Y, and Z to monitor the shift in performance.
+
+2.  **Warehouse Processing Time:** The average time (in hours) from order placement to "Carrier Pick-up" to ensure the internal bottleneck is resolving.
+
+3.  **Tracking Update Latency:** The average time elapsed between the order being "Shipped" and the first tracking scan appearing for the customer.
+
+**Follow-up Data Requests:**
+
+1.  **Carrier-to-Region Mapping:** A breakdown of which carriers serve Region A to determine if Region A’s 18% late rate is due to Carrier X’s presence or local infrastructure.
+
+2.  **Carrier-to-Complaint Mapping:** A cross-reference of complaint tags (e.g., "No tracking updates") by carrier to confirm if the visibility issues are concentrated within one specific partner.
+
+## Response evaluation:
+
+- Correct use of evidence: 2
+
+- Format compliance: 2
+
+- Actionability: 2
+
+  - I liked the KPIs out of this response the best out of all of the models. They say to track the carrier performance individually for on time performance
+
+- Constraint adherence: 2
+
+  - It went under budget by 2000
+
+- Professional tone 2
+
+## Recommendation
+
+Tool C (Gemini) was the only model to achieve a perfect score on all the criteria. All the models did pretty well following the prompt, but Gemini's proposed KPI's were a little better than the other models. I primarily liked how Gemini specified that the KPI should track each carrier individually as opposed to on time deliveries as a whole. One thing that could be an issue is how it believes shifting away from carrier X will cost nothing, although it does have a little leeway by going \$2000 under budget overall.

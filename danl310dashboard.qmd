@@ -181,6 +181,62 @@ ggplot(hsr_2026, aes(
   scale_fill_viridis_d()
 ```
 
+# Future Projections
+## Row
+```{r}
+hsr_2036 <- hsr %>% 
+  filter(Opening_year<=2037) %>% 
+  filter(Opening_year>=2027) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+hsr_2036 <- hsr_2036 %>%
+  filter(!is.na(total_km))
+
+# 2036 plot --------------------------------------------------------------
+hsr_2036 <- hsr_2036 %>%
+  mutate(
+    country = fct_reorder(country, total_km)
+  )
+
+ggplot(hsr_2036, aes(
+  x = total_km,
+  y = fct_reorder(country, total_km)
+)) +
+  geom_col(aes(fill = country)) +
+  scale_y_discrete(labels = function(x) {
+    x
+  }) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_text(
+      color = ifelse(
+        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) == "United_States",
+        "red",
+        "black"
+      ),
+      face = ifelse(
+        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) %in% 
+          hsr_2036$country[hsr_2036$total_km],
+        "bold",
+        "plain"
+      )
+    )
+  ) +
+  labs(
+    title = "10 Year Projection of New HSR by Country",
+    y = "",
+    x = "Total HSR in Km",
+    subtitle = "HSR planned between 2027-2037"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 2500, 5000, 10000, 20000, 25000),
+    limits = c(0, 30000),
+  expand=c(0,0))+
+  scale_fill_viridis_d()
+```
+
 # World Map
 
 ## Row

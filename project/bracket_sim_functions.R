@@ -277,7 +277,8 @@ prepare_prediction_data <- function(
   row
 }
 
-# MONTE CARLO BRACKET GENERATION--------------------
+# MODIFIED: MONTE CARLO BRACKET GENERATION (using ranger model)----------------------
+# MODIFIED: MONTE CARLO BRACKET GENERATION (supports multiple models with ELO gamma)
 generate_monte_carlo_brackets <- function(
     season,
     data,

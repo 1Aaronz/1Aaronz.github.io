@@ -120,7 +120,9 @@ Each row represents one rail line capable of carrying high-speed rail.
 
 ## Data Source
 
-The data was scraped from tables from wikipedia on 4/30/2026
+The data was scraped from tables from Wikipedia on 4/30/2026.
+
+The scraping and initial cleaning process is shown in Appendix A.
 
 # Data Preparation and Transformation
 
@@ -190,8 +192,6 @@ additional cleaning for certain years and creating a flag for the US to highligh
 
 # Descriptive Statistics
 
-Use descriptive statistics to help your audience understand the data before you tell the main story.
-
 ## Basic Summary
 
 ```{r summary-statistics}
@@ -201,7 +201,6 @@ skim(hsr)
 ## Important Counts, Rates, or Group Summaries
 
 ```{r descriptive-summary}
-# Example structure:
 
 hsr |>
   group_by(country) |>
@@ -473,9 +472,9 @@ Briefly describe the Shiny app and dashboard that accompany this project.
 
 ## Dashboard
 
-- **Dashboard:** [Insert link here](YOUR_DASHBOARD_URL)
+- **The dashboard for my project can be found here:** [1aaronz.github.io/danl310dashboard.html](https://1aaronz.github.io/danl310dashboard.html)
 
-Explain how dashboard help users interact with or explore the project data.
+The dashboard organizes the all the charts together
 
 # Connecting the Dots
 
@@ -495,32 +494,11 @@ You may discuss:
 
 # Discussion
 
-Interpret the meaning of your findings in plain language.
-
-This project does **not** require regression, machine learning, or causal inference. Avoid claiming that one variable causes another unless your project design truly supports that claim.
-
-Use careful language such as:
-
-- The data suggest that...
-- The pattern is consistent with...
-- One possible explanation is...
-- This comparison shows that...
-- This trend raises questions about...
-
-HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While global adoption is only set to increase, the US has stalled behind the rest of the world in building HSR.
+HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While the data suggests global adoption is only set to increase, the US has appears to have stalled behind the rest of the world in building HSR, and continues to build HSR at a slower than other countries building HSR.
 
 ## Limitations
 
-Discuss what your data story can and cannot show.
-
-Possible limitations include:
-
-- missing data,
-- limited time period,
-- measurement issues,
-- small sample size,
-- data not representing all populations,
-- descriptive analysis cannot prove causality.
+The 10 year projection is subject to change. It is based off of projects that have been officially announced. New projects set to be complete within the next 10 years could be announced, and projects that were announced could be cancelled.
 
 # Conclusion
 
@@ -576,6 +554,7 @@ library(stringr)
 library(xml2)
 
 #SCRAPE PAGE---------------------------------------------------------
+
 url <- "https://en.wikipedia.org/wiki/High-speed_rail_by_country"
 page <- read_html(url)
 

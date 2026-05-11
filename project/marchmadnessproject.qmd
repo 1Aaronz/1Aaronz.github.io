@@ -14,6 +14,7 @@ execute:
   message: false
   fig-width: 10
   fig-height: 6
+  dir: project
 
 format:
   html:
@@ -51,6 +52,7 @@ library(tibble)
 library(stringr)
 library(tidyr)
 library(glmnet)
+library(tidyverse)
 
 # Feel free to revise this ggplot theme_set
 theme_set(theme_ipsum()+
@@ -80,43 +82,279 @@ Describe the real-world motivation for your project. Clearly state your research
 
 Briefly preview your data, empirical approach, main findings, and contribution.
 
-March Madness is an annual tournament for division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN.
+March Madness is an annual tournament for division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.
 
 The research question is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
+
+I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets
 
 The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.
 
 # Background and Related Literature
 
--64 teams compete for the title
+The structure of March Madness is a 64 team, single elimination tournament.
 
--Single elimination tournament.
-
--Millions of people fill out brackets
-
--Billions of dollars each year are gambled on the tournament
+Millions of people fill out brackets each year, attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament.
 
 # Data
 
 ## Data Source
 
-Describe the data source clearly. Include the source name, link, and access date in the References section.
+Regular season performance data and bracket structure data: Kaggle
+
+Advanced efficiency metrics: Kenpom
+
+Public picks data: mRchmadness package, which scrapes data from ESPN
 
 ## Unit of Observation
 
-Explain what each row in your dataset represents.
+Each observation represents team-level pre-tournament aggregate data
 
 ## Key Variables
 
 Describe your outcome variable, main explanatory variables, and important control variables.
 
-The outcome variable is win probability.
+The outcome variable we are predicting for is win probability.
+
+WinPct= Win percentage
+
+AvgPoints= Average points
+
+AvgOppPoints= Average Opponent Points
+
+FG2_Pct= two-point percentage
+
+FG3_Pct= three-point percentage
+
+FT_Pct= free-throw percentage
+
+OR_pg= Offensive rebounds per game
+
+DR_pg= Defensive rebounds per game
+
+TO_pg= Turnovers per game
+
+CareerTourneyWins= Coach's historical success in previous tournaments, measured in number of NCAA tournament games won.
+
+AdjEM= Adjusted efficiency margin, the number of points a team is expected to outscore the average D-1 team over 100 possessions
+
+SOV= Strength of victory, average AdjEM percentile of opponents that a team defeated
+
+AdjOE= Adjusted offensive efficiency, sourced from kenpom, points scored per 100 possessions and adjusted for opponent.
+
+AdjDE= Adjusted defensive efficiency, points allowed per 100 possessions and adjusted for opponent.
+
+RankAdjEM= Ranked adjusted efficiency margin, the number ranking of each team's Adjusted efficiency margin each season
+
+AdjTempo= Adjusted tempo, measured in possessions per 40 minutes and adjusted for opponent.
 
 ## Data Cleaning
 
 Explain major cleaning steps, sample restrictions, missing values, and variable construction.
 
-Kenpom had to be cleaned to be able to left join to team_season_stats.
+loading data into a directory
+
+```{r}
+data_dir <- "csvs"
+
+files <- list.files(
+  data_dir,
+  pattern = "\\.csv$",
+  full.names = TRUE
+)
+
+data <- files %>%
+  set_names(tools::file_path_sans_ext(basename(.))) %>%
+  map(~ tryCatch(
+    read_csv(.x, show_col_types = FALSE),
+    error = function(e) {
+      message("Error reading: ", .x)
+      NULL
+    }
+  ))
+```
+
+```{r}
+
+rs <- data$MRegularSeasonDetailedResults
+
+team_games <- bind_rows(
+  rs %>%
+    transmute(
+      Season, DayNum,
+      TeamID = WTeamID, OpponentID = LTeamID,
+      Win = 1, NumOT,
+      Points = WScore, OppPoints = LScore,
+      FGM = WFGM, FGA = WFGA, FGM3 = WFGM3, FGA3 = WFGA3,
+      FTM = WFTM, FTA = WFTA,
+      OR = WOR, DR = WDR,
+      Ast = WAst, TO = WTO,
+      Stl = WStl, Blk = WBlk,
+      PF = WPF
+    ),
+  rs %>%
+    transmute(
+      Season, DayNum,
+      TeamID = LTeamID, OpponentID = WTeamID,
+      Win = 0, NumOT,
+      Points = LScore, OppPoints = WScore,
+      FGM = LFGM, FGA = LFGA, FGM3 = LFGM3, FGA3 = LFGA3,
+      FTM = LFTM, FTA = LFTA,
+      OR = LOR, DR = LDR,
+      Ast = LAst, TO = LTO,
+      Stl = LStl, Blk = LBlk,
+      PF = LPF
+    )
+)
+
+team_season_stats <- team_games %>%
+  group_by(Season, TeamID) %>%
+  summarise(
+    Games = n(),
+    WinPct = mean(Win),
+    AvgPoints = median(Points),
+    AvgOppPoints = median(OppPoints),
+    FG2_Pct = sum(FGM - FGM3) / sum(FGA - FGA3),
+    FG3_Pct = sum(FGM3) / sum(FGA3),
+    FT_Pct = sum(FTM) / sum(FTA),
+    ThreeP_Rate = sum(FGA3) / sum(FGA),
+    OR_pg = median(OR),
+    DR_pg = median(DR),
+    Ast_pg = median(Ast),
+    TO_pg = median(TO),
+    Stl_pg = median(Stl),
+    Blk_pg = median(Blk),
+    PF_pg = median(PF),
+    AvgOT = mean(NumOT),
+    .groups = "drop"
+  )
+
+
+```
+
+```{r}
+kenpom_final <- data$kenpom_tournament_ready
+# Filter to post-2002
+team_season_stats <- team_season_stats %>%
+  filter(Season >= 2003)
+```
+
+```{r}
+
+# Strength of victories -----------------------------------------------------
+# First, get the total number of teams per season for percentile calculation
+teams_per_season <- kenpom_final %>%
+  group_by(Season) %>%
+  summarise(n_teams = n(), .groups = "drop")
+
+# Prepare opponent KenPom ranks and join team count
+opp_kenpom <- kenpom_final %>%
+  select(Season, TeamID, Opp_RankAdjEM = RankAdjEM) %>%
+  left_join(teams_per_season, by = "Season")
+
+# Compute opponent percentile: (n_teams - rank + 1) / n_teams
+opp_kenpom <- opp_kenpom %>%
+  mutate(Opp_Percentile = (n_teams - Opp_RankAdjEM + 1) / n_teams) %>%
+  select(Season, TeamID, Opp_Percentile)
+
+# Join opponent percentiles to each game
+team_games_with_opp <- team_games %>%
+  left_join(opp_kenpom, by = c("Season", "OpponentID" = "TeamID"))
+
+# Compute scaled SOV: average percentile of opponents that the team defeated
+sov_scaled <- team_games_with_opp %>%
+  filter(Win == 1) %>%
+  group_by(Season, TeamID) %>%
+  summarise(
+    SOV_Scaled = mean(Opp_Percentile, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# coach feature -----------------------------------------------------------
+# Get all coach data from MTeamCoaches
+all_coaches <- data$MTeamCoaches %>%
+  select(Season, TeamID, CoachName) %>%
+  distinct() %>%
+  arrange(CoachName, Season)
+
+# Get tournament wins for each coach-season
+tourney_wins <- data$MNCAATourneyDetailedResults %>%
+  # Get primary coach for the winning team
+  inner_join(
+    data$MTeamCoaches %>%
+      mutate(DaysCoached = LastDayNum - FirstDayNum + 1) %>%
+      group_by(Season, TeamID) %>%
+      arrange(desc(DaysCoached)) %>%
+      dplyr::slice(1) %>%
+      ungroup() %>%
+      select(Season, TeamID, PrimaryCoach = CoachName),
+    by = c("Season", "WTeamID" = "TeamID")
+  ) %>%
+  # Count wins per primary coach per season
+  group_by(PrimaryCoach, Season) %>%
+  summarise(SeasonWins = n(), .groups = "drop") %>%
+  rename(CoachName = PrimaryCoach)
+
+# Calculate coach career statistics (using ALL historical data)
+coach_career_stats <- all_coaches %>%
+  select(CoachName, Season) %>%
+  distinct() %>%
+  left_join(tourney_wins, by = c("CoachName", "Season")) %>%
+  mutate(SeasonWins = coalesce(SeasonWins, 0)) %>%
+  arrange(CoachName, Season) %>%
+  group_by(CoachName) %>%
+  mutate(
+    # Career wins BEFORE current season
+    CareerTourneyWins = lag(cumsum(SeasonWins), default = 0),
+    # Years coached BEFORE current season
+    YearsNCAA = row_number() - 1,
+    .groups = "drop"
+  ) %>%
+  select(CoachName, Season, YearsNCAA, CareerTourneyWins)
+
+# Get primary coach for each team-season (for seasons >= 2003 to match team_season_stats)
+primary_coaches <- data$MTeamCoaches %>%
+  filter(Season >= 2003) %>%
+  mutate(DaysCoached = LastDayNum - FirstDayNum + 1) %>%
+  group_by(Season, TeamID) %>%
+  arrange(desc(DaysCoached)) %>%
+  dplyr::slice(1) %>%
+  ungroup() %>%
+  select(Season, TeamID, CoachName)
+
+
+```
+
+Adding strength of victory, coach historical success, and Kenpom metrics to team season stats
+
+```{r}
+team_season_stats <- team_season_stats %>%
+  left_join(
+    kenpom_final %>% 
+      select(Season, TeamID, AdjEM, AdjOE, AdjDE, AdjTempo, RankAdjEM) %>%
+      mutate(TeamID = as.integer(TeamID)),
+    by = c("Season", "TeamID")
+  )
+
+team_season_stats <- team_season_stats %>%
+  # Remove any existing coach columns if they exist
+  select(-any_of(c("CoachName", "YearsNCAA", "CareerTourneyWins"))) %>%
+  # Join with primary coaches
+  left_join(primary_coaches, by = c("Season", "TeamID")) %>%
+  # Join with career stats
+  left_join(coach_career_stats, by = c("CoachName", "Season")) %>%
+  # Fill NA values with 0
+  mutate(
+    YearsNCAA = coalesce(YearsNCAA, 0),
+    CareerTourneyWins = coalesce(CareerTourneyWins, 0)
+  )
+
+team_season_stats <- team_season_stats %>%
+  left_join(sov_scaled, by = c("Season", "TeamID")) %>%
+  rename(SOV = SOV_Scaled)
+```
+
+Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A)
 
 ## Summary Statistics
 
@@ -134,6 +372,26 @@ Linear Regression Using PC1 and PC2:
 $$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$
 
 where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first explanatory variable, $PC_2X_{it}$ is the second explanatory variable, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.
+
+The methodology to create a public consensus-based model is as follows:
+
+We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula: $$Strength = r_1 + 2r_2 + 4r_3 + 8r_4 + 16r_5 + 32r_6$$ We normalize the strength to each season by dividing each strength value by the highest strength value for the given year. $$Strength_{\mathrm{norm}} = \frac{Strength}{\max(Strength)}$$
+
+We convert the normalized strength value into an ELO metric
+
+$$\mathrm{ELO} = 1500 + 400\ln\left(Strength_{\mathrm{norm}} + 10^{-6}\right)$$
+
+We finally compare the ELO of two teams to determine the probability a given team wins
+
+$$P(\text{A beats B}) = \frac{1}{1 + 10^{\frac{ELO_B - ELO_A}{500}}}$$
+
+Where $A$ refers to team A, and $B$ refers to team B.
+
+Logistic regression: $$p(Y=1 \mid X_1, X_2)
+=
+\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}$$
+
+$X_{j,1}$ and   $X_{j,2}$ are team-level stats for team 1 and team 2.
 
 If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.
 

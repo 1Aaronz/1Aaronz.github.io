@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Aaron Zalen">
-<meta name="dcterms.date" content="2026-05-06">
+<meta name="dcterms.date" content="2026-05-11">
 
 <title>Data Analytics Capstone Project – Aaron Zalen</title>
 <style>
@@ -414,7 +414,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 6, 2026</p>
+      <p class="date">May 11, 2026</p>
     </div>
   </div>
   
@@ -433,44 +433,265 @@ window.Quarto = {
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>Describe the real-world motivation for your project. Clearly state your research question and explain why it matters.</p>
 <p>Briefly preview your data, empirical approach, main findings, and contribution.</p>
-<p>March Madness is an annual tournament for division 1 college basketball.&nbsp;I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN.</p>
+<p>March Madness is an annual tournament for division 1 college basketball.&nbsp;I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</p>
 <p>The research question is “How do NCAA March Madness prediction models perform relative to human-selected brackets?”</p>
+<p>I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets</p>
 <p>The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.</p>
 </section>
 <section id="background-and-related-literature" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Background and Related Literature</h1>
-<p>-64 teams compete for the title</p>
-<p>-Single elimination tournament.</p>
-<p>-Millions of people fill out brackets</p>
-<p>-Billions of dollars each year are gambled on the tournament</p>
+<p>The structure of March Madness is a 64 team, single elimination tournament.</p>
+<p>Millions of people fill out brackets each year, attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament.</p>
 </section>
 <section id="data" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Data</h1>
 <section id="data-source" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-source"><span class="header-section-number">3.1</span> Data Source</h2>
-<p>Describe the data source clearly. Include the source name, link, and access date in the References section.</p>
+<p>Regular season performance data and bracket structure data: Kaggle</p>
+<p>Advanced efficiency metrics: Kenpom</p>
+<p>Public picks data: mRchmadness package, which scrapes data from ESPN</p>
 </section>
 <section id="unit-of-observation" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="unit-of-observation"><span class="header-section-number">3.2</span> Unit of Observation</h2>
-<p>Explain what each row in your dataset represents.</p>
+<p>Each observation represents team-level pre-tournament aggregate data</p>
 </section>
 <section id="key-variables" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="key-variables"><span class="header-section-number">3.3</span> Key Variables</h2>
 <p>Describe your outcome variable, main explanatory variables, and important control variables.</p>
-<p>The outcome variable is win probability.</p>
+<p>The outcome variable we are predicting for is win probability.</p>
+<p>WinPct= Win percentage</p>
+<p>AvgPoints= Average points</p>
+<p>AvgOppPoints= Average Opponent Points</p>
+<p>FG2_Pct= two-point percentage</p>
+<p>FG3_Pct= three-point percentage</p>
+<p>FT_Pct= free-throw percentage</p>
+<p>OR_pg= Offensive rebounds per game</p>
+<p>DR_pg= Defensive rebounds per game</p>
+<p>TO_pg= Turnovers per game</p>
+<p>CareerTourneyWins= Coach’s historical success in previous tournaments, measured in number of NCAA tournament games won.</p>
+<p>AdjEM= Adjusted efficiency margin, the number of points a team is expected to outscore the average D-1 team over 100 possessions</p>
+<p>SOV= Strength of victory, average AdjEM percentile of opponents that a team defeated</p>
+<p>AdjOE= Adjusted offensive efficiency, sourced from kenpom, points scored per 100 possessions and adjusted for opponent.</p>
+<p>AdjDE= Adjusted defensive efficiency, points allowed per 100 possessions and adjusted for opponent.</p>
+<p>RankAdjEM= Ranked adjusted efficiency margin, the number ranking of each team’s Adjusted efficiency margin each season</p>
+<p>AdjTempo= Adjusted tempo, measured in possessions per 40 minutes and adjusted for opponent.</p>
 </section>
 <section id="data-cleaning" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="data-cleaning"><span class="header-section-number">3.4</span> Data Cleaning</h2>
 <p>Explain major cleaning steps, sample restrictions, missing values, and variable construction.</p>
-<p>Kenpom had to be cleaned to be able to left join to team_season_stats.</p>
+<p>loading data into a directory</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> <span class="st">"csvs"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  data_dir,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> files <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"Error reading: "</span>, .x)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NULL</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> data<span class="sc">$</span>MRegularSeasonDetailedResults</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>team_games <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  rs <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      Season, DayNum,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">TeamID =</span> WTeamID, <span class="at">OpponentID =</span> LTeamID,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">Win =</span> <span class="dv">1</span>, NumOT,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">Points =</span> WScore, <span class="at">OppPoints =</span> LScore,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">FGM =</span> WFGM, <span class="at">FGA =</span> WFGA, <span class="at">FGM3 =</span> WFGM3, <span class="at">FGA3 =</span> WFGA3,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">FTM =</span> WFTM, <span class="at">FTA =</span> WFTA,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">OR =</span> WOR, <span class="at">DR =</span> WDR,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">Ast =</span> WAst, <span class="at">TO =</span> WTO,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stl =</span> WStl, <span class="at">Blk =</span> WBlk,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">PF =</span> WPF</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  rs <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      Season, DayNum,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">TeamID =</span> LTeamID, <span class="at">OpponentID =</span> WTeamID,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">Win =</span> <span class="dv">0</span>, NumOT,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">Points =</span> LScore, <span class="at">OppPoints =</span> WScore,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">FGM =</span> LFGM, <span class="at">FGA =</span> LFGA, <span class="at">FGM3 =</span> LFGM3, <span class="at">FGA3 =</span> LFGA3,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">FTM =</span> LFTM, <span class="at">FTA =</span> LFTA,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">OR =</span> LOR, <span class="at">DR =</span> LDR,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">Ast =</span> LAst, <span class="at">TO =</span> LTO,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stl =</span> LStl, <span class="at">Blk =</span> LBlk,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">PF =</span> LPF</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_games <span class="sc">%&gt;%</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Games =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">WinPct =</span> <span class="fu">mean</span>(Win),</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgPoints =</span> <span class="fu">median</span>(Points),</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgOppPoints =</span> <span class="fu">median</span>(OppPoints),</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">FG2_Pct =</span> <span class="fu">sum</span>(FGM <span class="sc">-</span> FGM3) <span class="sc">/</span> <span class="fu">sum</span>(FGA <span class="sc">-</span> FGA3),</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">FG3_Pct =</span> <span class="fu">sum</span>(FGM3) <span class="sc">/</span> <span class="fu">sum</span>(FGA3),</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">FT_Pct =</span> <span class="fu">sum</span>(FTM) <span class="sc">/</span> <span class="fu">sum</span>(FTA),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">ThreeP_Rate =</span> <span class="fu">sum</span>(FGA3) <span class="sc">/</span> <span class="fu">sum</span>(FGA),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">OR_pg =</span> <span class="fu">median</span>(OR),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">DR_pg =</span> <span class="fu">median</span>(DR),</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ast_pg =</span> <span class="fu">median</span>(Ast),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">TO_pg =</span> <span class="fu">median</span>(TO),</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">Stl_pg =</span> <span class="fu">median</span>(Stl),</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">Blk_pg =</span> <span class="fu">median</span>(Blk),</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">PF_pg =</span> <span class="fu">median</span>(PF),</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgOT =</span> <span class="fu">mean</span>(NumOT),</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kenpom_final <span class="ot">&lt;-</span> data<span class="sc">$</span>kenpom_tournament_ready</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to post-2002</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Season <span class="sc">&gt;=</span> <span class="dv">2003</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Strength of victories -----------------------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First, get the total number of teams per season for percentile calculation</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>teams_per_season <span class="ot">&lt;-</span> kenpom_final <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_teams =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare opponent KenPom ranks and join team count</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>opp_kenpom <span class="ot">&lt;-</span> kenpom_final <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, <span class="at">Opp_RankAdjEM =</span> RankAdjEM) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(teams_per_season, <span class="at">by =</span> <span class="st">"Season"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute opponent percentile: (n_teams - rank + 1) / n_teams</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>opp_kenpom <span class="ot">&lt;-</span> opp_kenpom <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Opp_Percentile =</span> (n_teams <span class="sc">-</span> Opp_RankAdjEM <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> n_teams) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, Opp_Percentile)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Join opponent percentiles to each game</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>team_games_with_opp <span class="ot">&lt;-</span> team_games <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(opp_kenpom, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"OpponentID"</span> <span class="ot">=</span> <span class="st">"TeamID"</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute scaled SOV: average percentile of opponents that the team defeated</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>sov_scaled <span class="ot">&lt;-</span> team_games_with_opp <span class="sc">%&gt;%</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Win <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">SOV_Scaled =</span> <span class="fu">mean</span>(Opp_Percentile, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># coach feature -----------------------------------------------------------</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all coach data from MTeamCoaches</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>all_coaches <span class="ot">&lt;-</span> data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, CoachName) <span class="sc">%&gt;%</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CoachName, Season)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Get tournament wins for each coach-season</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>tourney_wins <span class="ot">&lt;-</span> data<span class="sc">$</span>MNCAATourneyDetailedResults <span class="sc">%&gt;%</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get primary coach for the winning team</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">DaysCoached =</span> LastDayNum <span class="sc">-</span> FirstDayNum <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrange</span>(<span class="fu">desc</span>(DaysCoached)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Season, TeamID, <span class="at">PrimaryCoach =</span> CoachName),</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"WTeamID"</span> <span class="ot">=</span> <span class="st">"TeamID"</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count wins per primary coach per season</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PrimaryCoach, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">SeasonWins =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">CoachName =</span> PrimaryCoach)</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate coach career statistics (using ALL historical data)</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>coach_career_stats <span class="ot">&lt;-</span> all_coaches <span class="sc">%&gt;%</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CoachName, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tourney_wins, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"Season"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SeasonWins =</span> <span class="fu">coalesce</span>(SeasonWins, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CoachName, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CoachName) <span class="sc">%&gt;%</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Career wins BEFORE current season</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">CareerTourneyWins =</span> <span class="fu">lag</span>(<span class="fu">cumsum</span>(SeasonWins), <span class="at">default =</span> <span class="dv">0</span>),</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Years coached BEFORE current season</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">YearsNCAA =</span> <span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CoachName, Season, YearsNCAA, CareerTourneyWins)</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Get primary coach for each team-season (for seasons &gt;= 2003 to match team_season_stats)</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>primary_coaches <span class="ot">&lt;-</span> data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Season <span class="sc">&gt;=</span> <span class="dv">2003</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DaysCoached =</span> LastDayNum <span class="sc">-</span> FirstDayNum <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(DaysCoached)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, CoachName)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Adding strength of victory, coach historical success, and Kenpom metrics to team season stats</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    kenpom_final <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Season, TeamID, AdjEM, AdjOE, AdjDE, AdjTempo, RankAdjEM) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">TeamID =</span> <span class="fu">as.integer</span>(TeamID)),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove any existing coach columns if they exist</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"YearsNCAA"</span>, <span class="st">"CareerTourneyWins"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join with primary coaches</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(primary_coaches, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join with career stats</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(coach_career_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"Season"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fill NA values with 0</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">YearsNCAA =</span> <span class="fu">coalesce</span>(YearsNCAA, <span class="dv">0</span>),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">CareerTourneyWins =</span> <span class="fu">coalesce</span>(CareerTourneyWins, <span class="dv">0</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(sov_scaled, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SOV =</span> SOV_Scaled)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A)</p>
 </section>
 <section id="summary-statistics" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="summary-statistics"><span class="header-section-number">3.5</span> Summary Statistics</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own data and summary statistics.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># skim(your_data)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own data and summary statistics.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># skim(your_data)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -481,6 +702,17 @@ window.Quarto = {
 <p>Linear Regression Using PC1 and PC2:</p>
 <p><span class="math display">\[Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}\]</span></p>
 <p>where <span class="math inline">\(Probability_{i}\)</span> is the outcome of win probability for unit <span class="math inline">\(i\)</span>, <span class="math inline">\(PC_1X_{it}\)</span> is the first explanatory variable, <span class="math inline">\(PC_2X_{it}\)</span> is the second explanatory variable, and <span class="math inline">\(\varepsilon_{i}\)</span> is the error term. We then cap the maximum probability at 100% and the minimum at 0%.</p>
+<p>The methodology to create a public consensus-based model is as follows:</p>
+<p>We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula: <span class="math display">\[Strength = r_1 + 2r_2 + 4r_3 + 8r_4 + 16r_5 + 32r_6\]</span> We normalize the strength to each season by dividing each strength value by the highest strength value for the given year. <span class="math display">\[Strength_{\mathrm{norm}} = \frac{Strength}{\max(Strength)}\]</span></p>
+<p>We convert the normalized strength value into an ELO metric</p>
+<p><span class="math display">\[\mathrm{ELO} = 1500 + 400\ln\left(Strength_{\mathrm{norm}} + 10^{-6}\right)\]</span></p>
+<p>We finally compare the ELO of two teams to determine the probability a given team wins</p>
+<p><span class="math display">\[P(\text{A beats B}) = \frac{1}{1 + 10^{\frac{ELO_B - ELO_A}{500}}}\]</span></p>
+<p>Where <span class="math inline">\(A\)</span> refers to team A, and <span class="math inline">\(B\)</span> refers to team B.</p>
+<p>Logistic regression: <span class="math display">\[p(Y=1 \mid X_1, X_2)
+=
+\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}\]</span></p>
+<p><span class="math inline">\(X_{j,1}\)</span> and <span class="math inline">\(X_{j,2}\)</span> are team-level stats for team 1 and team 2.</p>
 <p>If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.</p>
 </section>
 <section id="results" class="level1" data-number="5">
@@ -489,17 +721,17 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own table or model output.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># modelsummary(list(model1, model2))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own table or model output.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># modelsummary(list(model1, model2))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own figure.</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(your_data, aes(x = x_variable, y = y_variable)) +</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point() +</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x = "X Variable", y = "Y Variable", title = "Main Result")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own figure.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(your_data, aes(x = x_variable, y = y_variable)) +</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point() +</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x = "X Variable", y = "Y Variable", title = "Main Result")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -993,182 +1225,439 @@ window.Quarto = {
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> Data Analytics Capstone Project</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "NCAA March Madness Prediction"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Aaron Zalen </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">    affiliation: SUNY Geneseo</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">  fig-width: 10</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">  fig-height: 6</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Contents"</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-expand: 3</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">    highlight-style: atom-one</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger)  </span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringdist)</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co"># library(randomForest)</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Feel free to revise this ggplot theme_set</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_ipsum</span>()<span class="sc">+</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>          <span class="fu">theme</span>(<span class="at">strip.background =</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"lightgray"</span>),</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>                <span class="at">axis.title.x =</span> </span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>,</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>                               <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.33</span>),</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>                               <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">10</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)),</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>                <span class="at">axis.title.y =</span> </span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>,</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>                               <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.33</span>),</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>                               <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Feel free to use below global options for color-blind-friendly scales</span></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="co"># scale_colour_discrete &lt;- function(...) scale_colour_viridis_d(...)</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="co"># scale_fill_discrete &lt;- function(...) scale_fill_viridis_d(...)</span></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## This page is currently under construction</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>Describe the real-world motivation for your project. Clearly state your research question and explain why it matters.</span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>Briefly preview your data, empirical approach, main findings, and contribution.</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>March Madness is an annual tournament for division 1 college basketball.&nbsp;I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN.</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>The research question is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="fu"># Background and Related Literature</span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>-64 teams compete for the title</span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>-Single elimination tournament.</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>-Millions of people fill out brackets</span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>-Billions of dollars each year are gambled on the tournament</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Source</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>Describe the data source clearly. Include the source name, link, and access date in the References section.</span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Unit of Observation</span></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>Explain what each row in your dataset represents.</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key Variables</span></span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>Describe your outcome variable, main explanatory variables, and important control variables.</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>The outcome variable is win probability.</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning</span></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>Explain major cleaning steps, sample restrictions, missing values, and variable construction.</span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>Kenpom had to be cleaned to be able to left join to team_season_stats.</span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary Statistics</span></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r summary-statistics}</span></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own data and summary statistics.</span></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a><span class="co"># skim(your_data)</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a><span class="fu"># Empirical Strategy / Methods</span></span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>Describe the method used to answer your research question. This may include regression, classification, clustering, forecasting, text analysis, or another data analytics method.</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>Linear Regression Using PC1 and PC2:</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>$$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$</span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first explanatory variable, $PC_2X_{it}$ is the second explanatory variable, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.</span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="fu"># Results</span></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>Present your main empirical findings using tables, figures, and written interpretation.</span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a><span class="in">```{r results-table}</span></span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own table or model output.</span></span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="co"># modelsummary(list(model1, model2))</span></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r results-figure}</span></span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own figure.</span></span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(your_data, aes(x = x_variable, y = y_variable)) +</span></span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point() +</span></span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x = "X Variable", y = "Y Variable", title = "Main Result")</span></span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="fu"># Discussion and Implications</span></span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>Interpret your results. Explain what they imply for economics, business, policy, or society.</span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>Discuss limitations and clarify what your analysis can and cannot show.</span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>Summarize your research question, data, method, main findings, and key takeaway.</span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>Briefly suggest possible future extensions.</span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>List all sources cited in your project, including data sources, academic articles, reports, websites, packages, and tools.</span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>For online sources, include the full URL and date/time accessed.</span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix</span></span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>Include additional tables, figures, robustness checks, code explanations, or variable definitions if needed.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> Data Analytics Capstone Project</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "NCAA March Madness Prediction"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Aaron Zalen </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">    affiliation: SUNY Geneseo</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> last-modified</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: true</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">  fig-width: 10</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">  fig-height: 6</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">  dir: project</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Contents"</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-expand: 3</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">    highlight-style: atom-one</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmarkdown)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger)  </span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringdist)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># library(randomForest)</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Feel free to revise this ggplot theme_set</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_ipsum</span>()<span class="sc">+</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>          <span class="fu">theme</span>(<span class="at">strip.background =</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"lightgray"</span>),</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>                <span class="at">axis.title.x =</span> </span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>,</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>                               <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.33</span>),</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>                               <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">10</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)),</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>                <span class="at">axis.title.y =</span> </span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>                               <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.33</span>),</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>                               <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Feel free to use below global options for color-blind-friendly scales</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="co"># scale_colour_discrete &lt;- function(...) scale_colour_viridis_d(...)</span></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="co"># scale_fill_discrete &lt;- function(...) scale_fill_viridis_d(...)</span></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## This page is currently under construction</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>Describe the real-world motivation for your project. Clearly state your research question and explain why it matters.</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>Briefly preview your data, empirical approach, main findings, and contribution.</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>March Madness is an annual tournament for division 1 college basketball.&nbsp;I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>The research question is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="fu"># Background and Related Literature</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>The structure of March Madness is a 64 team, single elimination tournament.</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>Millions of people fill out brackets each year, attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament.</span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Source</span></span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>Regular season performance data and bracket structure data: Kaggle</span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>Advanced efficiency metrics: Kenpom</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>Public picks data: mRchmadness package, which scrapes data from ESPN</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Unit of Observation</span></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>Each observation represents team-level pre-tournament aggregate data</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key Variables</span></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>Describe your outcome variable, main explanatory variables, and important control variables.</span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>The outcome variable we are predicting for is win probability.</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>WinPct= Win percentage</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>AvgPoints= Average points</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>AvgOppPoints= Average Opponent Points</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>FG2_Pct= two-point percentage</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>FG3_Pct= three-point percentage</span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>FT_Pct= free-throw percentage</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>OR_pg= Offensive rebounds per game</span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>DR_pg= Defensive rebounds per game</span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>TO_pg= Turnovers per game</span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>CareerTourneyWins= Coach's historical success in previous tournaments, measured in number of NCAA tournament games won.</span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>AdjEM= Adjusted efficiency margin, the number of points a team is expected to outscore the average D-1 team over 100 possessions</span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>SOV= Strength of victory, average AdjEM percentile of opponents that a team defeated</span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>AdjOE= Adjusted offensive efficiency, sourced from kenpom, points scored per 100 possessions and adjusted for opponent.</span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>AdjDE= Adjusted defensive efficiency, points allowed per 100 possessions and adjusted for opponent.</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a>RankAdjEM= Ranked adjusted efficiency margin, the number ranking of each team's Adjusted efficiency margin each season</span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a>AdjTempo= Adjusted tempo, measured in possessions per 40 minutes and adjusted for opponent.</span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning</span></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>Explain major cleaning steps, sample restrictions, missing values, and variable construction.</span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>loading data into a directory</span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> <span class="st">"csvs"</span></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>  data_dir,</span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.csv$"</span>,</span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>  <span class="at">full.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> files <span class="sc">%&gt;%</span></span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_csv</span>(.x, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"Error reading: "</span>, .x)</span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NULL</span></span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> data<span class="sc">$</span>MRegularSeasonDetailedResults</span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a>team_games <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>  rs <span class="sc">%&gt;%</span></span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>      Season, DayNum,</span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>      <span class="at">TeamID =</span> WTeamID, <span class="at">OpponentID =</span> LTeamID,</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>      <span class="at">Win =</span> <span class="dv">1</span>, NumOT,</span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>      <span class="at">Points =</span> WScore, <span class="at">OppPoints =</span> LScore,</span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a>      <span class="at">FGM =</span> WFGM, <span class="at">FGA =</span> WFGA, <span class="at">FGM3 =</span> WFGM3, <span class="at">FGA3 =</span> WFGA3,</span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>      <span class="at">FTM =</span> WFTM, <span class="at">FTA =</span> WFTA,</span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a>      <span class="at">OR =</span> WOR, <span class="at">DR =</span> WDR,</span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a>      <span class="at">Ast =</span> WAst, <span class="at">TO =</span> WTO,</span>
+<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stl =</span> WStl, <span class="at">Blk =</span> WBlk,</span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a>      <span class="at">PF =</span> WPF</span>
+<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a>  rs <span class="sc">%&gt;%</span></span>
+<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transmute</span>(</span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a>      Season, DayNum,</span>
+<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a>      <span class="at">TeamID =</span> LTeamID, <span class="at">OpponentID =</span> WTeamID,</span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a>      <span class="at">Win =</span> <span class="dv">0</span>, NumOT,</span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a>      <span class="at">Points =</span> LScore, <span class="at">OppPoints =</span> WScore,</span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a>      <span class="at">FGM =</span> LFGM, <span class="at">FGA =</span> LFGA, <span class="at">FGM3 =</span> LFGM3, <span class="at">FGA3 =</span> LFGA3,</span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a>      <span class="at">FTM =</span> LFTM, <span class="at">FTA =</span> LFTA,</span>
+<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a>      <span class="at">OR =</span> LOR, <span class="at">DR =</span> LDR,</span>
+<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a>      <span class="at">Ast =</span> LAst, <span class="at">TO =</span> LTO,</span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>      <span class="at">Stl =</span> LStl, <span class="at">Blk =</span> LBlk,</span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a>      <span class="at">PF =</span> LPF</span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_games <span class="sc">%&gt;%</span></span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a>    <span class="at">Games =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>    <span class="at">WinPct =</span> <span class="fu">mean</span>(Win),</span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgPoints =</span> <span class="fu">median</span>(Points),</span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgOppPoints =</span> <span class="fu">median</span>(OppPoints),</span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a>    <span class="at">FG2_Pct =</span> <span class="fu">sum</span>(FGM <span class="sc">-</span> FGM3) <span class="sc">/</span> <span class="fu">sum</span>(FGA <span class="sc">-</span> FGA3),</span>
+<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a>    <span class="at">FG3_Pct =</span> <span class="fu">sum</span>(FGM3) <span class="sc">/</span> <span class="fu">sum</span>(FGA3),</span>
+<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a>    <span class="at">FT_Pct =</span> <span class="fu">sum</span>(FTM) <span class="sc">/</span> <span class="fu">sum</span>(FTA),</span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>    <span class="at">ThreeP_Rate =</span> <span class="fu">sum</span>(FGA3) <span class="sc">/</span> <span class="fu">sum</span>(FGA),</span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a>    <span class="at">OR_pg =</span> <span class="fu">median</span>(OR),</span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">DR_pg =</span> <span class="fu">median</span>(DR),</span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ast_pg =</span> <span class="fu">median</span>(Ast),</span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a>    <span class="at">TO_pg =</span> <span class="fu">median</span>(TO),</span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a>    <span class="at">Stl_pg =</span> <span class="fu">median</span>(Stl),</span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a>    <span class="at">Blk_pg =</span> <span class="fu">median</span>(Blk),</span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a>    <span class="at">PF_pg =</span> <span class="fu">median</span>(PF),</span>
+<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>    <span class="at">AvgOT =</span> <span class="fu">mean</span>(NumOT),</span>
+<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a>kenpom_final <span class="ot">&lt;-</span> data<span class="sc">$</span>kenpom_tournament_ready</span>
+<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to post-2002</span></span>
+<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Season <span class="sc">&gt;=</span> <span class="dv">2003</span>)</span>
+<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-250"><a href="#cb9-250" aria-hidden="true" tabindex="-1"></a><span class="co"># Strength of victories -----------------------------------------------------</span></span>
+<span id="cb9-251"><a href="#cb9-251" aria-hidden="true" tabindex="-1"></a><span class="co"># First, get the total number of teams per season for percentile calculation</span></span>
+<span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a>teams_per_season <span class="ot">&lt;-</span> kenpom_final <span class="sc">%&gt;%</span></span>
+<span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season) <span class="sc">%&gt;%</span></span>
+<span id="cb9-254"><a href="#cb9-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_teams =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb9-255"><a href="#cb9-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-256"><a href="#cb9-256" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare opponent KenPom ranks and join team count</span></span>
+<span id="cb9-257"><a href="#cb9-257" aria-hidden="true" tabindex="-1"></a>opp_kenpom <span class="ot">&lt;-</span> kenpom_final <span class="sc">%&gt;%</span></span>
+<span id="cb9-258"><a href="#cb9-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, <span class="at">Opp_RankAdjEM =</span> RankAdjEM) <span class="sc">%&gt;%</span></span>
+<span id="cb9-259"><a href="#cb9-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(teams_per_season, <span class="at">by =</span> <span class="st">"Season"</span>)</span>
+<span id="cb9-260"><a href="#cb9-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-261"><a href="#cb9-261" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute opponent percentile: (n_teams - rank + 1) / n_teams</span></span>
+<span id="cb9-262"><a href="#cb9-262" aria-hidden="true" tabindex="-1"></a>opp_kenpom <span class="ot">&lt;-</span> opp_kenpom <span class="sc">%&gt;%</span></span>
+<span id="cb9-263"><a href="#cb9-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Opp_Percentile =</span> (n_teams <span class="sc">-</span> Opp_RankAdjEM <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> n_teams) <span class="sc">%&gt;%</span></span>
+<span id="cb9-264"><a href="#cb9-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, Opp_Percentile)</span>
+<span id="cb9-265"><a href="#cb9-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-266"><a href="#cb9-266" aria-hidden="true" tabindex="-1"></a><span class="co"># Join opponent percentiles to each game</span></span>
+<span id="cb9-267"><a href="#cb9-267" aria-hidden="true" tabindex="-1"></a>team_games_with_opp <span class="ot">&lt;-</span> team_games <span class="sc">%&gt;%</span></span>
+<span id="cb9-268"><a href="#cb9-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(opp_kenpom, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"OpponentID"</span> <span class="ot">=</span> <span class="st">"TeamID"</span>))</span>
+<span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute scaled SOV: average percentile of opponents that the team defeated</span></span>
+<span id="cb9-271"><a href="#cb9-271" aria-hidden="true" tabindex="-1"></a>sov_scaled <span class="ot">&lt;-</span> team_games_with_opp <span class="sc">%&gt;%</span></span>
+<span id="cb9-272"><a href="#cb9-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Win <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-273"><a href="#cb9-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb9-274"><a href="#cb9-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-275"><a href="#cb9-275" aria-hidden="true" tabindex="-1"></a>    <span class="at">SOV_Scaled =</span> <span class="fu">mean</span>(Opp_Percentile, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-276"><a href="#cb9-276" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb9-277"><a href="#cb9-277" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-278"><a href="#cb9-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-279"><a href="#cb9-279" aria-hidden="true" tabindex="-1"></a><span class="co"># coach feature -----------------------------------------------------------</span></span>
+<span id="cb9-280"><a href="#cb9-280" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all coach data from MTeamCoaches</span></span>
+<span id="cb9-281"><a href="#cb9-281" aria-hidden="true" tabindex="-1"></a>all_coaches <span class="ot">&lt;-</span> data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb9-282"><a href="#cb9-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, CoachName) <span class="sc">%&gt;%</span></span>
+<span id="cb9-283"><a href="#cb9-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-284"><a href="#cb9-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CoachName, Season)</span>
+<span id="cb9-285"><a href="#cb9-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-286"><a href="#cb9-286" aria-hidden="true" tabindex="-1"></a><span class="co"># Get tournament wins for each coach-season</span></span>
+<span id="cb9-287"><a href="#cb9-287" aria-hidden="true" tabindex="-1"></a>tourney_wins <span class="ot">&lt;-</span> data<span class="sc">$</span>MNCAATourneyDetailedResults <span class="sc">%&gt;%</span></span>
+<span id="cb9-288"><a href="#cb9-288" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get primary coach for the winning team</span></span>
+<span id="cb9-289"><a href="#cb9-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb9-290"><a href="#cb9-290" aria-hidden="true" tabindex="-1"></a>    data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb9-291"><a href="#cb9-291" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">DaysCoached =</span> LastDayNum <span class="sc">-</span> FirstDayNum <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-292"><a href="#cb9-292" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb9-293"><a href="#cb9-293" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrange</span>(<span class="fu">desc</span>(DaysCoached)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-294"><a href="#cb9-294" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-295"><a href="#cb9-295" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-296"><a href="#cb9-296" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Season, TeamID, <span class="at">PrimaryCoach =</span> CoachName),</span>
+<span id="cb9-297"><a href="#cb9-297" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"WTeamID"</span> <span class="ot">=</span> <span class="st">"TeamID"</span>)</span>
+<span id="cb9-298"><a href="#cb9-298" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-299"><a href="#cb9-299" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count wins per primary coach per season</span></span>
+<span id="cb9-300"><a href="#cb9-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PrimaryCoach, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb9-301"><a href="#cb9-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">SeasonWins =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-302"><a href="#cb9-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">CoachName =</span> PrimaryCoach)</span>
+<span id="cb9-303"><a href="#cb9-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-304"><a href="#cb9-304" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate coach career statistics (using ALL historical data)</span></span>
+<span id="cb9-305"><a href="#cb9-305" aria-hidden="true" tabindex="-1"></a>coach_career_stats <span class="ot">&lt;-</span> all_coaches <span class="sc">%&gt;%</span></span>
+<span id="cb9-306"><a href="#cb9-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CoachName, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb9-307"><a href="#cb9-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-308"><a href="#cb9-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tourney_wins, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"Season"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SeasonWins =</span> <span class="fu">coalesce</span>(SeasonWins, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CoachName, Season) <span class="sc">%&gt;%</span></span>
+<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CoachName) <span class="sc">%&gt;%</span></span>
+<span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Career wins BEFORE current season</span></span>
+<span id="cb9-314"><a href="#cb9-314" aria-hidden="true" tabindex="-1"></a>    <span class="at">CareerTourneyWins =</span> <span class="fu">lag</span>(<span class="fu">cumsum</span>(SeasonWins), <span class="at">default =</span> <span class="dv">0</span>),</span>
+<span id="cb9-315"><a href="#cb9-315" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Years coached BEFORE current season</span></span>
+<span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a>    <span class="at">YearsNCAA =</span> <span class="fu">row_number</span>() <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CoachName, Season, YearsNCAA, CareerTourneyWins)</span>
+<span id="cb9-320"><a href="#cb9-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a><span class="co"># Get primary coach for each team-season (for seasons &gt;= 2003 to match team_season_stats)</span></span>
+<span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a>primary_coaches <span class="ot">&lt;-</span> data<span class="sc">$</span>MTeamCoaches <span class="sc">%&gt;%</span></span>
+<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Season <span class="sc">&gt;=</span> <span class="dv">2003</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DaysCoached =</span> LastDayNum <span class="sc">-</span> FirstDayNum <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season, TeamID) <span class="sc">%&gt;%</span></span>
+<span id="cb9-326"><a href="#cb9-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(DaysCoached)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-327"><a href="#cb9-327" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-328"><a href="#cb9-328" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-329"><a href="#cb9-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Season, TeamID, CoachName)</span>
+<span id="cb9-330"><a href="#cb9-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-331"><a href="#cb9-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-332"><a href="#cb9-332" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-333"><a href="#cb9-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-334"><a href="#cb9-334" aria-hidden="true" tabindex="-1"></a>Adding strength of victory, coach historical success, and Kenpom metrics to team season stats</span>
+<span id="cb9-335"><a href="#cb9-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-338"><a href="#cb9-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-339"><a href="#cb9-339" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb9-340"><a href="#cb9-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb9-341"><a href="#cb9-341" aria-hidden="true" tabindex="-1"></a>    kenpom_final <span class="sc">%&gt;%</span> </span>
+<span id="cb9-342"><a href="#cb9-342" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(Season, TeamID, AdjEM, AdjOE, AdjDE, AdjTempo, RankAdjEM) <span class="sc">%&gt;%</span></span>
+<span id="cb9-343"><a href="#cb9-343" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">TeamID =</span> <span class="fu">as.integer</span>(TeamID)),</span>
+<span id="cb9-344"><a href="#cb9-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)</span>
+<span id="cb9-345"><a href="#cb9-345" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-346"><a href="#cb9-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-347"><a href="#cb9-347" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb9-348"><a href="#cb9-348" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove any existing coach columns if they exist</span></span>
+<span id="cb9-349"><a href="#cb9-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"YearsNCAA"</span>, <span class="st">"CareerTourneyWins"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-350"><a href="#cb9-350" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join with primary coaches</span></span>
+<span id="cb9-351"><a href="#cb9-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(primary_coaches, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-352"><a href="#cb9-352" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join with career stats</span></span>
+<span id="cb9-353"><a href="#cb9-353" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(coach_career_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"CoachName"</span>, <span class="st">"Season"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-354"><a href="#cb9-354" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fill NA values with 0</span></span>
+<span id="cb9-355"><a href="#cb9-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-356"><a href="#cb9-356" aria-hidden="true" tabindex="-1"></a>    <span class="at">YearsNCAA =</span> <span class="fu">coalesce</span>(YearsNCAA, <span class="dv">0</span>),</span>
+<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a>    <span class="at">CareerTourneyWins =</span> <span class="fu">coalesce</span>(CareerTourneyWins, <span class="dv">0</span>)</span>
+<span id="cb9-358"><a href="#cb9-358" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-360"><a href="#cb9-360" aria-hidden="true" tabindex="-1"></a>team_season_stats <span class="ot">&lt;-</span> team_season_stats <span class="sc">%&gt;%</span></span>
+<span id="cb9-361"><a href="#cb9-361" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(sov_scaled, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Season"</span>, <span class="st">"TeamID"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-362"><a href="#cb9-362" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SOV =</span> SOV_Scaled)</span>
+<span id="cb9-363"><a href="#cb9-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-364"><a href="#cb9-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-365"><a href="#cb9-365" aria-hidden="true" tabindex="-1"></a>Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A)</span>
+<span id="cb9-366"><a href="#cb9-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-367"><a href="#cb9-367" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary Statistics</span></span>
+<span id="cb9-368"><a href="#cb9-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-369"><a href="#cb9-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r summary-statistics}</span></span>
+<span id="cb9-370"><a href="#cb9-370" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own data and summary statistics.</span></span>
+<span id="cb9-371"><a href="#cb9-371" aria-hidden="true" tabindex="-1"></a><span class="co"># skim(your_data)</span></span>
+<span id="cb9-372"><a href="#cb9-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-373"><a href="#cb9-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-374"><a href="#cb9-374" aria-hidden="true" tabindex="-1"></a><span class="fu"># Empirical Strategy / Methods</span></span>
+<span id="cb9-375"><a href="#cb9-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-376"><a href="#cb9-376" aria-hidden="true" tabindex="-1"></a>Describe the method used to answer your research question. This may include regression, classification, clustering, forecasting, text analysis, or another data analytics method.</span>
+<span id="cb9-377"><a href="#cb9-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-378"><a href="#cb9-378" aria-hidden="true" tabindex="-1"></a>Linear Regression Using PC1 and PC2:</span>
+<span id="cb9-379"><a href="#cb9-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-380"><a href="#cb9-380" aria-hidden="true" tabindex="-1"></a>$$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$</span>
+<span id="cb9-381"><a href="#cb9-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-382"><a href="#cb9-382" aria-hidden="true" tabindex="-1"></a>where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first explanatory variable, $PC_2X_{it}$ is the second explanatory variable, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.</span>
+<span id="cb9-383"><a href="#cb9-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-384"><a href="#cb9-384" aria-hidden="true" tabindex="-1"></a>The methodology to create a public consensus-based model is as follows:</span>
+<span id="cb9-385"><a href="#cb9-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-386"><a href="#cb9-386" aria-hidden="true" tabindex="-1"></a>We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula: $$Strength = r_1 + 2r_2 + 4r_3 + 8r_4 + 16r_5 + 32r_6$$ We normalize the strength to each season by dividing each strength value by the highest strength value for the given year. $$Strength_{\mathrm{norm}} = \frac{Strength}{\max(Strength)}$$</span>
+<span id="cb9-387"><a href="#cb9-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-388"><a href="#cb9-388" aria-hidden="true" tabindex="-1"></a>We convert the normalized strength value into an ELO metric</span>
+<span id="cb9-389"><a href="#cb9-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-390"><a href="#cb9-390" aria-hidden="true" tabindex="-1"></a>$$\mathrm{ELO} = 1500 + 400\ln\left(Strength_{\mathrm{norm}} + 10^{-6}\right)$$</span>
+<span id="cb9-391"><a href="#cb9-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-392"><a href="#cb9-392" aria-hidden="true" tabindex="-1"></a>We finally compare the ELO of two teams to determine the probability a given team wins</span>
+<span id="cb9-393"><a href="#cb9-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-394"><a href="#cb9-394" aria-hidden="true" tabindex="-1"></a>$$P(\text{A beats B}) = \frac{1}{1 + 10^{\frac{ELO_B - ELO_A}{500}}}$$</span>
+<span id="cb9-395"><a href="#cb9-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-396"><a href="#cb9-396" aria-hidden="true" tabindex="-1"></a>Where $A$ refers to team A, and $B$ refers to team B.</span>
+<span id="cb9-397"><a href="#cb9-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-398"><a href="#cb9-398" aria-hidden="true" tabindex="-1"></a>Logistic regression: $$p(Y=1 \mid X_1, X_2)</span>
+<span id="cb9-399"><a href="#cb9-399" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb9-400"><a href="#cb9-400" aria-hidden="true" tabindex="-1"></a>\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}$$</span>
+<span id="cb9-401"><a href="#cb9-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-402"><a href="#cb9-402" aria-hidden="true" tabindex="-1"></a>$X_{j,1}$ and   $X_{j,2}$ are team-level stats for team 1 and team 2.</span>
+<span id="cb9-403"><a href="#cb9-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-404"><a href="#cb9-404" aria-hidden="true" tabindex="-1"></a>If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.</span>
+<span id="cb9-405"><a href="#cb9-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-406"><a href="#cb9-406" aria-hidden="true" tabindex="-1"></a><span class="fu"># Results</span></span>
+<span id="cb9-407"><a href="#cb9-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-408"><a href="#cb9-408" aria-hidden="true" tabindex="-1"></a>Present your main empirical findings using tables, figures, and written interpretation.</span>
+<span id="cb9-409"><a href="#cb9-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-410"><a href="#cb9-410" aria-hidden="true" tabindex="-1"></a><span class="in">```{r results-table}</span></span>
+<span id="cb9-411"><a href="#cb9-411" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own table or model output.</span></span>
+<span id="cb9-412"><a href="#cb9-412" aria-hidden="true" tabindex="-1"></a><span class="co"># modelsummary(list(model1, model2))</span></span>
+<span id="cb9-413"><a href="#cb9-413" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-414"><a href="#cb9-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-415"><a href="#cb9-415" aria-hidden="true" tabindex="-1"></a><span class="in">```{r results-figure}</span></span>
+<span id="cb9-416"><a href="#cb9-416" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this example with your own figure.</span></span>
+<span id="cb9-417"><a href="#cb9-417" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(your_data, aes(x = x_variable, y = y_variable)) +</span></span>
+<span id="cb9-418"><a href="#cb9-418" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point() +</span></span>
+<span id="cb9-419"><a href="#cb9-419" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(x = "X Variable", y = "Y Variable", title = "Main Result")</span></span>
+<span id="cb9-420"><a href="#cb9-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-421"><a href="#cb9-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-422"><a href="#cb9-422" aria-hidden="true" tabindex="-1"></a><span class="fu"># Discussion and Implications</span></span>
+<span id="cb9-423"><a href="#cb9-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-424"><a href="#cb9-424" aria-hidden="true" tabindex="-1"></a>Interpret your results. Explain what they imply for economics, business, policy, or society.</span>
+<span id="cb9-425"><a href="#cb9-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-426"><a href="#cb9-426" aria-hidden="true" tabindex="-1"></a>Discuss limitations and clarify what your analysis can and cannot show.</span>
+<span id="cb9-427"><a href="#cb9-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-428"><a href="#cb9-428" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb9-429"><a href="#cb9-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-430"><a href="#cb9-430" aria-hidden="true" tabindex="-1"></a>Summarize your research question, data, method, main findings, and key takeaway.</span>
+<span id="cb9-431"><a href="#cb9-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-432"><a href="#cb9-432" aria-hidden="true" tabindex="-1"></a>Briefly suggest possible future extensions.</span>
+<span id="cb9-433"><a href="#cb9-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-434"><a href="#cb9-434" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
+<span id="cb9-435"><a href="#cb9-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-436"><a href="#cb9-436" aria-hidden="true" tabindex="-1"></a>List all sources cited in your project, including data sources, academic articles, reports, websites, packages, and tools.</span>
+<span id="cb9-437"><a href="#cb9-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-438"><a href="#cb9-438" aria-hidden="true" tabindex="-1"></a>For online sources, include the full URL and date/time accessed.</span>
+<span id="cb9-439"><a href="#cb9-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-440"><a href="#cb9-440" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix</span></span>
+<span id="cb9-441"><a href="#cb9-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-442"><a href="#cb9-442" aria-hidden="true" tabindex="-1"></a>Include additional tables, figures, robustness checks, code explanations, or variable definitions if needed.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

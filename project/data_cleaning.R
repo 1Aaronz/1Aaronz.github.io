@@ -9,7 +9,7 @@ library(glmnet)
 
 # loading data into directory  --------------------------------
 # Set new data directory
-data_dir <- "csv"
+data_dir <- "project/csvs"
 
 files <- list.files(data_dir, pattern = "\\.csv$", full.names = TRUE)
 
@@ -371,11 +371,11 @@ missing_ids <- consensus_clean %>%
   anti_join(consensus_with_ids, by = c("year", "name", "round1", "round2", "round3", "round4", "round5", "round6", "TeamName"))
 
 if(nrow(missing_ids) > 0){
-  cat("⚠️ WARNING: These teams are still missing TeamIDs:\n")
+  cat("WARNING: These teams are still missing TeamIDs:\n")
   print(missing_ids %>% select(year, name, TeamName) %>% distinct())
   stop("ERROR: Some teams are still missing TeamIDs")
 } else {
-  cat("✅ All teams successfully matched with TeamIDs!\n")
+  cat("all teams successfully matched with TeamIDs")
 }
 
 
@@ -812,10 +812,6 @@ team_season_stats <- team_season_stats %>%
   mutate(
     YearsNCAA = coalesce(YearsNCAA, 0),
     CareerTourneyWins = coalesce(CareerTourneyWins, 0)
-  ) %>%
-  # Cap CareerTourneyWins at 15 to reduce influence of extreme values
-  mutate(
-    CareerTourneyWins = pmin(CareerTourneyWins, 20)
   )
 
 # add KenPom advanced stats and sov_scaled------------------------------------------------

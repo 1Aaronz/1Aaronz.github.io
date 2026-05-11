@@ -1,3 +1,216 @@
+# Loading libraries -------------------------------------------------------
+library(dplyr)
+library(readr)
+library(purrr)
+library(tibble)
+library(ranger)  
+library(stringr)
+library(tidyr)
+library(glmnet)
+
+# loading data into directory  --------------------------------
+# Set new data directory
+data_dir <- "csv"
+
+files <- list.files(data_dir, pattern = "\\.csv$", full.names = TRUE)
+
+data <- files %>%
+  set_names(~ str_remove(basename(.), "\\.csv$")) %>%
+  map(~ read_csv(.x, show_col_types = FALSE))
+
+# Load KenPom file
+kenpom_final <- read.csv("Rstudio work/kenpom_tournament_ready.csv")
+# Team season stats -------------------------------------------------------
+
+rs <- data$MRegularSeasonDetailedResults
+
+team_games <- bind_rows(
+  rs %>%
+    transmute(
+      Season, DayNum,
+      TeamID = WTeamID, OpponentID = LTeamID,
+      Win = 1, NumOT,
+      Points = WScore, OppPoints = LScore,
+      FGM = WFGM, FGA = WFGA, FGM3 = WFGM3, FGA3 = WFGA3,
+      FTM = WFTM, FTA = WFTA,
+      OR = WOR, DR = WDR,
+      Ast = WAst, TO = WTO,
+      Stl = WStl, Blk = WBlk,
+      PF = WPF
+    ),
+  rs %>%
+    transmute(
+      Season, DayNum,
+      TeamID = LTeamID, OpponentID = WTeamID,
+      Win = 0, NumOT,
+      Points = LScore, OppPoints = WScore,
+      FGM = LFGM, FGA = LFGA, FGM3 = LFGM3, FGA3 = LFGA3,
+      FTM = LFTM, FTA = LFTA,
+      OR = LOR, DR = LDR,
+      Ast = LAst, TO = LTO,
+      Stl = LStl, Blk = LBlk,
+      PF = LPF
+    )
+)
+
+team_season_stats <- team_games %>%
+  group_by(Season, TeamID) %>%
+  summarise(
+    Games = n(),
+    WinPct = mean(Win),
+    AvgPoints = median(Points),
+    AvgOppPoints = median(OppPoints),
+    FG2_Pct = sum(FGM - FGM3) / sum(FGA - FGA3),
+    FG3_Pct = sum(FGM3) / sum(FGA3),
+    FT_Pct = sum(FTM) / sum(FTA),
+    ThreeP_Rate = sum(FGA3) / sum(FGA),
+    OR_pg = median(OR),
+    DR_pg = median(DR),
+    Ast_pg = median(Ast),
+    TO_pg = median(TO),
+    Stl_pg = median(Stl),
+    Blk_pg = median(Blk),
+    PF_pg = median(PF),
+    AvgOT = mean(NumOT),
+    .groups = "drop"
+  )
+
+# Filter to post-2002
+team_season_stats <- team_season_stats %>%
+  filter(Season >= 2003)
+
+# Strength of victories -----------------------------------------------------
+# First, get the total number of teams per season for percentile calculation
+teams_per_season <- kenpom_final %>%
+  group_by(Season) %>%
+  summarise(n_teams = n(), .groups = "drop")
+
+# Prepare opponent KenPom ranks and join team count
+opp_kenpom <- kenpom_final %>%
+  select(Season, TeamID, Opp_RankAdjEM = RankAdjEM) %>%
+  left_join(teams_per_season, by = "Season")
+
+# Compute opponent percentile: (n_teams - rank + 1) / n_teams
+opp_kenpom <- opp_kenpom %>%
+  mutate(Opp_Percentile = (n_teams - Opp_RankAdjEM + 1) / n_teams) %>%
+  select(Season, TeamID, Opp_Percentile)
+
+# Join opponent percentiles to each game
+team_games_with_opp <- team_games %>%
+  left_join(opp_kenpom, by = c("Season", "OpponentID" = "TeamID"))
+
+# Compute scaled SOV: average percentile of opponents that the team defeated
+sov_scaled <- team_games_with_opp %>%
+  filter(Win == 1) %>%
+  group_by(Season, TeamID) %>%
+  summarise(
+    SOV_Scaled = mean(Opp_Percentile, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# coach feature -----------------------------------------------------------
+# Get all coach data from MTeamCoaches
+all_coaches <- data$MTeamCoaches %>%
+  select(Season, TeamID, CoachName) %>%
+  distinct() %>%
+  arrange(CoachName, Season)
+
+# Get tournament wins for each coach-season
+tourney_wins <- data$MNCAATourneyDetailedResults %>%
+  # Get primary coach for the winning team
+  inner_join(
+    data$MTeamCoaches %>%
+      mutate(DaysCoached = LastDayNum - FirstDayNum + 1) %>%
+      group_by(Season, TeamID) %>%
+      arrange(desc(DaysCoached)) %>%
+      dplyr::slice(1) %>%
+      ungroup() %>%
+      select(Season, TeamID, PrimaryCoach = CoachName),
+    by = c("Season", "WTeamID" = "TeamID")
+  ) %>%
+  # Count wins per primary coach per season
+  group_by(PrimaryCoach, Season) %>%
+  summarise(SeasonWins = n(), .groups = "drop") %>%
+  rename(CoachName = PrimaryCoach)
+
+# Calculate coach career statistics (using ALL historical data)
+coach_career_stats <- all_coaches %>%
+  select(CoachName, Season) %>%
+  distinct() %>%
+  left_join(tourney_wins, by = c("CoachName", "Season")) %>%
+  mutate(SeasonWins = coalesce(SeasonWins, 0)) %>%
+  arrange(CoachName, Season) %>%
+  group_by(CoachName) %>%
+  mutate(
+    # Career wins BEFORE current season
+    CareerTourneyWins = lag(cumsum(SeasonWins), default = 0),
+    # Years coached BEFORE current season
+    YearsNCAA = row_number() - 1,
+    .groups = "drop"
+  ) %>%
+  select(CoachName, Season, YearsNCAA, CareerTourneyWins)
+
+# Get primary coach for each team-season (for seasons >= 2003 to match team_season_stats)
+primary_coaches <- data$MTeamCoaches %>%
+  filter(Season >= 2003) %>%
+  mutate(DaysCoached = LastDayNum - FirstDayNum + 1) %>%
+  group_by(Season, TeamID) %>%
+  arrange(desc(DaysCoached)) %>%
+  dplyr::slice(1) %>%
+  ungroup() %>%
+  select(Season, TeamID, CoachName)
+
+# Join with existing team_season_stats
+team_season_stats <- team_season_stats %>%
+  # Remove any existing coach columns if they exist
+  select(-any_of(c("CoachName", "YearsNCAA", "CareerTourneyWins"))) %>%
+  # Join with primary coaches
+  left_join(primary_coaches, by = c("Season", "TeamID")) %>%
+  # Join with career stats
+  left_join(coach_career_stats, by = c("CoachName", "Season")) %>%
+  # Fill NA values with 0
+  mutate(
+    YearsNCAA = coalesce(YearsNCAA, 0),
+    CareerTourneyWins = coalesce(CareerTourneyWins, 0)
+  ) %>%
+  # Cap CareerTourneyWins at 15 to reduce influence of extreme values
+  mutate(
+    CareerTourneyWins = pmin(CareerTourneyWins, 20)
+  )
+
+# add KenPom advanced stats and sov_scaled------------------------------------------------
+team_season_stats <- team_season_stats %>%
+  left_join(
+    kenpom_final %>% 
+      select(Season, TeamID, AdjEM, AdjOE, AdjDE, AdjTempo, RankAdjEM) %>%
+      mutate(TeamID = as.integer(TeamID)),
+    by = c("Season", "TeamID")
+  )
+
+team_season_stats <- team_season_stats %>%
+  left_join(sov_scaled, by = c("Season", "TeamID")) %>%
+  rename(SOV = SOV_Scaled)
+
+# add seed info -----------------------------------------------------------
+# Get seed data and extract numeric seed value - SIMPLIFIED: only raw seed number
+seed_data <- data$MNCAATourneySeeds %>%
+  filter(Season >= 2003) %>%
+  mutate(
+    # Extract numeric seed (remove region letters)
+    Seed_Num = as.numeric(str_extract(Seed, "\\d+"))
+  )
+
+# Join seed information with team_season_stats
+team_season_stats <- team_season_stats %>%
+  left_join(seed_data %>% select(Season, TeamID, Seed_Num),
+            by = c("Season", "TeamID"))
+
+# For teams that didn't make the tournament (no seed), fill with appropriate value
+team_season_stats <- team_season_stats %>%
+  mutate(
+    Seed_Num = ifelse(is.na(Seed_Num), 17, Seed_Num)  # 17 = didn't make tournament
+  )
+
 # model predictors function --------------------------------------
 get_model_predictors <- function() {
   c(
@@ -881,3 +1094,106 @@ run_pipeline <- function(
     model = prediction_models
   )
 }
+
+
+
+# run it ------------------------------------------------------------------
+
+
+library(xgboost)
+
+n <- 25
+s <- 2024
+# Run with Ranger (default)
+results_ranger <- run_pipeline(
+  season = s,
+  data = data,
+  team_season_stats = team_season_stats,
+  actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
+  n_generate = n,
+  n_pick = n,
+  pick_method = "alldiverse",
+  model_type = "ranger"
+)
+
+# Run with Logistic Regression
+results_logistic <- run_pipeline(
+  season = s,
+  data = data,
+  team_season_stats = team_season_stats,
+  actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
+  n_generate = n,
+  n_pick = n,
+  pick_method = "alldiverse",
+  model_type = "logistic"
+)
+
+# Run with XGBoost
+results_xgb <- run_pipeline(
+  season = s,
+  data = data,
+  team_season_stats = team_season_stats,
+  actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
+  n_generate = n,
+  n_pick = n,
+  pick_method = "alldiverse",
+  model_type = "xgboost",
+  xgb_params = list(nrounds = 100, max_depth = 6, eta = 0.3)
+)
+
+# Run with ELO
+results_elo <- run_pipeline(
+  season = s,
+  data = data,
+  team_season_stats = team_season_stats,
+  actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
+  n_generate = n,
+  n_pick = n,
+  pick_method = "alldiverse",
+  model_type = "elo",
+  elo_pairwise_lookup = pairwise_lookup  # Your pre-computed ELO probabilities
+)
+
+results_elo_underconf <- run_pipeline(
+  season = s,
+  data = data,
+  team_season_stats = team_season_stats,
+  actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
+  n_generate = n,
+  n_pick = n,
+  pick_method = "alldiverse",
+  model_type = "elo",
+  elo_pairwise_lookup = pairwise_lookup,
+  elo_gamma = 0.25  # This matches your brier_analysis_elo_adj_underconf
+)
+
+# compare -----------------------------------------------------------------
+# Create comparison of all model scores
+all_scores <- bind_rows(
+  results_ranger$picked$scores$scores %>% mutate(Model = "Ranger"),
+  results_logistic$picked$scores$scores %>% mutate(Model = "Logistic"),
+  results_xgb$picked$scores$scores %>% mutate(Model = "XGBoost"),
+  results_elo$picked$scores$scores %>% mutate(Model = "ELO"),  
+  results_elo_underconf$picked$scores$scores %>% mutate(Model = "ELO_adj_underconf")
+)
+
+# View summary of each model's performance
+all_scores %>%
+  group_by(Model) %>%
+  summarise(
+    Avg_Score = mean(TotalPoints),
+    Max_Score = max(TotalPoints),
+    Min_Score = min(TotalPoints),
+    N_Brackets = n()
+  ) %>%
+  arrange(desc(Avg_Score))
+
+# Boxplot comparison
+ggplot(all_scores, aes(x = Model, y = TotalPoints, fill = Model)) +
+  geom_boxplot() +
+  labs(title = "Bracket Scores by Model (2024)",
+       subtitle = paste("number of brackets generated =", n),
+       y = "Total Points",
+       x = "Model") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))

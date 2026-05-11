@@ -1,0 +1,71 @@
+---
+title: "Untitled"
+editor: visual
+---
+
+## Logistic Regression
+
+The logistic regression model estimates probabilities using the logit link:
+
+$$\hat{p}_i = P(Y_i = 1 \mid \mathbf{x}_i)
+= \frac{1}{1 + e^{-(\beta_0 + \sum_{j=1}^{p} \beta_j x_{ij})}}$$
+
+Log-odds form:
+
+$$\log\left(\frac{\hat{p}_i}{1 - \hat{p}_i}\right)
+= \beta_0 + \sum_{j=1}^{p} \beta_j x_{ij}$$
+
+Log-loss objective:
+
+$$\mathcal{L} =
+-\frac{1}{n} \sum_{i=1}^{n}
+\left[
+y_i \log(\hat{p}_i) + (1 - y_i)\log(1 - \hat{p}_i)
+\right]$$
+
+## Random Forest (ranger)
+
+Random forest prediction averages across (B) trees:
+
+$$\hat{p}(x) = \frac{1}{B} \sum_{b=1}^{B} T_b(x)$$
+
+where (B = 500).
+
+Each tree is built using bootstrap samples and feature subsampling.
+
+Gini impurity:
+
+$$Gini = 1 - p^2 - (1 - p)^2$$
+
+Best split:
+
+$$s^* = \arg\min_s \text{Impurity}(s)$$
+
+## XGBoost (Gradient Boosted Trees)
+
+Prediction is a sum of boosted trees passed through a sigmoid:
+
+$$\hat{p}_i = \sigma(F(x_i)) = \frac{1}{1 + e^{-F(x_i)}}$$
+
+with:
+
+$$F(x) = \sum_{k=1}^{K} f_k(x)$$
+
+Boosting update:
+
+$$F_t(x) = F_{t-1}(x) + \eta f_t(x)$$
+
+Objective function:
+
+$$\mathcal{L} = \sum_{i=1}^{n} \ell(y_i, \hat{p}_i) + \sum_{k=1}^{K} \Omega(f_k)$$
+
+Logistic loss:
+
+$$\ell(y, \hat{p}) =
+- \left[y \log(\hat{p}) + (1 - y)\log(1 - \hat{p})\right]$$
+
+Regularization:
+
+$$\Omega(f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^{T} w_j^2$$
+
+where (T) is the number of leaves.
