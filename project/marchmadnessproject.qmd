@@ -29,6 +29,7 @@ format:
 
 ```{r setup}
 #| include: false
+library(gt)
 library(tidyverse)
 library(skimr)
 library(ggthemes)
@@ -68,7 +69,26 @@ theme_set(theme_ipsum()+
                 )
           )
 
-
+get_model_predictors <- function() {
+  c(
+    #"WinPct", 
+    "AvgPoints", "AvgOppPoints", 
+    "FG2_Pct", "FG3_Pct", "FT_Pct", 
+    #"ThreeP_Rate", 
+    "OR_pg", "DR_pg", 
+    #"Ast_pg", 
+    "TO_pg", 
+    #"Stl_pg", 
+    #"Blk_pg", 
+    #"PF_pg", 
+    #"YearsNCAA", 
+    "CareerTourneyWins",
+    #"Momentum",
+    "SOV",
+    "AdjEM", "AdjOE", "AdjDE", "RankAdjEM",
+    "AdjTempo"
+  )
+}
 # Feel free to use below global options for color-blind-friendly scales
 # scale_colour_discrete <- function(...) scale_colour_viridis_d(...)
 # scale_fill_discrete <- function(...) scale_fill_viridis_d(...)
@@ -109,6 +129,7 @@ Public picks data: mRchmadness package, which scrapes data from ESPN
 There is a large number of csv files that could be useful for the analysis, so I load the data into a directory to pull each csv as needed
 
 ```{r}
+#| echo: true
 data_dir <- "csvs"
 
 files <- list.files(
@@ -130,25 +151,28 @@ data <- files %>%
 kenpom_final <- data$kenpom_tournament_ready
 ```
 
-The full data directory shown in Appendix D
+The full data directory is shown in Appendix D
 
 ## Data summary
 
 ### Regular season stats
 
 ```{r}
+#| echo: true
 skim(data$MRegularSeasonDetailedResults)
 ```
 
 ### Advanced efficiency metrics
 
 ```{r}
+#| echo: true
 skim(data$INT_KenPom_Summary_Pre_Tourny)
 ```
 
 ### Public pick data
 
 ```{r}
+#| echo: true
 skim(data$"consensus1")
 ```
 
@@ -203,7 +227,7 @@ AdjTempo= Adjusted tempo, measured in possessions per 40 minutes and adjusted fo
 #### Creating the data frame team_season_stats from MRegularSeasonDetailedResults
 
 ```{r}
-
+#| echo: true
 rs <- data$MRegularSeasonDetailedResults
 
 team_games <- bind_rows(
@@ -265,7 +289,7 @@ team_season_stats <- team_season_stats %>%
 #### Creating SOV and CareerTourneyWins
 
 ```{r}
-
+#| echo: true
 # Strength of victories -----------------------------------------------------
 # First, get the total number of teams per season for percentile calculation
 teams_per_season <- kenpom_final %>%
@@ -353,6 +377,7 @@ primary_coaches <- data$MTeamCoaches %>%
 #### Left joining strength of victory, coach historical success, and Kenpom metrics to team season stats
 
 ```{r}
+#| echo: true
 team_season_stats <- team_season_stats %>%
   left_join(
     kenpom_final %>% 
@@ -381,15 +406,48 @@ team_season_stats <- team_season_stats %>%
 
 Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A)
 
+#### Adding seed information
+
+```{r}
+# Get seed data and extract numeric seed value - SIMPLIFIED: only raw seed number
+seed_data <- data$MNCAATourneySeeds %>%
+  filter(Season >= 2003) %>%
+  mutate(
+    # Extract numeric seed (remove region letters)
+    Seed_Num = as.numeric(str_extract(Seed, "\\d+"))
+  )
+
+# Join seed information with team_season_stats
+team_season_stats <- team_season_stats %>%
+  left_join(seed_data %>% select(Season, TeamID, Seed_Num),
+            by = c("Season", "TeamID"))
+
+# For teams that didn't make the tournament (no seed), fill with appropriate value
+team_season_stats <- team_season_stats %>%
+  mutate(
+    Seed_Num = ifelse(is.na(Seed_Num), 17, Seed_Num)  # 17 = didn't make tournament
+  )
+```
+
 #### Summary Statistics of team_season_stats
 
 ```{r summary-statistics}
+#| echo: true
 skim(team_season_stats)
 ```
 
 ## Cleaning Public Picks into a comparison model
 
 This code provides the full pipeline from the original consensus picks data frame, which provides public pick data from ESPN, and converts into a model that compares teams for each year and decides win probability based on how often each team was picked. A more in depth explanation of this process can be found in the Empirical Methods section.
+
+```{r}
+#| include: FALSE
+
+#debugging #the rendering literally breaks if i dont do this
+print("CHECKPOINT BEFORE CHUNK 11")
+print(names(team_season_stats))
+stopifnot("Seed_Num" %in% names(team_season_stats))
+```
 
 ```{r}
 consensus1 <- (data$consensus1)
@@ -621,6 +679,7 @@ pairwise_probs <- df_strength %>%
 ### Final model data frame
 
 ```{r}
+#| echo: true
 pairwise_lookup <- pairwise_probs %>%
   select(year, TeamA, TeamB, matchup_prob)
 
@@ -662,6 +721,7 @@ For each year the model is to predict, the model gets retrained on all previous 
 ## Public Picks (comparison model)
 
 ```{r}
+#| echo: true
 data$"Public Picks" %>% 
   head(5)
 ```
@@ -702,9 +762,11 @@ Brier score is essentially an average mean score error on model predictions
 
 $$\text{Log Loss} = -\frac{1}{N}\sum_{i=1}^{N}\left[o_i\log(p_i) + (1-o_i)\log(1-p_i)\right]$$
 
-- $p_i$ = predicted probability
-- $o_i$ = observed outcome (0 for a loss, 1 for a win)
-- $N$ = number of predictions
+$p_i$ = predicted probability
+
+$o_i$ = observed outcome (0 for a loss, 1 for a win)
+
+$N$ = number of predictions
 
 Log-loss measures how wrong each model is on average. Models score exponentially worse when they are more confident in a wrong prediction.
 
@@ -742,6 +804,78 @@ This gives a score for each bracket each model generates, which we can use to co
 
 # Results
 
+## PCA analysis
+
+```{r}
+#| echo: true
+pca_base <- team_season_stats %>%
+  filter(Seed_Num <= 16) %>%
+  select(Season, TeamID, all_of(get_model_predictors())) %>%
+  drop_na()
+
+pca_model <- prcomp(
+  pca_base %>% select(-Season, -TeamID),
+  scale. = TRUE,
+  center = TRUE
+)
+
+#check bindings
+pca_model$rotation
+
+pca_scores <- bind_cols(
+  pca_base %>% select(Season, TeamID),
+  as.data.frame(pca_model$x)
+)
+
+pca_scores %>%
+  filter(Season >= 2021, Season <= 2026) %>%
+  left_join(
+    team_season_stats %>% select(Season, TeamID, Seed_Num),
+    by = c("Season", "TeamID")
+  ) %>%
+  mutate(is_one_seed = ifelse(Seed_Num == 1, "1 Seed", "Other Seed")) %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_point(
+    aes(color = Seed_Num, shape = is_one_seed),
+    alpha = 0.8,
+    size = 2.5
+  ) +
+  facet_wrap(~ Season) +
+  scale_shape_manual(values = c("1 Seed" = 8, "Other Seed" = 16)) +
+  scale_color_viridis_c(option = "plasma") +
+  labs(
+    title = "PCA of Tournament Teams by Year",
+    subtitle= "One seeds are starred",
+    shape = "Seed Type",
+    color = "Seed Number"
+  ) +
+  theme_minimal()
+```
+
+### Variance explained
+
+```{r}
+#| echo: true
+year <- "2025" #model is subject to change depending on the year
+
+# variance explained
+var_explained <- pca_model$sdev^2
+prop_var_explained <- var_explained / sum(var_explained)
+
+variance_df <- data.frame(
+  PC = paste0("PC", seq_along(prop_var_explained)),
+  Variance_Explained = prop_var_explained,
+  Cumulative = cumsum(prop_var_explained)
+)
+pc12_df <- data.frame(
+  Component = c("PC1", "PC2"),
+  Variance_Explained = prop_var_explained[1:2],
+  Cumulative = cumsum(prop_var_explained[1:2])
+)
+
+pc12_df %>% gt()
+```
+
 ## Brier score results
 
 ```{r results-table}
@@ -771,7 +905,114 @@ p2 <- ggplot(data$comparison, aes(x = Evaluation_Year, y = LogLoss, color = Mode
 p2+scale_color_viridis_d()
 ```
 
+## Bracket simulation results
+
+```{r}
+q3_lines <- data$combined_scores %>%
+  group_by(Year, Model) %>%
+  summarise(Q3 = quantile(TotalPoints, 0.75), .groups = "drop") %>%
+  group_by(Year) %>%
+  slice_max(Q3, n = 1, with_ties = FALSE) %>%
+  ungroup()
+
+# Faceted boxplot by year
+ggplot(data$combined_scores, aes(x = Model, y = TotalPoints, fill = Model)) +
+  geom_boxplot() +
+  
+  geom_hline(
+    data = q3_lines,
+    aes(yintercept = Q3),
+    color = "red",
+    linetype = "dotted",
+    linewidth = 1,
+    alpha=.5
+  ) +
+  
+  facet_wrap(~Year, ncol = 3, scales = "free_y") +
+  labs(
+    title = "Bracket Scores by Model (2021-2025)",
+    subtitle = paste("Best model 3rd quartile denoted by red dotted line"),
+    y = "Total Points",
+    x = "Model"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.background = element_rect(fill = "lightgray", color = NA),
+    strip.text = element_text(size = 12, face = "bold")
+  )+
+  scale_fill_viridis_d()
+```
+
+These results are further explained by championship accuracies:
+
+```{r}
+combined_champs<- data$champion_predictions_all_models2
+
+year_summary <- combined_champs %>%
+  group_by(Year, Model) %>%
+  summarise(
+    Accuracy = mean(Correct, na.rm = TRUE) * 100,
+    Correct = sum(Correct, na.rm = TRUE),
+    Total = n(),
+    .groups = "drop"
+  )
+
+cat("\n", paste(rep("=", 60), collapse = ""), "\n")
+cat("ACCURACY BY YEAR\n")
+cat(paste(rep("=", 60), collapse = ""), "\n")
+print(year_summary)
+
+# Plot 1: Champion accuracy by model and year (all 5 models)
+# Use year_summary instead of accuracy_summary for faceted plot
+year_summary <- year_summary %>%
+  mutate(Model = ifelse(Model == "Ranger", "Random_Forest", Model))
+
+p2_faceted <- ggplot(year_summary, aes(x = reorder(Model, Accuracy), y = Accuracy, fill = Model)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(Accuracy, 1), "%\n")), 
+            hjust = -0.1, size = 3) +
+  coord_flip() +
+  facet_wrap(~Year, ncol = 2, scale="free_x") +
+  labs(
+    title = "Champion Prediction Accuracy by Model and Year",
+    x = "Model",
+    y = "Accuracy (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(p2_faceted+scale_fill_viridis_d())
+
+# Plot 2: Overall accuracy bar chart (all 5 models)
+accuracy_summary <- data$accuracy_summary_all_models2 %>%
+  mutate(Model = ifelse(Model == "Ranger", "Random_Forest", Model))
+
+p2 <- ggplot(accuracy_summary, aes(x = reorder(Model, Accuracy), y = Accuracy, fill = Model)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(Accuracy, 1), "%\n(", Correct, "/", Total, ")")), 
+            hjust = -0.1, size = 4) +
+  coord_flip() +
+  labs(
+    title = "Overall Champion Prediction Accuracy by Model",
+    x = "Model",
+    y = "Accuracy (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  ylim(0, max(accuracy_summary$Accuracy, na.rm = TRUE) + 10)
+
+print(p2+scale_fill_viridis_d())
+
+# Optional: Save results
+#   write.csv(combined_champs, "champion_predictions_all_models2.csv", row.names = FALSE)
+#   write.csv(accuracy_summary, "accuracy_summary_all_models2.csv", row.names = FALSE)
+```
+
 # Discussion and Implications
+
+## PCA and Linear Regression analysis
 
 ## Brier Score and Log-loss analysis
 
@@ -1900,7 +2141,7 @@ results_ranger <- run_pipeline(
   actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
   n_generate = n,
   n_pick = n,
-  pick_method = "alldiverse",
+  pick_method = "random",
   model_type = "ranger"
 )
 
@@ -1912,7 +2153,7 @@ results_logistic <- run_pipeline(
   actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
   n_generate = n,
   n_pick = n,
-  pick_method = "alldiverse",
+  pick_method = "random",
   model_type = "logistic"
 )
 
@@ -1924,7 +2165,7 @@ results_xgb <- run_pipeline(
   actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
   n_generate = n,
   n_pick = n,
-  pick_method = "alldiverse",
+  pick_method = "random",
   model_type = "xgboost",
   xgb_params = list(nrounds = 100, max_depth = 6, eta = 0.3)
 )
@@ -1937,7 +2178,7 @@ results_elo <- run_pipeline(
   actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
   n_generate = n,
   n_pick = n,
-  pick_method = "alldiverse",
+  pick_method = "random",
   model_type = "elo",
   elo_pairwise_lookup = pairwise_lookup  # Your pre-computed ELO probabilities
 )
@@ -1949,7 +2190,7 @@ results_elo_underconf <- run_pipeline(
   actual_slot_winners = bracket_year_historical(s, data) %>% select(Slot, Winner, GameRound),
   n_generate = n,
   n_pick = n,
-  pick_method = "alldiverse",
+  pick_method = "random",
   model_type = "elo",
   elo_pairwise_lookup = pairwise_lookup,
   elo_gamma = 0.25  # This matches your brier_analysis_elo_adj_underconf
@@ -1975,6 +2216,8 @@ all_scores %>%
     N_Brackets = n()
   ) %>%
   arrange(desc(Avg_Score))
+
+#write.csv(combined_scores, "combined_scores")
 ```
 
 ### C.2 Pipeline for brier score and log-loss

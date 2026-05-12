@@ -1,0 +1,6 @@
+"Model","Accuracy","Correct","Total"
+"Consensus",21.3333333333333,128,600
+"XGBoost",16.8333333333333,101,600
+"Logistic",15,90,600
+"Random_Forest",10.1666666666667,61,600
+"linear_pca",7.5,45,600
