@@ -78,15 +78,13 @@ theme_set(theme_ipsum()+
 
 # Introduction
 
-Describe the real-world motivation for your project. Clearly state your research question and explain why it matters.
-
-Briefly preview your data, empirical approach, main findings, and contribution.
-
 March Madness is an annual tournament for division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.
 
-The research question is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
+## Research Question
 
-I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets
+The research question this project aims to answer is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
+
+To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets
 
 The goal is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.
 
@@ -106,15 +104,63 @@ Advanced efficiency metrics: Kenpom
 
 Public picks data: mRchmadness package, which scrapes data from ESPN
 
+## Loading the data
+
+There is a large number of csv files that could be useful for the analysis, so I load the data into a directory and pull each
+
+```{r}
+data_dir <- "csvs"
+
+files <- list.files(
+  data_dir,
+  pattern = "\\.csv$",
+  full.names = TRUE
+)
+
+data <- files %>%
+  set_names(tools::file_path_sans_ext(basename(.))) %>%
+  map(~ tryCatch(
+    read_csv(.x, show_col_types = FALSE),
+    error = function(e) {
+      message("Error reading: ", .x)
+      NULL
+    }
+  ))
+
+kenpom_final <- data$kenpom_tournament_ready
+
+data
+```
+
+## Data summary
+
+### Regular season stats
+
+```{r}
+skim(data$MRegularSeasonDetailedResults)
+```
+
+### Advanced efficiency metrics
+
+```{r}
+skim(data$INT_KenPom_Summary_Pre_Tourny)
+```
+
+### Public pick data
+
+```{r}
+skim(data$"Public Picks")
+```
+
 ## Unit of Observation
 
-Each observation represents team-level pre-tournament aggregate data
+Each observation of MRegularSeasonDetailedResults represents game-level data for each match-up in the regular season.
+
+Each observation of INT_KenPom_Summary_Pre_Tourny represents team-level pre-tournament aggregate data
 
 ## Key Variables
 
-Describe your outcome variable, main explanatory variables, and important control variables.
-
-The outcome variable we are predicting for is win probability.
+The outcome variable we are predicting for is win probability this following are the variables used to build difference features for each machine learning model:
 
 WinPct= Win percentage
 
@@ -150,29 +196,7 @@ AdjTempo= Adjusted tempo, measured in possessions per 40 minutes and adjusted fo
 
 ## Data Cleaning
 
-Explain major cleaning steps, sample restrictions, missing values, and variable construction.
-
-loading data into a directory
-
-```{r}
-data_dir <- "csvs"
-
-files <- list.files(
-  data_dir,
-  pattern = "\\.csv$",
-  full.names = TRUE
-)
-
-data <- files %>%
-  set_names(tools::file_path_sans_ext(basename(.))) %>%
-  map(~ tryCatch(
-    read_csv(.x, show_col_types = FALSE),
-    error = function(e) {
-      message("Error reading: ", .x)
-      NULL
-    }
-  ))
-```
+### Creating the data frame team_season_stats from MRegularSeasonDetailedResults
 
 ```{r}
 
@@ -229,15 +253,12 @@ team_season_stats <- team_games %>%
     .groups = "drop"
   )
 
-
-```
-
-```{r}
-kenpom_final <- data$kenpom_tournament_ready
 # Filter to post-2002
 team_season_stats <- team_season_stats %>%
   filter(Season >= 2003)
 ```
+
+### Creating SOV and CareerTourneyWins
 
 ```{r}
 
@@ -325,7 +346,7 @@ primary_coaches <- data$MTeamCoaches %>%
 
 ```
 
-Adding strength of victory, coach historical success, and Kenpom metrics to team season stats
+### Left joining strength of victory, coach historical success, and Kenpom metrics to team season stats
 
 ```{r}
 team_season_stats <- team_season_stats %>%
@@ -359,23 +380,44 @@ Kenpom efficiency metrics had to be cleaned to be able to left join to team_seas
 ## Summary Statistics
 
 ```{r summary-statistics}
-# Replace this example with your own data and summary statistics.
-# skim(your_data)
+skim(team_season_stats)
 ```
 
 # Empirical Strategy / Methods
 
-Describe the method used to answer your research question. This may include regression, classification, clustering, forecasting, text analysis, or another data analytics method.
+## Machine learning models
 
-Linear Regression Using PC1 and PC2:
+### Linear regression
+
+For linear regression, we use the first two principle components resulting from the principal component analysis of the predictor variables.
 
 $$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$
 
-where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first explanatory variable, $PC_2X_{it}$ is the second explanatory variable, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.
+where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first principal component of the predictor variables, $PC_2X_{it}$ is the second explanatory of the predictor variables, and $\varepsilon_{i}$ is the error term. We then cap the maximum probability at 100% and the minimum at 0%.
 
-The methodology to create a public consensus-based model is as follows:
+### Logistic regression
 
-We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula: $$Strength = r_1 + 2r_2 + 4r_3 + 8r_4 + 16r_5 + 32r_6$$ We normalize the strength to each season by dividing each strength value by the highest strength value for the given year. $$Strength_{\mathrm{norm}} = \frac{Strength}{\max(Strength)}$$
+$$p(Y=1 \mid X_1, X_2)
+=
+\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}$$
+
+$X_{j,1}$ and $X_{j,2}$ are team-level stats for team 1 and team 2.
+
+### Random Forest
+
+### Elastic Net
+
+### Training the models
+
+For each year the model is to predict, the model gets retrained on all previous years.
+
+## Public Picks (comparison model)
+
+We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula:
+
+$$Strength = r_1 + 2r_2 + 4r_3 + 8r_4 + 16r_5 + 32r_6$$
+
+We normalize the strength to each season by dividing each strength value by the highest strength value for the given year. $$Strength_{\mathrm{norm}} = \frac{Strength}{\max(Strength)}$$
 
 We convert the normalized strength value into an ELO metric
 
@@ -387,13 +429,55 @@ $$P(\text{A beats B}) = \frac{1}{1 + 10^{\frac{ELO_B - ELO_A}{500}}}$$
 
 Where $A$ refers to team A, and $B$ refers to team B.
 
-Logistic regression: $$p(Y=1 \mid X_1, X_2)
-=
-\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}$$
+## Evaluation methodology
 
-$X_{j,1}$ and   $X_{j,2}$ are team-level stats for team 1 and team 2.
+### Brier Score:
 
-If your project uses machine learning or prediction, explain your train/test split, cross-validation, model tuning, and performance metrics.
+$$\text{Brier Score} = \frac{1}{N}\sum_{i=1}^{N}(p_i - o_i)^2$$
+
+- $p_i$ = predicted probability
+- $o_i$ = observed outcome (0 for a loss, 1 for a win)
+- \$N\$ = number of predictions
+
+### Log-Loss:
+
+$$\text{Log Loss} = -\frac{1}{N}\sum_{i=1}^{N}\left[o_i\log(p_i) + (1-o_i)\log(1-p_i)\right]$$
+
+- $p_i$ = predicted probability
+- $o_i$ = observed outcome (0 for a loss, 1 for a win)
+- $N$ = number of predictions
+
+### Simulated Brackets
+
+To evaluate the models on simulated brackets, first we run simulations with the following method:
+
+$$Y_{g,b} \sim \operatorname{Bernoulli}(p_{g,b}), \qquad g=1,\dots,63,\ b=1,\dots,100$$
+
+$Y_{g,b}$ = the simulated outcome of game $g$ in bracket simulation $b$
+
+$Bernoulli(p_{g,b})$ = a random draw with probability $p_{g,b}​$
+
+$$B_b = \{Y_{1,b},Y_{2,b},\dots,Y_{63,b}\}$$
+
+$B_b$ = one complete simulated tournament bracket with all random draws chosen for all 63 games
+
+These simulation are run 100 times
+
+#### Scoring brackets
+
+The brackets are scored on the following formula:
+
+$$S({B}) = \sum_{r=1}^{6} w_r C_r$$
+
+$$(w_1,w_2,w_3,w_4,w_5,w_6) = (1,1,2,3,5,8)$$
+
+$S(B)$ = Total score for bracket $B$
+
+$C_r$ = Total number of correct picks for round $r$
+
+$w_r$ = point value for round $r$, ranging from 1 point for the first round up to 8 points for the championship game
+
+This gives a score for each bracket each model generates, which we can use to compare to other models
 
 # Results
 
@@ -425,10 +509,194 @@ Briefly suggest possible future extensions.
 
 # References
 
-List all sources cited in your project, including data sources, academic articles, reports, websites, packages, and tools.
-
-For online sources, include the full URL and date/time accessed.
+Shayer, E., & Powers, S. (2017). *mRchmadness: Numerical tools for filling out an NCAA basketball tournament bracket* (Version 1.0.0) \[R package\]. CRAN. https://CRAN.R-project.org/package=mRchmadness. Accessed 4/26/2026.
 
 # Appendix
 
-Include additional tables, figures, robustness checks, code explanations, or variable definitions if needed.
+## Appendix A
+
+### Kenpom Cleaning
+
+```{r}
+# --- 1. LOAD KENPOM DATA WITH ALL STATS ---
+kenpom1 <- data$INT_KenPom_Summary_Pre_Tourny %>%
+  select(Season, TeamName, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo) %>%
+  mutate(TeamName = tolower(trimws(TeamName)))
+
+#---------- 2026 years kenpom
+kenpom2 <- data$INT_KenPom_Summary_2026 %>% 
+  select(Season, TeamName, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo) %>%
+  filter(Season==2026) %>% 
+  mutate(TeamName = tolower(trimws(TeamName)))
+
+kenpom <- bind_rows(kenpom1,kenpom2)
+
+# Load spellings and team info
+spellings <- data$MTeamSpellings %>%
+  mutate(TeamNameSpelling = tolower(trimws(
+    iconv(TeamNameSpelling, from = "latin1", to = "UTF-8", sub = " ")
+  ))) %>%
+  distinct(TeamNameSpelling, .keep_all = TRUE)
+
+# --- 2. COMPREHENSIVE MANUAL MAPPINGS ---
+# These handle all known name variations and historical name changes
+manual_mappings <- data.frame(
+  TeamName = c(
+    # Louisiana Lafayette variations
+    "louisiana lafayette", "louisiana-lafayette", "ull",
+    # Illinois Chicago variations
+    "illinois chicago", "illinois-chicago", "uic",
+    # Texas A&M Corpus Christi
+    "texas a&m corpus chris", "texas a&m-corpus christi", "a&m-corpus chris", "texas a&m-cc", "corpus christi",
+    # Mississippi Valley State
+    "mississippi valley st.", "mississippi valley state", "miss valley st.",
+    # Arkansas Pine Bluff
+    "arkansas pine bluff", "ark pine bluff", "uapb",
+    # Arkansas Little Rock
+    "arkansas little rock", "ark little rock", "ualr", "little rock",
+    # Cal State Bakersfield
+    "cal st. bakersfield", "cal state bakersfield", "csu bakersfield", "cs bakersfield", "bakersfield",
+    # Southeast Missouri State
+    "southeast missouri st.", "southeast missouri state", "se missouri st", "se missouri state", "semo",
+    # Texas State
+    "texas state", "texas st.", "southwest texas st.", "southwest texas state",
+    # UT Rio Grande Valley
+    "ut rio grande valley", "texas-rio grande valley", "utrgv", "texas pan american", "texas-pan american",
+    # IUPUI / IU Indy
+    "iupui", "iu indy", "indianapolis",
+    # LIU
+    "liu", "long island", "long island university", "liu brooklyn",
+    # Queens
+    "queens", "queens nc", "queens university",
+    # Saint Francis (NY)
+    "st. francis ny", "st francis ny", "saint francis ny", "st. francis (ny)", "saint francis (ny)",
+    # Saint Francis (PA)
+    "st. francis pa", "st francis pa", "saint francis pa", "st. francis (pa)", "saint francis (pa)",
+    # Green Bay
+    "green bay", "wisconsin green bay", "wisconsin-green bay",
+    # Milwaukee
+    "milwaukee", "wisconsin milwaukee", "wisconsin-milwaukee",
+    # Utah Tech / Dixie State
+    "utah tech", "dixie st.", "dixie state",
+    # Texas A&M Commerce
+    "texas a&m commerce", "tx a&m commerce", "east texas a&m",
+    # Missouri State
+    "missouri state", "missouri st.", "southwest missouri st.",
+    # McNeese
+    "mcneese", "mcneese st.", "mcneese state",
+    # Nicholls
+    "nicholls", "nicholls st.", "nicholls state",
+    # Troy
+    "troy", "troy st.",
+    # Utah Valley
+    "utah valley", "utah valley st.", "utah valley state",
+    # Detroit Mercy
+    "detroit mercy", "detroit", "detroit-mercy",
+    # SIU Edwardsville
+    "siue", "siu edwardsville", "southern illinois edwardsville",
+    # UMKC / Kansas City
+    "umkc", "kansas city", "missouri-kansas city",
+    # Purdue Fort Wayne
+    "purdue fort wayne", "ipfw", "fort wayne", "pfw",
+    # Charleston
+    "charleston", "college of charleston",
+    # CSUN
+    "csun", "cal st. northridge", "cal state northridge",
+    # Middle Tennessee
+    "middle tennessee", "middle tennessee st.", "mtsu",
+    # Additional tournament-relevant teams
+    "louisiana monroe", "st francis (pa)", "bethune-cookman", 
+    "maryland - e. shore", "tarleton st", "tarleton state",
+    "st. thomas", "tarleton st.", "winston salem st.", "tennessee martin"
+  ),
+  TeamID = c(
+    rep(1418, 3), rep(1227, 3), rep(1394, 5), rep(1290, 3),
+    rep(1115, 3), rep(1114, 4), rep(1167, 5), rep(1369, 5),
+    rep(1402, 4), rep(1410, 5), rep(1237, 3), rep(1254, 4),
+    rep(1474, 3), rep(1383, 5), rep(1382, 5),
+    rep(1453, 3), rep(1454, 3), rep(1469, 3), rep(1477, 3),
+    rep(1283, 3), rep(1270, 3), rep(1311, 3), rep(1407, 2),
+    rep(1430, 3), rep(1178, 3), rep(1188, 3), rep(1282, 3),
+    rep(1236, 4), rep(1158, 2), rep(1169, 3), rep(1292, 3),
+    # Additional IDs
+    1398, 1384, 1126, 1271, 1470, 1470, 1384, 1468, 1475, 1404
+  ),
+  stringsAsFactors = FALSE
+) %>%
+  distinct(TeamName, .keep_all = TRUE)
+
+# --- 3. EXACT MATCHES ---
+exact <- kenpom %>%
+  left_join(spellings, by = c("TeamName" = "TeamNameSpelling")) %>%
+  filter(!is.na(TeamID)) %>%
+  mutate(method = "exact")
+
+# --- 4. MANUAL MATCHES (apply first) ---
+manual <- kenpom %>%
+  filter(TeamName %in% manual_mappings$TeamName) %>%
+  left_join(manual_mappings, by = "TeamName") %>%
+  mutate(method = "manual")
+
+# --- 5. FUZZY MATCH FOR REMAINING ---
+already_matched <- unique(c(exact$TeamName, manual$TeamName))
+fuzzy_candidates <- kenpom %>%
+  filter(!TeamName %in% already_matched) %>%
+  distinct(TeamName) %>%
+  pull(TeamName)
+
+fuzzy_list <- list()
+for (team in fuzzy_candidates) {
+  dists <- stringdist(team, spellings$TeamNameSpelling, method = "jw")
+  best <- which.min(dists)
+  if (dists[best] <= 0.2) {
+    # Get the matched spelling and TeamID
+    matched_spelling <- spellings$TeamNameSpelling[best]
+    matched_id <- spellings$TeamID[best]
+    
+    # Retrieve the full KenPom row for that team (Season, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo)
+    full_row <- kenpom %>% filter(TeamName == team)
+    if (nrow(full_row) > 0) {
+      fuzzy_list[[team]] <- full_row %>%
+        mutate(
+          TeamID = matched_id,
+          matched_spelling = matched_spelling,
+          dist = dists[best],
+          method = "fuzzy"
+        )
+    }
+  }
+}
+fuzzy <- bind_rows(fuzzy_list)
+
+# --- 6. COMBINE ALL MATCHES ---
+# Join back to full KenPom data (keeping all stats including RankAdjEM)
+kenpom_final <- bind_rows(
+  exact %>% select(Season, TeamName, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo, TeamID, method),
+  manual %>% select(Season, TeamName, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo, TeamID, method),
+  fuzzy %>% select(Season, TeamName, AdjEM, RankAdjEM, AdjOE, AdjDE, AdjTempo, TeamID, method)
+) %>%
+  distinct(Season, TeamID, .keep_all = TRUE) %>%   # one row per team-season
+  arrange(Season, TeamID)
+
+# --- 8. FINAL VERIFICATION ---
+cat("\n", strrep("=", 60), "\n")
+cat("FINAL KENPOM DATASET\n")
+cat(strrep("=", 60), "\n")
+cat("Rows:", nrow(kenpom_final), "\n")
+cat("Unique teams:", n_distinct(kenpom_final$TeamID), "\n")
+cat("Seasons:", min(kenpom_final$Season, na.rm=TRUE), "-", max(kenpom_final$Season, na.rm=TRUE), "\n")
+
+# Verify tournament teams (2003+)
+tourney_teams <- data$MNCAATourneySeeds %>%
+  filter(Season >= 2003) %>%
+  distinct(TeamID) %>%
+  pull(TeamID)
+
+missing <- setdiff(tourney_teams, kenpom_final$TeamID)
+if (length(missing) == 0) {
+  cat("\n✅ TOURNAMENT TEAMS (2003+): ALL", length(tourney_teams), "PRESENT\n")
+} else {
+  cat("\n⚠️ Missing tournament teams:", length(missing), "\n")
+  cat("Missing IDs:", paste(missing, collapse = ", "), "\n")
+}
+```
