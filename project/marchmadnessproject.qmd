@@ -1241,6 +1241,7 @@ However, despite finding that public picks was overconfident and that scaling th
 #### Bracket simulation function
 
 ```{r}
+#| execute: FALSE
 # model predictors function --------------------------------------
 get_model_predictors <- function() {
   c(
@@ -2129,6 +2130,7 @@ run_pipeline <- function(
 
 ```{r}
 #| execute: FALSE
+#| echo: FALSE
 library(xgboost)
 
 n <- 1 #Number of simulations. Be aware, 100 simulations is computationally expensive.
@@ -2225,6 +2227,7 @@ all_scores %>%
 #### Full pipeline for brier score and log-loss
 
 ```{r}
+#| execute: FALSE
 calculate_brier_by_year_iterative_ranger <- function(
     data,
     team_season_stats,
@@ -2679,7 +2682,7 @@ calculate_brier_by_year_iterative_xgb <- function(
       maximize = FALSE
     )
     
-    # FIX: Check if early stopping occurred and extract values safely
+    # Check if early stopping occurred and extract values safely
     if (!is.null(xgb_model$best_iteration)) {
       best_nrounds <- xgb_model$best_iteration
       best_logloss <- xgb_model$best_score
@@ -2852,9 +2855,7 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     
     cat("\nPCA + Linear Regression on", eval_year, "\n")
     
-    # ========================
-    # TRAIN DATA
-    # ========================
+    # TRAIN DATA=====================
     train_data <- build_training_data_balanced(
       data = data,
       team_season_stats = team_season_stats %>% filter(Season < eval_year),
@@ -2871,9 +2872,7 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     x_train <- x_train[keep, , drop = FALSE]
     y_train <- y_train[keep]
     
-    # ========================
-    # PCA (ONLY PC1 and PC2)
-    # ========================
+    # PCA (ONLY PC1 and PC2)==================
     pca_model <- prcomp(x_train, center = TRUE, scale. = TRUE)
     
     # Check how many components we have
@@ -2891,18 +2890,14 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     
     pca_train$Win <- y_train
     
-    # ========================
-    # LINEAR REGRESSION (ONLY PC1 + PC2)
-    # ========================
+    # LINEAR REGRESSION (ONLY PC1 + PC2)=====================
     lm_model <- lm(Win ~ PC1 + PC2, data = pca_train)
     
     train_pred <- predict(lm_model)
     train_brier <- mean((train_pred - y_train)^2)
     cat("  Training Brier:", round(train_brier, 4), "\n")
     
-    # ========================
-    # TEST DATA
-    # ========================
+    # TEST DATA=====================
     tourney_games <- data$MNCAATourneyCompactResults %>%
       filter(Season == eval_year) %>%
       select(WTeamID, LTeamID)
@@ -2969,9 +2964,7 @@ calculate_brier_by_year_iterative_pca_lm <- function(
       next
     }
     
-    # ========================
-    # METRICS
-    # ========================
+    # METRICS====================
     brier_score <- mean((predictions$Pred_Prob - predictions$Actual_Win)^2)
     
     epsilon <- 1e-15
@@ -3033,9 +3026,7 @@ calculate_brier_by_year_iterative_elo <- function(
     cat("║        Evaluating ELO model on", eval_year, "tournament        ║\n")
     cat("╚══════════════════════════════════════════════════════════════╝\n\n")
     
-    # ========================
-    # GET TOURNAMENT GAMES
-    # ========================
+    # GET TOURNAMENT GAMES======================
     tourney_games <- data$MNCAATourneyCompactResults %>%
       dplyr::filter(Season == eval_year) %>%
       dplyr::select(WTeamID, LTeamID)
@@ -3045,9 +3036,7 @@ calculate_brier_by_year_iterative_elo <- function(
     
     if (n_total_games == 0) next
     
-    # ========================
-    # RANDOMIZE GAME DIRECTION #possibly not needed for consensus picks
-    # ========================
+    # RANDOMIZE GAME DIRECTION #possibly not needed for consensus picks----
     set.seed(seed)
     
     evaluation_games <- tourney_games %>%
@@ -3061,9 +3050,7 @@ calculate_brier_by_year_iterative_elo <- function(
       dplyr::ungroup() %>%
       dplyr::select(Team1, Team2, Actual_Win)
     
-    # ========================
-    # GET ELO PREDICTIONS
-    # ========================
+    # GET ELO PREDICTIONS======================
     predictions <- data.frame(
       Actual_Win = evaluation_games$Actual_Win,
       Pred_Prob = NA_real_
