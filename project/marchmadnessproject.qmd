@@ -702,13 +702,23 @@ We cap the maximum probability at 1 and the minimum at 0
 
 ### Logistic regression
 
+$$z = \beta_0 + \sum_{j=1}^v \beta_j (X_{j,1} - X_{j,2})$$
+
 $$p(Y=1 \mid X_1, X_2)
 =
-\frac{1}{1 + \exp\left(-\left(\beta_0 + \sum_{j=1}^p \beta_j (X_{j,1} - X_{j,2})\right)\right)}$$
+\frac{1}{1 + e^{-z}}$$
 
-$X_{j,1}$ and $X_{j,2}$ are team-level stats for team 1 and team 2.
+Where $X_{j,1}$ and $X_{j,2}$ are team-level stats for team 1 and team 2 respectively.
 
-We transform the linear predictor into probabilities between 0 and 1 using the logistic function.
+$p(Y=1 \mid X_1, X_2)$ indicates the probability team 1 wins the match-up, given the difference in predictor values for each team.
+
+$\beta_0$ is the intercept term.
+
+$v$ is the number of predictor variables.
+
+\$z\$ represents the linear predictor, calculated as the weighted combination of the differences between team statistics and their associated coefficients
+
+$\frac{1}{1 + e^{-z}}$ transforms the linear predictor $z$ into probabilities between 0 and 1.
 
 ### Random Forest
 
@@ -726,7 +736,7 @@ data$"Public Picks" %>%
   head(5)
 ```
 
-The public pick data needs to be converted from frequency of teams picked to each round into probability of team A beating team B.
+In order for the public pick data to be meaningful, it needs to be converted from frequency of teams picked to each round of the tournament into probability of team A beating team B.
 
 We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula:
 
@@ -800,7 +810,7 @@ $C_r$ = Total number of correct picks for round $r$
 
 $w_r$ = point value for round $r$, ranging from 1 point for the first round up to 8 points for the championship game
 
-This gives a score for each bracket each model generates, which we can use to compare to other models
+This formula gives a score for each bracket each model generates, which we can use to compare to other models.
 
 # Results
 
@@ -819,8 +829,6 @@ pca_model <- prcomp(
   center = TRUE
 )
 
-#check bindings
-pca_model$rotation
 
 pca_scores <- bind_cols(
   pca_base %>% select(Season, TeamID),
@@ -852,7 +860,12 @@ pca_scores %>%
   theme_minimal()
 ```
 
-### Variance explained
+### Variance explained and PC bindings
+
+```{r}
+#check bindings
+pca_model$rotation[,1:2]
+```
 
 ```{r}
 #| echo: true
@@ -1012,7 +1025,9 @@ print(p2+scale_fill_viridis_d())
 
 # Discussion and Implications
 
-## PCA and Linear Regression analysis
+## PCA review
+
+PC1 seems to correlate with team strength. PC2 seems to correlate with pace of play.
 
 ## Brier Score and Log-loss analysis
 
@@ -1022,9 +1037,13 @@ All of the machine learning models vary in brier score by about .02 year to year
 
 # Conclusion
 
-Summarize your research question, data, method, main findings, and key takeaway.
+The findings suggest that out of the 63 games in the NCAA tournament, a gradient boosted tree model is, on average, the best on average at evaluating the probability that a team will win a given game. When looking at just the championship games for each year, the public consensus model on average is the best at picking champions. This increased championship accuracy causes the consensus model to outperform machine learning models in bracket generation in some years.
 
-Briefly suggest possible future extensions.
+However, the championship model is overconfident in its predictions, which can skew the results of the bracket simulations. Championship accuracy has a high deviation each year. In 2023, the consensus model failed to pick the championship game correctly a single time out of 100 simulations. In contrast the best model in 2023 picked the championship game correctly 36 times out of 100 simulations. In 2024, the consensus model was nearly twice as accurate as the next most accurate model that year (50% versus 27%). This suggests that when the consensus model is overconfident in a champion and the champion wins, the consensus model outperforms the machine learning models. When the favorite doesn't win, the consensus performs very poorly for that year. This explains the high variance in performance from the consensus year to year.
+
+The current findings suggest that using a gradient boosted model for the first 62 games of the tournament, and the consensus model for the championship game will perform the best on average. However, in the long run we may see the current championship accuracy of the consensus model start to normalize, and gradient boosted trees perform the best overall.
+
+Each year this project could be updated with the new tournament data to further examine how model performance averages out over time.
 
 # References
 
@@ -1228,9 +1247,9 @@ if (length(missing) == 0) {
 
 When evaluating the public consensus model, I found that it was consistently overconfident in its predictions. Initially, I applied a transformation to the consensus model, scaling it to be more under confident in all predictions.
 
-The following is a graph showing the results of scaling public consensus:
+The following is a graph showing the brier score results of scaling public consensus:
 
-![](images/Screenshot 2026-05-12 115226.png){width="340"}
+![](images/Screenshot%202026-05-12%20115226.png){width="340"}
 
 However, despite finding that public picks was overconfident and that scaling the probabilities saw a better brier score outcome, adjusting this overconfidence led to a decrease in scores during the bracket simulation across all years.
 
@@ -1534,7 +1553,7 @@ generate_monte_carlo_brackets <- function(
     seed = 123,
     is_future = FALSE,
     elo_lookup = NULL,
-    elo_gamma = 1.0  # ADD THIS PARAMETER
+    elo_gamma = 1.0 
 ) {
   set.seed(seed)
   
@@ -2228,6 +2247,8 @@ all_scores %>%
 
 ```{r}
 #| execute: FALSE
+#| echo: FALSE
+
 calculate_brier_by_year_iterative_ranger <- function(
     data,
     team_season_stats,
