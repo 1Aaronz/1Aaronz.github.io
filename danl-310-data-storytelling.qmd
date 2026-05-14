@@ -70,21 +70,9 @@ theme_set(
 
 - **Project Webpage:** [HSR Visualization project](https://1aaronz.github.io/danl-310-data-storytelling.html)
 
-This project visualizes Global High Speed Rail (HSR) progress compared to the US.
-
-Your project should tell an interesting and coherent story using:
-
-- descriptive statistics,
-- data transformation, and
-- data visualization.
-
-A literature review, regression model, machine learning model, or formal statistical model is **not required**.
-
-# Big Idea
+This project visualizes Global High Speed Rail (HSR) progress compared to the US. It emphasizes the difference in the length of HSR other countries have managed to achieve while the US continues to have slow progress in HSR construction. This project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future.
 
 Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR.
-
-This project emphasizes the difference in the length of HSR other countries have managed to achieve while the US continues to have slow progress in HSR construction. This project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future.
 
 # Guiding Question or Story Theme
 
@@ -92,7 +80,7 @@ The guiding question of this project is: "How has the length of HSR lines by cou
 
 # Background and Context
 
-What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high speed rail is defined as "the length of track where passenger trains can reliably go at least 200 kilometers per hour". In the case of the United States, the North East Corridor line can in theory carry high speed rail much further than what the dataset for this project provides, however only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project.
+What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high speed rail is defined as "the length of track where passenger trains can reliably go at least 200 kilometers per hour". In the case of the United States, the North East Corridor can in theory carry high speed rail much further than what the dataset for this project provides, however only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project.
 
 # Data
 
@@ -124,19 +112,6 @@ The data was scraped from tables from Wikipedia on 4/30/2026.
 The scraping and initial cleaning process is shown in Appendix A.
 
 # Data Preparation and Transformation
-
-Describe the main steps you used to prepare the data for storytelling.
-
-This may include:
-
-- cleaning missing or invalid values,
-- renaming variables,
-- filtering observations,
-- creating new variables,
-- grouping and summarizing data,
-- reshaping data from wide to long format, or long to wide format,
-- joining multiple datasets, and
-- preparing data specifically for your Shiny app or dashboard.
 
 ```{r data-preparation}
 
@@ -183,7 +158,7 @@ hsr_2000 <- hsr_2000 %>%
     is_us = country == "United_States")
 ```
 
-additional cleaning for certain years and creating a flag for the US to highlight on the maps.
+Additional cleaning for creating dataframes of certain years and creating a flag for the US to highlight on the maps.
 
 # Descriptive Statistics
 
@@ -193,7 +168,7 @@ additional cleaning for certain years and creating a flag for the US to highligh
 skim(hsr)
 ```
 
-## Important Counts, Rates, or Group Summaries
+## Total HSR by country summary
 
 ```{r descriptive-summary}
 
@@ -210,34 +185,9 @@ hsr |>
 
 ## Initial Observations
 
-Briefly explain what the descriptive statistics show.
-
-Focus on patterns such as:
-
-- largest or smallest groups,
-- typical values,
-- variation across groups,
-- outliers or unusual cases,
-- missing data issues, and
-- patterns that set up your main story.
-
-China appears as a big outlier in total HSR kilometers. The US is only seen much further down the list, almost all countries that have any HSR are ahead of the US.
+China appears as a big outlier in total HSR kilometers. The US is only seen much further down the list, and almost all countries that have any HSR are ahead of the US. 
 
 # Data Visualization and Storytelling
-
-This section is the main body of your project. Use visualizations to build a clear story.
-
-Each visualization should include:
-
-- a clear, message-driven title,
-- readable axis labels,
-- appropriate chart type,
-- thoughtful color choices,
-- colorblind-friendly colors,
-- a source note or caption when appropriate, and
-- a short written interpretation.
-
-Your webpage should feel like one coherent narrative, not a disconnected collection of plots.
 
 ## Visualization 1: HSR by country in 2000
 
@@ -277,7 +227,9 @@ ggplot(hsr_2000, aes(
 ```
 
 **Interpretation:**\
-This gives us an initial view of what the landscape for HSR initially looked like in 2000. High speed rail was exclusive to European countries, Japan, and the US, with Japan leading the pack at nearly 2500km. Germany was a close second, followed by France. While the US was among only 16 countries with HSR in 2000, the US had only a small amount, less than 100km.
+This gives us an initial view of what the landscape for HSR initially looked like in 2000. High speed rail was exclusive to European countries, Japan, and the US, with Japan leading the pack at nearly 2500km. Germany was a close second, followed by France. 
+
+While the US was among only 16 countries with HSR in 2000, the US had only a small amount, less than 100km. The country with the most HSR in 2000, Japan, had 31 times more HSR than the US.
 
 ## Visualization 2: HSR by Country in 2026
 
@@ -333,6 +285,8 @@ ggplot(hsr_2026, aes(
 
 **Interpretation:**\
 Between 2000 and 2026, 13 more countries jumped ahead of the US in HSR km. Most notably is China, which went from having no HSR in 2000, to nearly 35000 km in 2026, beating out all other countries by a long-shot. The US only gained 50km of HSR between 2000 and 2026, with the opening of the Bright-line in Florida. Out of all the countries that have HSR, Denmark is the only country the US is ahead of.
+
+The discrepancy between the front runner and the US grew a significant amount between 2000 and 2026. While the front runner had 31x more HSR than the US in 2000, in 2026 china, the current front runner, has 245x more HSR than the US.  
 
 ## Visualization 3: Future Prospects, the 10 year projection of new HSR by country
 
@@ -463,35 +417,18 @@ This graph helps visualize how far behind the US currently is to the rest of the
 </div>
 ```
 
-Briefly describe the Shiny app and dashboard that accompany this project.
+![](hsr_race_chart.gif)
 
 ## Dashboard
 
 - **The dashboard for my project can be found here:** [1aaronz.github.io/danl310dashboard.html](https://1aaronz.github.io/danl310dashboard.html)
 
-The dashboard organizes the all the charts together
-
-![](hsr_race_chart.gif)
-
-# Connecting the Dots
-
-Bring the visual evidence together.
-
-Explain how your descriptive statistics, transformations, and visualizations work together to answer your guiding question or support your story theme.
-
-You may discuss:
-
-- the strongest pattern in the data,
-- a surprising result,
-- differences across groups,
-- changes over time,
-- geographic or categorical variation,
-- practical, business, economic, social, cultural, or policy relevance,
-- why your audience should care.
+The shiny app allows interactive visualization with the cumulative HSR bar chart.
+The dashboard organizes the all the charts together.
 
 # Discussion
 
-HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While the data suggests global adoption is only set to increase, the US has appears to have stalled behind the rest of the world in building HSR, and continues to build HSR at a slower than other countries building HSR.
+HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While the data suggests global adoption is only set to increase, the US has appears to have stalled behind the rest of the world in building HSR, and continues to build HSR at a slower rate than other countries. 
 
 ## Limitations
 
@@ -499,28 +436,15 @@ The 10 year projection is subject to change. It is based off of projects that ha
 
 # Conclusion
 
-Summarize your project in one or two paragraphs.
+The data shows that the US has fallen behind in high-speed rail construction considerably. Since 2000, 13 countries that previously had no high speed rail have built enough rail today to be ahead of the US in HSR km. With the exception of Denmark, all of the 13 countries that had more HSR than the US in 2000 still have more HSR in 2026, with many increasing the gap between them and the US. 
 
-Return to your Big Idea and explain the main takeaway your audience should remember.
-
-A strong conclusion should answer:
-
-- What did the data reveal?
-- Why does it matter?
-- What should the audience remember after leaving your webpage?
+If the US is to catchup to the rest of the world, drastic changes will need to be made to the entire pipeline of funding, building, and operating high-speed rail lines
 
 # Future Directions
 
-Briefly explain what you would explore next.
+Further research into this topic could involve looking into other variables for measuring high speed rail contributions such as amount of funding allocated to HSR projects. 
 
-Examples:
-
-- additional variables,
-- a longer time period,
-- different geographic areas,
-- more detailed group comparisons,
-- a dashboard or interactive visualization improvement,
-- a follow-up analysis using modeling, if appropriate.
+Additional research could look into areas where high speed-rail could be justified by analyzing the variables of places that have already built high-speed rail, such as population served, cost per mile, and terrain. We could then look for places that have similar or better statistics as good candidates for future high-speed rail prospects.
 
 # References
 

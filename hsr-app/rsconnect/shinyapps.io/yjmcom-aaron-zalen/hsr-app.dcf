@@ -5,6 +5,6 @@ account: yjmcom-aaron-zalen
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 17361543
-bundleId: 11994513
+bundleId: 11995055
 url: https://yjmcom-aaron-zalen.shinyapps.io/hsr-app/
 version: 1

@@ -78,8 +78,7 @@ ui <- fluidPage(
                mainPanel(
                  h3("Total HSR Kilometer by Country"),
                  plotlyOutput("rank_plot", height = "600px"),
-                 br(),
-                 DTOutput("rank_table")
+                 br()
                )
              )
     )
