@@ -98,9 +98,9 @@ get_model_predictors <- function() {
 
 # Introduction
 
-March Madness is an annual tournament for division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.
+March Madness is an annual tournament for Division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.
 
-The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.
+The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage. 
 
 ## Research Question
 
@@ -118,15 +118,15 @@ Millions of people fill out brackets each year, attempting to predict which team
 
 ## Data Source
 
-Regular season performance data and bracket structure data: Kaggle
+Regular season performance data and bracket structure data was sourced from Kaggle
 
-Advanced efficiency metrics: Kenpom
+Advanced efficiency metrics was sourced from Kenpom
 
-Public picks data: mRchmadness package, which scrapes data from ESPN
+Public picks data: mRchmadness package, which scrapes picks from ESPN
 
 ## Loading the data
 
-There is a large number of csv files that could be useful for the analysis, so I load the data into a directory to pull each csv as needed
+There is a large number of csv files that could be useful for the analysis, so I load all the data into a directory to pull each csv as needed
 
 ```{r}
 #| echo: true
@@ -151,7 +151,7 @@ data <- files %>%
 kenpom_final <- data$kenpom_tournament_ready
 ```
 
-The full data directory is shown in Appendix D
+Information on the full data directory is shown in Appendix D
 
 ## Data summary
 
@@ -212,9 +212,9 @@ AdjEM= Adjusted efficiency margin, the number of points a team is expected to ou
 
 SOV= Strength of victory, average AdjEM percentile of opponents that a team defeated
 
-AdjOE= Adjusted offensive efficiency, sourced from kenpom, points scored per 100 possessions and adjusted for opponent.
+AdjOE= Adjusted offensive efficiency, points scored per 100 possessions, adjusted for opponent strength.
 
-AdjDE= Adjusted defensive efficiency, points allowed per 100 possessions and adjusted for opponent.
+AdjDE= Adjusted defensive efficiency, points allowed per 100 possessions and adjusted for opponent strength.
 
 RankAdjEM= Ranked adjusted efficiency margin, the number ranking of each team's Adjusted efficiency margin each season
 
@@ -374,7 +374,7 @@ primary_coaches <- data$MTeamCoaches %>%
 
 ```
 
-#### Left joining strength of victory, coach historical success, and Kenpom metrics to team season stats
+#### Left joining SOV, coach historical success, and Kenpom metrics to team season stats
 
 ```{r}
 #| echo: true
@@ -404,16 +404,15 @@ team_season_stats <- team_season_stats %>%
   rename(SOV = SOV_Scaled)
 ```
 
-Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A)
+Kenpom efficiency metrics had to be cleaned to be able to left join to team_season_stats (Appendix A).
 
 #### Adding seed information
 
 ```{r}
-# Get seed data and extract numeric seed value - SIMPLIFIED: only raw seed number
+# Get seed data and extract numeric seed value
 seed_data <- data$MNCAATourneySeeds %>%
   filter(Season >= 2003) %>%
   mutate(
-    # Extract numeric seed (remove region letters)
     Seed_Num = as.numeric(str_extract(Seed, "\\d+"))
   )
 
@@ -422,10 +421,10 @@ team_season_stats <- team_season_stats %>%
   left_join(seed_data %>% select(Season, TeamID, Seed_Num),
             by = c("Season", "TeamID"))
 
-# For teams that didn't make the tournament (no seed), fill with appropriate value
+# For teams that didn't make the tournament, fill with value 17
 team_season_stats <- team_season_stats %>%
   mutate(
-    Seed_Num = ifelse(is.na(Seed_Num), 17, Seed_Num)  # 17 = didn't make tournament
+    Seed_Num = ifelse(is.na(Seed_Num), 17, Seed_Num)  
   )
 ```
 
@@ -443,7 +442,7 @@ This code provides the full pipeline from the original consensus picks data fram
 ```{r}
 #| include: FALSE
 
-#debugging #the rendering literally breaks if i dont do this
+#debugging #the rendering literally breaks If I don't do this
 print("CHECKPOINT BEFORE CHUNK 11")
 print(names(team_season_stats))
 stopifnot("Seed_Num" %in% names(team_season_stats))
@@ -678,11 +677,14 @@ pairwise_probs <- df_strength %>%
 
 ### Final model data frame
 
+This is the results of the cleaning. We now have a match-up (Team A against Team B) and a probability for each team year. 
 ```{r}
 #| echo: true
 pairwise_lookup <- pairwise_probs %>%
   select(year, TeamA, TeamB, matchup_prob)
 
+pairwise_lookup %>% 
+  head(5)
 #write_csv(pairwise_lookup, "pairwise_lookup.csv")
 ```
 
@@ -692,7 +694,7 @@ pairwise_lookup <- pairwise_probs %>%
 
 ### Linear regression
 
-For linear regression, we use the first two principle components resulting from the principal component analysis of the predictor variables.
+For linear regression, we use the first two principle components resulting from the principal component analysis of all the predictor variables.
 
 $$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$
 
@@ -722,11 +724,50 @@ $\frac{1}{1 + e^{-z}}$ transforms the linear predictor $z$ into probabilities be
 
 ### Random Forest
 
+The final predicted probability is the average prediction across all trees in the forest:
+
+$$
+\hat{p}_i
+=
+\frac{1}{B}
+\sum_{b=1}^{B}
+T_b(X_i)
+$$
+
+where $\hat{p}_i$ is the predicted probability that team 1 wins game $i$, $B$ is the total number of decision trees in the forest, $T_b(X_i)$ is the predicted probability from tree $b$ using predictor vector $X_i$, and $X_i$ contains the differences in team-level statistics between the two teams.
+
+Each tree is trained on a bootstrap sample of the data, while a random subset of predictor variables is considered at each split to reduce correlation between trees and improve predictive performance.
+
 ### Elastic Net
+
+$$
+\min_{\beta}
+\left\{
+\frac{1}{2n}
+\sum_{i=1}^{n}
+\left(
+y_i - X_i\beta
+\right)^2
++
+\lambda
+\left[
+\alpha \sum_{j=1}^{p} |\beta_j|
++
+\frac{1-\alpha}{2}
+\sum_{j=1}^{p} \beta_j^2
+\right]
+\right\}
+$$
+
+where $y_i$ is the observed outcome for game $i$, $X_i$ is the vector of predictor variables, $\beta$ is the vector of coefficients, $n$ is the number of observations, and $p$ is the number of predictor variables.
+
+$\lambda$ controls the overall strength of regularization, while $\alpha$ determines the balance between the lasso penalty ($L_1$) and ridge penalty ($L_2$). When $\alpha = 1$, the model becomes lasso regression, and when $\alpha = 0$, the model becomes ridge regression.
+
+For this study, Elastic Net is used to estimate match-up win probabilities while reducing multi-collinearity among predictor variables and preventing over-fitting.
 
 ### Training the models
 
-For each year the model is to predict, the model gets retrained on all previous years.
+For each year the model is to predict, the model gets retrained on all previous years. For example, the model trained to predict 2024 gets trained on all data from 2003-2023, the 2025 model gets trained on 2003-2024, up to 2026. 
 
 ## Public Picks (comparison model)
 
@@ -792,9 +833,9 @@ $Bernoulli(p_{g,b})$ = a random draw with probability $p_{g,b}​$
 
 $$B_b = \{Y_{1,b},Y_{2,b},\dots,Y_{63,b}\}$$
 
-$B_b$ = one complete simulated tournament bracket with all random draws chosen for all 63 games
+$B_b$ = one complete simulated tournament bracket with random draws chosen for all 63 games
 
-These simulation are run 100 times
+These simulations generate a random 63 game bracket based on the probabilities given by each model, which is then repeated 100 times for each model on each year we predict. 
 
 #### Scoring brackets
 
@@ -860,7 +901,7 @@ pca_scores %>%
   theme_minimal()
 ```
 
-### Variance explained and PC bindings
+### Variance explained and Principle Component bindings
 
 ```{r}
 #check bindings
@@ -957,7 +998,7 @@ ggplot(data$combined_scores, aes(x = Model, y = TotalPoints, fill = Model)) +
   scale_fill_viridis_d()
 ```
 
-These results are further explained by championship accuracies:
+###Championship game accuracies of simulated brackets:
 
 ```{r}
 combined_champs<- data$champion_predictions_all_models2
@@ -1505,7 +1546,7 @@ prepare_prediction_data <- function(
     season,
     predictors,               # full list of column names needed (non-diff + diff)
     diff_predictor_names,      # names from get_model_predictors() (the ones that become diffs)
-    non_diff_names             # non-diff features like "Team_Strength_Total"
+    non_diff_names             # currently defunct 
 ) {
   t1 <- team_season_stats %>% filter(Season == season, TeamID == team1_id)
   t2 <- team_season_stats %>% filter(Season == season, TeamID == team2_id)
@@ -2201,7 +2242,7 @@ results_elo <- run_pipeline(
   n_pick = n,
   pick_method = "random",
   model_type = "elo",
-  elo_pairwise_lookup = pairwise_lookup  # Your pre-computed ELO probabilities
+  elo_pairwise_lookup = pairwise_lookup  #pre-computed conensus-derived probabilities
 )
 
 results_elo_underconf <- run_pipeline(
@@ -2214,7 +2255,7 @@ results_elo_underconf <- run_pipeline(
   pick_method = "random",
   model_type = "elo",
   elo_pairwise_lookup = pairwise_lookup,
-  elo_gamma = 0.25  # This matches your brier_analysis_elo_adj_underconf
+  elo_gamma = 0.25  # This matches brier_analysis_elo_adj_underconf
 )
 
 # compare -----------------------------------------------------------------
@@ -2960,16 +3001,12 @@ calculate_brier_by_year_iterative_pca_lm <- function(
       
       x_test <- pred_data[, predictors, drop = FALSE]
       
-      # ========================
-      # PCA TRANSFORM (ONLY FIRST 2 COMPONENTS)
-      # ========================
+      # PCA TRANSFORM (ONLY FIRST 2 COMPONENTS)===================
       pca_test <- predict(pca_model, newdata = x_test)[, 1:2, drop = FALSE]
       pca_test <- as.data.frame(pca_test)
       colnames(pca_test) <- c("PC1", "PC2")
       
-      # ========================
-      # LINEAR REGRESSION PREDICTION
-      # ========================
+      # LINEAR REGRESSION PREDICTION=====================
       pred <- predict(lm_model, newdata = pca_test)
       
       # clip to probability space
@@ -3093,9 +3130,7 @@ calculate_brier_by_year_iterative_elo <- function(
         p <- 0.5
       }
       
-      # ========================
-      # APPLY GAMMA SCALING
-      # ========================
+      # APPLY GAMMA SCALING====================
       p_raw <- pmax(pmin(p, 1 - 1e-10), 1e-10)
       log_odds <- log(p_raw / (1 - p_raw))
       p_scaled <- 1 / (1 + exp(-gamma * log_odds))
@@ -3103,9 +3138,7 @@ calculate_brier_by_year_iterative_elo <- function(
       predictions$Pred_Prob[i] <- p_scaled
     }
     
-    # ========================
-    # CLEAN PREDICTIONS
-    # ========================
+    # CLEAN PREDICTION=================
     predictions <- predictions[!is.na(predictions$Pred_Prob), ]
     
     n_valid_predictions <- nrow(predictions)
@@ -3113,9 +3146,7 @@ calculate_brier_by_year_iterative_elo <- function(
     
     if (n_valid_predictions == 0) next
     
-    # ========================
-    # METRICS
-    # ========================
+    # METRICS================
     predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
     brier_score <- mean(predictions$Brier_Component)
     
@@ -3129,9 +3160,7 @@ calculate_brier_by_year_iterative_elo <- function(
     
     accuracy <- mean((predictions$Pred_Prob >= 0.5) == predictions$Actual_Win)
     
-    # ========================
-    # STORE RESULTS
-    # ========================
+    # STORE RESULTS====================
     year_result <- data.frame(
       Evaluation_Year = eval_year,
       Brier_Score = brier_score,
@@ -3151,9 +3180,7 @@ calculate_brier_by_year_iterative_elo <- function(
         "| Acc:", round(accuracy, 3), "\n")
   }
   
-  # ========================
-  # OVERALL METRICS
-  # ========================
+  # OVERALL METRICS====================
   if (nrow(all_brier_results) > 0) {
     
     overall_brier <- weighted.mean(
