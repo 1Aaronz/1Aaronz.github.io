@@ -96,9 +96,9 @@ get_model_predictors <- function() {
 
 # Introduction
 
-March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.
+March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a match-up. 
 
-The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage. 
+The goal of this project is to find an effective way to fill out brackets of 63 game tournaments which consistently outperforms both people and the other prediction models. As a rough estimate of human judgement, a prediction model will be derived from public pick data (the way people filled out brackets and selected teams). This will serve as a baseline to compare the model results against. 
 
 ## Research Question
 
@@ -118,11 +118,11 @@ While the data for a DI basketball tournament contains a lot of noise and varian
 
 ## Data Source
 
-Regular season performance data and bracket structure data was sourced from Kaggle
+Regular season performance data and bracket structure data was sourced from the datasets provided by Kaggle's 2026 machine learning competition, which is a community-compiled historical file. 
 
-Advanced efficiency metrics was sourced from Kenpom
+Advanced efficiency metrics was sourced from a community dataset compiled by Pilafas. I opted out of using Pomeroy's cite directly, because the site iteratively updates with post-tournament results, which would result in data leakage.
 
-Public picks data: Pulled from the mRchmadness package, which scrapes pick data from ESPN
+Public pick data was pulled from the mRchmadness package, which scrapes pick data from ESPN.
 
 ## Loading the data
 
@@ -1089,6 +1089,20 @@ Each year this project could be updated with the new tournament data to further 
 # References
 
 Shayer, E., & Powers, S. (2017). *mRchmadness: Numerical tools for filling out an NCAA basketball tournament bracket* (Version 1.0.0) \[R package\]. CRAN. https://CRAN.R-project.org/package=mRchmadness. Accessed 4/26/2026.
+
+Lopez, M. J., & Matthews, G. J. (2015). “Building an NCAA Men’s Basketball Predictive Model and Quantifying Its Success.” Journal of Quantitative Analysis in Sports, 11(1), 5-12.
+
+Jeff Sonas, Martyna Plomecka, Yao Yan, and Addison Howard. March Machine Learning Mania 2026. https://kaggle.com/competitions/march-machine-learning-mania-2026, 2026. Kaggle. Accessed 5/1/2026.
+
+Pomeroy, K. (2026). KenPom college basketball ratings. https://kenpom.com. Accessed 5/1/2026.
+
+Amin, N. (2026). March Madness Data [Dataset, Public Picks.csv]. Kaggle. 
+	https://www.kaggle.com/datasets/nishaanamin/march-madness-data/code. Accessed 5/1/2026.
+	
+Kaggle. (2026). March Machine Learning Mania 2026 competition data [Data set]. Kaggle. 
+	https://www.kaggle.com/competitions/march-machine-learning-mania-2026/data. Accessed 5/1/2026
+
+Pilafas, J. (2026). INT_KenPom_Summary (Pre-Tournament).csv [Data file]. Kaggle. https://www.kaggle.com/datasets/jonathanpilafas/2024-march-madness-statistical-analysis. Accessed 5/1/2026
 
 # Appendix
 
