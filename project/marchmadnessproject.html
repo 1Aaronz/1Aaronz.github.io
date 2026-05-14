@@ -500,18 +500,19 @@ window.Quarto = {
 </section>
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>March Madness is an annual tournament for Division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</p>
+<p>March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</p>
 <p>The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage.</p>
 <section id="research-question" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="research-question"><span class="header-section-number">1.1</span> Research Question</h2>
 <p>The research question this project aims to answer is “How do NCAA March Madness prediction models perform relative to human-selected brackets?”</p>
-<p>To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets</p>
+<p>To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets. The evaluation had nuanced results, with machine learning models generally outperforming a human-derived model, but with the human-derived model outperforming in a key metric; championship game accuracy.</p>
 </section>
 </section>
 <section id="background-and-related-literature" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Background and Related Literature</h1>
 <p>The structure of March Madness is a 64 team, single elimination tournament.</p>
-<p>Millions of people fill out brackets each year, attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament.</p>
+<p>Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., &amp; Matthews, G. J), attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions.</p>
+<p>While the data for a DI basketball tournament contains a lot of noise and variance, and luck does play a part in win outcomes, there is still meaningful signal for machine learning models. In a study by Lopez and Matthews, where they tested a machine learning model against random chance, they found that “Relative to a contest based entirely on luck, where each entry would have a 1 in 433 chance of finishing first, our [model’s] chances of winning were roughly 50 to 60 times higher”. It’s known that machine learning models perform significantly than random chance, so this study will focus on comparing machine learning models to each other and to human judgement.</p>
 </section>
 <section id="data" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Data</h1>
@@ -519,7 +520,7 @@ window.Quarto = {
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-source"><span class="header-section-number">3.1</span> Data Source</h2>
 <p>Regular season performance data and bracket structure data was sourced from Kaggle</p>
 <p>Advanced efficiency metrics was sourced from Kenpom</p>
-<p>Public picks data: mRchmadness package, which scrapes picks from ESPN</p>
+<p>Public picks data: Pulled from the mRchmadness package, which scrapes pick data from ESPN</p>
 </section>
 <section id="loading-the-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">3.2</span> Loading the data</h2>
@@ -2923,23 +2924,23 @@ AdjTempo           0.06002154  0.40388717</code></pre>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>pc12_df <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="uqhqufgbls" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uqhqufgbls table {
+<div id="ewtjqvccmm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ewtjqvccmm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uqhqufgbls thead, #uqhqufgbls tbody, #uqhqufgbls tfoot, #uqhqufgbls tr, #uqhqufgbls td, #uqhqufgbls th {
+#ewtjqvccmm thead, #ewtjqvccmm tbody, #ewtjqvccmm tfoot, #ewtjqvccmm tr, #ewtjqvccmm td, #ewtjqvccmm th {
   border-style: none;
 }
 
-#uqhqufgbls p {
+#ewtjqvccmm p {
   margin: 0;
   padding: 0;
 }
 
-#uqhqufgbls .gt_table {
+#ewtjqvccmm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2965,12 +2966,12 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_caption {
+#ewtjqvccmm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uqhqufgbls .gt_title {
+#ewtjqvccmm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2982,7 +2983,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-bottom-width: 0;
 }
 
-#uqhqufgbls .gt_subtitle {
+#ewtjqvccmm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2994,7 +2995,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-top-width: 0;
 }
 
-#uqhqufgbls .gt_heading {
+#ewtjqvccmm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3006,13 +3007,13 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_bottom_border {
+#ewtjqvccmm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_col_headings {
+#ewtjqvccmm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3027,7 +3028,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_col_heading {
+#ewtjqvccmm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3047,7 +3048,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   overflow-x: hidden;
 }
 
-#uqhqufgbls .gt_column_spanner_outer {
+#ewtjqvccmm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3059,15 +3060,15 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 4px;
 }
 
-#uqhqufgbls .gt_column_spanner_outer:first-child {
+#ewtjqvccmm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uqhqufgbls .gt_column_spanner_outer:last-child {
+#ewtjqvccmm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uqhqufgbls .gt_column_spanner {
+#ewtjqvccmm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3079,11 +3080,11 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   width: 100%;
 }
 
-#uqhqufgbls .gt_spanner_row {
+#ewtjqvccmm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uqhqufgbls .gt_group_heading {
+#ewtjqvccmm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3109,7 +3110,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   text-align: left;
 }
 
-#uqhqufgbls .gt_empty_group_heading {
+#ewtjqvccmm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3124,15 +3125,15 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   vertical-align: middle;
 }
 
-#uqhqufgbls .gt_from_md > :first-child {
+#ewtjqvccmm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uqhqufgbls .gt_from_md > :last-child {
+#ewtjqvccmm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uqhqufgbls .gt_row {
+#ewtjqvccmm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3151,7 +3152,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   overflow-x: hidden;
 }
 
-#uqhqufgbls .gt_stub {
+#ewtjqvccmm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3164,7 +3165,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 5px;
 }
 
-#uqhqufgbls .gt_stub_row_group {
+#ewtjqvccmm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3178,15 +3179,15 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   vertical-align: top;
 }
 
-#uqhqufgbls .gt_row_group_first td {
+#ewtjqvccmm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uqhqufgbls .gt_row_group_first th {
+#ewtjqvccmm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uqhqufgbls .gt_summary_row {
+#ewtjqvccmm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3196,16 +3197,16 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 5px;
 }
 
-#uqhqufgbls .gt_first_summary_row {
+#ewtjqvccmm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_first_summary_row.thick {
+#ewtjqvccmm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uqhqufgbls .gt_last_summary_row {
+#ewtjqvccmm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3215,7 +3216,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_grand_summary_row {
+#ewtjqvccmm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3225,7 +3226,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 5px;
 }
 
-#uqhqufgbls .gt_first_grand_summary_row {
+#ewtjqvccmm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3235,7 +3236,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_last_grand_summary_row_top {
+#ewtjqvccmm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3245,11 +3246,11 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_striped {
+#ewtjqvccmm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uqhqufgbls .gt_table_body {
+#ewtjqvccmm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3258,7 +3259,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_footnotes {
+#ewtjqvccmm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3272,7 +3273,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_footnote {
+#ewtjqvccmm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3281,7 +3282,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 5px;
 }
 
-#uqhqufgbls .gt_sourcenotes {
+#ewtjqvccmm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3295,7 +3296,7 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#uqhqufgbls .gt_sourcenote {
+#ewtjqvccmm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3303,72 +3304,72 @@ AdjTempo           0.06002154  0.40388717</code></pre>
   padding-right: 5px;
 }
 
-#uqhqufgbls .gt_left {
+#ewtjqvccmm .gt_left {
   text-align: left;
 }
 
-#uqhqufgbls .gt_center {
+#ewtjqvccmm .gt_center {
   text-align: center;
 }
 
-#uqhqufgbls .gt_right {
+#ewtjqvccmm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uqhqufgbls .gt_font_normal {
+#ewtjqvccmm .gt_font_normal {
   font-weight: normal;
 }
 
-#uqhqufgbls .gt_font_bold {
+#ewtjqvccmm .gt_font_bold {
   font-weight: bold;
 }
 
-#uqhqufgbls .gt_font_italic {
+#ewtjqvccmm .gt_font_italic {
   font-style: italic;
 }
 
-#uqhqufgbls .gt_super {
+#ewtjqvccmm .gt_super {
   font-size: 65%;
 }
 
-#uqhqufgbls .gt_footnote_marks {
+#ewtjqvccmm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uqhqufgbls .gt_asterisk {
+#ewtjqvccmm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uqhqufgbls .gt_indent_1 {
+#ewtjqvccmm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uqhqufgbls .gt_indent_2 {
+#ewtjqvccmm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uqhqufgbls .gt_indent_3 {
+#ewtjqvccmm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uqhqufgbls .gt_indent_4 {
+#ewtjqvccmm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uqhqufgbls .gt_indent_5 {
+#ewtjqvccmm .gt_indent_5 {
   text-indent: 25px;
 }
 
-#uqhqufgbls .katex-display {
+#ewtjqvccmm .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#uqhqufgbls div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ewtjqvccmm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -5328,7 +5329,7 @@ Overall Brier Score: 0.2228
   .. ..   Seed = col_character(),
   .. ..   TeamID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9de0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cff960&gt; 
  $ accuracy_summary_all_models2    : spc_tbl_ [5 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Model   : chr [1:5] "Consensus" "XGBoost" "Logistic" "Random_Forest" ...
   ..$ Accuracy: num [1:5] 21.3 16.8 15 10.2 7.5
@@ -5341,7 +5342,7 @@ Overall Brier Score: 0.2228
   .. ..   Correct = col_double(),
   .. ..   Total = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0faa10&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe8b0&gt; 
  $ champion_predictions_all_models2: spc_tbl_ [3,000 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Year            : num [1:3000] 2021 2021 2021 2021 2021 ...
   ..$ Model           : chr [1:3000] "Ranger" "Ranger" "Ranger" "Ranger" ...
@@ -5364,7 +5365,7 @@ Overall Brier Score: 0.2228
   .. ..   ActualChampion = col_character(),
   .. ..   Correct = col_logical()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9e50&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe860&gt; 
  $ Cities                          : spc_tbl_ [510 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ CityID: num [1:510] 4001 4002 4003 4004 4005 ...
   ..$ City  : chr [1:510] "Abilene" "Akron" "Albany" "Albuquerque" ...
@@ -5375,7 +5376,7 @@ Overall Brier Score: 0.2228
   .. ..   City = col_character(),
   .. ..   State = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9f10&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffa10&gt; 
  $ combined_scores                 : spc_tbl_ [3,000 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ ...1       : num [1:3000] 1 2 3 4 5 6 7 8 9 10 ...
   ..$ BracketID  : num [1:3000] 1 2 3 4 5 6 7 8 9 10 ...
@@ -5390,7 +5391,7 @@ Overall Brier Score: 0.2228
   .. ..   Model = col_character(),
   .. ..   Year = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa9f0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe310&gt; 
  $ comparison                      : spc_tbl_ [30 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ ...1               : num [1:30] 1 2 3 4 5 6 7 8 9 10 ...
   ..$ Evaluation_Year    : num [1:30] 2021 2022 2023 2024 2025 ...
@@ -5409,7 +5410,7 @@ Overall Brier Score: 0.2228
   .. ..   N_Valid_Predictions = col_double(),
   .. ..   Model = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa880&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe200&gt; 
  $ Conferences                     : spc_tbl_ [51 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ ConfAbbrev : chr [1:51] "a_sun" "a_ten" "aac" "acc" ...
   ..$ Description: chr [1:51] "Atlantic Sun Conference" "Atlantic 10 Conference" "American Athletic Conference" "Atlantic Coast Conference" ...
@@ -5418,7 +5419,7 @@ Overall Brier Score: 0.2228
   .. ..   ConfAbbrev = col_character(),
   .. ..   Description = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa930&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfffb0&gt; 
  $ consensus1                      : spc_tbl_ [576 × 12] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ ...1   : num [1:576] 1 2 3 4 5 6 7 8 9 10 ...
   ..$ name   : chr [1:576] "AR-Little Rock" "Arizona" "Austin Peay" "Baylor" ...
@@ -5447,7 +5448,7 @@ Overall Brier Score: 0.2228
   .. ..   team.id = col_double(),
   .. ..   TEAM.NO = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9e90&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe550&gt; 
  $ INT_KenPom_Summary_2026         : spc_tbl_ [9,633 × 16] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season      : num [1:9633] 2016 2016 2016 2016 2016 ...
   ..$ TeamName    : chr [1:9633] "Abilene Christian" "Air Force" "Akron" "Alabama" ...
@@ -5484,7 +5485,7 @@ Overall Brier Score: 0.2228
   .. ..   AdjEM = col_double(),
   .. ..   RankAdjEM = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa030&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe840&gt; 
  $ INT_KenPom_Summary_Pre_Tourny   : spc_tbl_ [8,282 × 17] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season      : num [1:8282] 2025 2025 2025 2025 2025 ...
   ..$ TeamName    : chr [1:8282] "Abilene Christian" "Air Force" "Akron" "Alabama" ...
@@ -5523,7 +5524,7 @@ Overall Brier Score: 0.2228
   .. ..   RankAdjEM = col_double(),
   .. ..   Seed = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9cd0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe140&gt; 
  $ kenpom_tournament_ready         : spc_tbl_ [8,599 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season   : num [1:8599] 2001 2001 2001 2001 2001 ...
   ..$ TeamName : chr [1:8599] "air force" "akron" "alabama" "alabama a&amp;m" ...
@@ -5546,7 +5547,7 @@ Overall Brier Score: 0.2228
   .. ..   TeamID = col_double(),
   .. ..   method = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0faa70&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfff00&gt; 
  $ MConferenceTourneyGames         : spc_tbl_ [7,093 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season    : num [1:7093] 2001 2001 2001 2001 2001 ...
   ..$ ConfAbbrev: chr [1:7093] "ovc" "ovc" "ovc" "ovc" ...
@@ -5561,7 +5562,7 @@ Overall Brier Score: 0.2228
   .. ..   WTeamID = col_double(),
   .. ..   LTeamID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa480&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe750&gt; 
  $ MGameCities                     : spc_tbl_ [92,438 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:92438] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
   ..$ DayNum : num [1:92438] 7 7 7 7 9 9 9 10 10 11 ...
@@ -5578,7 +5579,7 @@ Overall Brier Score: 0.2228
   .. ..   CRType = col_character(),
   .. ..   CityID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa9a0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffe50&gt; 
  $ MNCAATourneyCompactResults      : spc_tbl_ [2,652 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:2652] 1985 1985 1985 1985 1985 ...
   ..$ DayNum : num [1:2652] 136 136 136 136 136 136 136 136 136 136 ...
@@ -5599,7 +5600,7 @@ Overall Brier Score: 0.2228
   .. ..   WLoc = col_character(),
   .. ..   NumOT = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa9e0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfff30&gt; 
  $ MNCAATourneyDetailedResults     : spc_tbl_ [1,449 × 34] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:1449] 2003 2003 2003 2003 2003 ...
   ..$ DayNum : num [1:1449] 134 136 136 136 136 136 136 136 136 136 ...
@@ -5672,7 +5673,7 @@ Overall Brier Score: 0.2228
   .. ..   LBlk = col_double(),
   .. ..   LPF = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa450&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffa80&gt; 
  $ MNCAATourneySeedRoundSlots      : spc_tbl_ [776 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Seed       : chr [1:776] "W01" "W01" "W01" "W01" ...
   ..$ GameRound  : num [1:776] 1 2 3 4 5 6 1 2 3 4 ...
@@ -5687,7 +5688,7 @@ Overall Brier Score: 0.2228
   .. ..   EarlyDayNum = col_double(),
   .. ..   LateDayNum = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9ed0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe320&gt; 
  $ MNCAATourneySeeds               : spc_tbl_ [2,694 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season: num [1:2694] 1985 1985 1985 1985 1985 ...
   ..$ Seed  : chr [1:2694] "W01" "W02" "W03" "W04" ...
@@ -5698,7 +5699,7 @@ Overall Brier Score: 0.2228
   .. ..   Seed = col_character(),
   .. ..   TeamID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa990&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffa40&gt; 
  $ MNCAATourneySlots               : spc_tbl_ [2,653 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season    : num [1:2653] 1985 1985 1985 1985 1985 ...
   ..$ Slot      : chr [1:2653] "R1W1" "R1W2" "R1W3" "R1W4" ...
@@ -5711,7 +5712,7 @@ Overall Brier Score: 0.2228
   .. ..   StrongSeed = col_character(),
   .. ..   WeakSeed = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9420&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffca0&gt; 
  $ MRegularSeasonCompactResults    : spc_tbl_ [198,577 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:198577] 1985 1985 1985 1985 1985 ...
   ..$ DayNum : num [1:198577] 20 25 25 25 25 25 25 25 25 25 ...
@@ -5732,7 +5733,7 @@ Overall Brier Score: 0.2228
   .. ..   WLoc = col_character(),
   .. ..   NumOT = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa920&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffc90&gt; 
  $ MRegularSeasonDetailedResults   : spc_tbl_ [124,529 × 34] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:124529] 2003 2003 2003 2003 2003 ...
   ..$ DayNum : num [1:124529] 10 10 11 11 11 11 12 12 12 12 ...
@@ -5805,7 +5806,7 @@ Overall Brier Score: 0.2228
   .. ..   LBlk = col_double(),
   .. ..   LPF = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa670&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe7f0&gt; 
  $ MSeasons                        : spc_tbl_ [42 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season : num [1:42] 1985 1986 1987 1988 1989 ...
   ..$ DayZero: chr [1:42] "10/29/1984" "10/28/1985" "10/27/1986" "11/02/1987" ...
@@ -5822,7 +5823,7 @@ Overall Brier Score: 0.2228
   .. ..   RegionY = col_character(),
   .. ..   RegionZ = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa900&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cff8d0&gt; 
  $ MSecondaryTourneyCompactResults : spc_tbl_ [1,865 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season          : num [1:1865] 1985 1985 1985 1985 1985 ...
   ..$ DayNum          : num [1:1865] 136 136 136 136 136 136 136 136 136 136 ...
@@ -5845,7 +5846,7 @@ Overall Brier Score: 0.2228
   .. ..   NumOT = col_double(),
   .. ..   SecondaryTourney = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa4f0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe340&gt; 
  $ MSecondaryTourneyTeams          : spc_tbl_ [1,895 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season          : num [1:1895] 1985 1985 1985 1985 1985 ...
   ..$ SecondaryTourney: chr [1:1895] "NIT" "NIT" "NIT" "NIT" ...
@@ -5856,7 +5857,7 @@ Overall Brier Score: 0.2228
   .. ..   SecondaryTourney = col_character(),
   .. ..   TeamID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9e20&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffde0&gt; 
  $ MTeamCoaches                    : spc_tbl_ [13,900 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season     : num [1:13900] 1985 1985 1985 1985 1985 ...
   ..$ TeamID     : num [1:13900] 1102 1103 1104 1106 1108 ...
@@ -5871,7 +5872,7 @@ Overall Brier Score: 0.2228
   .. ..   LastDayNum = col_double(),
   .. ..   CoachName = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa1b0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe210&gt; 
  $ MTeamConferences                : spc_tbl_ [13,753 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ Season    : num [1:13753] 1985 1985 1985 1985 1985 ...
   ..$ TeamID    : num [1:13753] 1102 1103 1104 1106 1108 ...
@@ -5882,7 +5883,7 @@ Overall Brier Score: 0.2228
   .. ..   TeamID = col_double(),
   .. ..   ConfAbbrev = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0faad0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffae0&gt; 
  $ MTeams                          : spc_tbl_ [381 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ TeamID       : num [1:381] 1101 1102 1103 1104 1105 ...
   ..$ TeamName     : chr [1:381] "Abilene Chr" "Air Force" "Akron" "Alabama" ...
@@ -5895,7 +5896,7 @@ Overall Brier Score: 0.2228
   .. ..   FirstD1Season = col_double(),
   .. ..   LastD1Season = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0f9ff0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cffd50&gt; 
  $ MTeamSpellings                  : spc_tbl_ [1,178 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ TeamNameSpelling: chr [1:1178] "a&amp;m-corpus chris" "a&amp;m-corpus christi" "abilene chr" "abilene christian" ...
   ..$ TeamID          : num [1:1178] 1394 1394 1101 1101 1101 ...
@@ -5904,7 +5905,7 @@ Overall Brier Score: 0.2228
   .. ..   TeamNameSpelling = col_character(),
   .. ..   TeamID = col_double()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa950&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe790&gt; 
  $ Public Picks                    : spc_tbl_ [64 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ YEAR   : num [1:64] 2026 2026 2026 2026 2026 ...
   ..$ TEAM NO: num [1:64] 1215 1214 1213 1212 1211 ...
@@ -5927,7 +5928,7 @@ Overall Brier Score: 0.2228
   .. ..   F4 = col_character(),
   .. ..   FINALS = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa8f0&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe700&gt; 
  $ sample_submission               : spc_tbl_ [126 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ RowId     : num [1:126] 0 1 2 3 4 5 6 7 8 9 ...
   ..$ Tournament: chr [1:126] "M" "M" "M" "M" ...
@@ -5942,7 +5943,7 @@ Overall Brier Score: 0.2228
   .. ..   Slot = col_character(),
   .. ..   Team = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fa870&gt; 
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe520&gt; 
  $ Team Results                    : spc_tbl_ [242 × 20] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..$ TEAM ID  : num [1:242] 1 2 3 4 6 8 9 10 11 12 ...
   ..$ TEAM     : chr [1:242] "Abilene Christian" "Akron" "Alabama" "Albany" ...
@@ -5987,7 +5988,7 @@ Overall Brier Score: 0.2228
   .. ..   `F4%` = col_character(),
   .. ..   `CHAMP%` = col_character()
   .. .. )
-  ..- attr(*, "problems")=&lt;pointer: 0x000001d72f0fab00&gt; </code></pre>
+  ..- attr(*, "problems")=&lt;pointer: 0x000001a643cfe7c0&gt; </code></pre>
 </div>
 </div>
 
@@ -6560,25 +6561,25 @@ Overall Brier Score: 0.2228
 <span id="cb66-94"><a href="#cb66-94" aria-hidden="true" tabindex="-1"></a><span class="co"># scale_fill_discrete &lt;- function(...) scale_fill_viridis_d(...)</span></span>
 <span id="cb66-95"><a href="#cb66-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb66-96"><a href="#cb66-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-97"><a href="#cb66-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## This page is currently under construction</span></span>
+<span id="cb66-97"><a href="#cb66-97" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
 <span id="cb66-98"><a href="#cb66-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-99"><a href="#cb66-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
+<span id="cb66-99"><a href="#cb66-99" aria-hidden="true" tabindex="-1"></a>March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</span>
 <span id="cb66-100"><a href="#cb66-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-101"><a href="#cb66-101" aria-hidden="true" tabindex="-1"></a>March Madness is an annual tournament for Division 1 college basketball. I will be training prediction models to assign a probability to teams winning in a match up. One of the prediction models is derived from human-selected bracket data sourced from ESPN to compare the results of the machine learning models against.</span>
+<span id="cb66-101"><a href="#cb66-101" aria-hidden="true" tabindex="-1"></a>The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage. </span>
 <span id="cb66-102"><a href="#cb66-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-103"><a href="#cb66-103" aria-hidden="true" tabindex="-1"></a>The goal of this project is to find a way to fill out brackets which consistently outperforms both people and the other prediction models. If a model is able to consistently outperform people at filling out brackets, anyone who relies on that model will have an advantage. </span>
+<span id="cb66-103"><a href="#cb66-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Research Question</span></span>
 <span id="cb66-104"><a href="#cb66-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-105"><a href="#cb66-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Research Question</span></span>
+<span id="cb66-105"><a href="#cb66-105" aria-hidden="true" tabindex="-1"></a>The research question this project aims to answer is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"</span>
 <span id="cb66-106"><a href="#cb66-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-107"><a href="#cb66-107" aria-hidden="true" tabindex="-1"></a>The research question this project aims to answer is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"</span>
+<span id="cb66-107"><a href="#cb66-107" aria-hidden="true" tabindex="-1"></a>To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets. The evaluation had nuanced results, with machine learning models generally outperforming a human-derived model, but with the human-derived model outperforming in a key metric; championship game accuracy. </span>
 <span id="cb66-108"><a href="#cb66-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-109"><a href="#cb66-109" aria-hidden="true" tabindex="-1"></a>To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets</span>
+<span id="cb66-109"><a href="#cb66-109" aria-hidden="true" tabindex="-1"></a><span class="fu"># Background and Related Literature</span></span>
 <span id="cb66-110"><a href="#cb66-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-111"><a href="#cb66-111" aria-hidden="true" tabindex="-1"></a><span class="fu"># Background and Related Literature</span></span>
+<span id="cb66-111"><a href="#cb66-111" aria-hidden="true" tabindex="-1"></a>The structure of March Madness is a 64 team, single elimination tournament.</span>
 <span id="cb66-112"><a href="#cb66-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-113"><a href="#cb66-113" aria-hidden="true" tabindex="-1"></a>The structure of March Madness is a 64 team, single elimination tournament.</span>
+<span id="cb66-113"><a href="#cb66-113" aria-hidden="true" tabindex="-1"></a>Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., &amp; Matthews, G. J), attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions. </span>
 <span id="cb66-114"><a href="#cb66-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-115"><a href="#cb66-115" aria-hidden="true" tabindex="-1"></a>Millions of people fill out brackets each year, attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament.</span>
+<span id="cb66-115"><a href="#cb66-115" aria-hidden="true" tabindex="-1"></a>While the data for a DI basketball tournament contains a lot of noise and variance, and luck does play a part in win outcomes, there is still meaningful signal for machine learning models. In a study by Lopez and Matthews, where they tested a machine learning model against random chance, they found that "Relative to a contest based entirely on luck, where each entry would have a 1 in 433 chance of finishing first, our <span class="co">[</span><span class="ot">model's</span><span class="co">]</span> chances of winning were roughly 50 to 60 times higher". It's known that machine learning models perform significantly than random chance, so this study will focus on comparing machine learning models to each other and to human judgement. </span>
 <span id="cb66-116"><a href="#cb66-116" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-117"><a href="#cb66-117" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data</span></span>
 <span id="cb66-118"><a href="#cb66-118" aria-hidden="true" tabindex="-1"></a></span>
@@ -6588,7 +6589,7 @@ Overall Brier Score: 0.2228
 <span id="cb66-122"><a href="#cb66-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-123"><a href="#cb66-123" aria-hidden="true" tabindex="-1"></a>Advanced efficiency metrics was sourced from Kenpom</span>
 <span id="cb66-124"><a href="#cb66-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-125"><a href="#cb66-125" aria-hidden="true" tabindex="-1"></a>Public picks data: mRchmadness package, which scrapes picks from ESPN</span>
+<span id="cb66-125"><a href="#cb66-125" aria-hidden="true" tabindex="-1"></a>Public picks data: Pulled from the mRchmadness package, which scrapes pick data from ESPN</span>
 <span id="cb66-126"><a href="#cb66-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-127"><a href="#cb66-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading the data</span></span>
 <span id="cb66-128"><a href="#cb66-128" aria-hidden="true" tabindex="-1"></a></span>
