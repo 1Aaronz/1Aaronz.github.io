@@ -37,23 +37,15 @@ library(hrbrthemes)
 library(rmarkdown)
 library(DT)
 library(dplyr)
-library(readr)
-library(purrr)
-library(tibble)
 library(ranger)  
 library(stringr)
-library(tidyr)
 library(glmnet)
-library(dplyr)
 library(stringdist)
 library(readr)
 library(purrr)
 library(tibble)
 # library(randomForest)
-library(stringr)
 library(tidyr)
-library(glmnet)
-library(tidyverse)
 
 # Feel free to revise this ggplot theme_set
 theme_set(theme_ipsum()+
@@ -96,37 +88,37 @@ get_model_predictors <- function() {
 
 # Introduction
 
-March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a match-up. 
+March Madness is an annual tournament for Division 1 (DI) college basketball. I will be training prediction models to assign a probability to teams winning in a matchup.
 
-The goal of this project is to find an effective way to fill out brackets of 63 game tournaments which consistently outperforms both people and the other prediction models. As a rough estimate of human judgement, a prediction model will be derived from public pick data (the way people filled out brackets and selected teams). This will serve as a baseline to compare the model results against. 
+The goal of this project is to find an effective way to fill out brackets of 63 game tournaments which consistently outperforms both people and the other prediction models. As a rough estimate of human judgement, a prediction model will be derived from public pick data (the way people filled out brackets and selected teams). This will serve as a baseline to compare the model results against.
 
 ## Research Question
 
 The research question this project aims to answer is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
 
-To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets. The evaluation had nuanced results, with machine learning models generally outperforming a human-derived model, but with the human-derived model outperforming in a key metric; championship game accuracy. 
+To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets. The evaluation had nuanced results, with machine learning models generally outperforming a human-derived model, but with the human-derived model outperforming in a key metric, championship game accuracy.
 
 # Background and Related Literature
 
 The structure of March Madness is a 64 team, single elimination tournament.
 
-Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., & Matthews, G. J), attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions. 
+Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., & Matthews, G. J), attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions.
 
-While the data for a DI basketball tournament contains a lot of noise and variance, and luck does play a part in win outcomes, there is still meaningful signal for machine learning models. In a study by Lopez and Matthews, where they tested a machine learning model against random chance, they found that "Relative to a contest based entirely on luck, where each entry would have a 1 in 433 chance of finishing first, our [model's] chances of winning were roughly 50 to 60 times higher". It's known that machine learning models perform significantly than random chance, so this study will focus on comparing machine learning models to each other and to human judgement. 
+While the data for a DI basketball tournament contains a lot of noise and variance, and luck does play a part in win outcomes, there is still meaningful signal for machine learning models. In a study by Lopez and Matthews, where they tested a machine learning model against random chance, they found that "Relative to a contest based entirely on luck, where each entry would have a 1 in 433 chance of finishing first, our \[model's\] chances of winning were roughly 50 to 60 times higher". It's known that machine learning models perform significantly better than random chance, so this study will focus on comparing machine learning models to each other and to human judgement.
 
 # Data
 
 ## Data Source
 
-Regular season performance data and bracket structure data was sourced from the datasets provided by Kaggle's 2026 machine learning competition, which is a community-compiled historical file. 
+Regular season performance data and bracket structure data was sourced from the datasets provided by Kaggle's 2026 machine learning competition, which is a community-compiled historical file.
 
-Advanced efficiency metrics was sourced from a community dataset compiled by Pilafas. I opted out of using Pomeroy's cite directly, because the site iteratively updates with post-tournament results, which would result in data leakage.
+Advanced efficiency metrics were sourced from a community dataset compiled by Pilafas. I opted out of using Pomeroy's site directly, because the site iteratively updates with post-tournament results, which would result in data leakage.
 
-Public pick data was pulled from the mRchmadness package, which scrapes pick data from ESPN.
+Public pick data was pulled from the mRchmadness package, which scrapes pick data from ESPN. ESPN stopped supporting the features the package relied on for 2026, so I sourced 2026 public pick data from a dataset on Kaggle, community-sourced by Amin.
 
 ## Loading the data
 
-There is a large number of csv files that could be useful for the analysis, so I load all the data into a directory to pull each csv as needed
+There are a large number of CSV files that could be useful for the analysis, so I load all the data into a directory to pull each CSV file as needed
 
 ```{r}
 #| echo: true
@@ -178,13 +170,13 @@ skim(data$"consensus1")
 
 ## Unit of Observation
 
-Each observation of MRegularSeasonDetailedResults represents game-level data for each match-up in the regular season.
+Each observation of MRegularSeasonDetailedResults represents game-level data for each matchup in the regular season.
 
 Each observation of INT_KenPom_Summary_Pre_Tourny represents team-level pre-tournament aggregate data
 
 ## Key Variables
 
-The outcome variable we are predicting for is win probability, measured on a scale of 0 to 1
+The outcome variable is win probability, measured on a scale of 0 to 1
 
 ### The prediction Features:
 
@@ -677,7 +669,8 @@ pairwise_probs <- df_strength %>%
 
 ### Final model data frame
 
-This is the results of the cleaning. We now have a match-up (Team A against Team B) and a probability for each team year. 
+This is the results of the cleaning. We now have a matchup (Team A against Team B) and a probability for each team year.
+
 ```{r}
 #| echo: true
 pairwise_lookup <- pairwise_probs %>%
@@ -694,11 +687,11 @@ pairwise_lookup %>%
 
 ### Linear regression
 
-For linear regression, we use the first two principle components resulting from the principal component analysis of all the predictor variables.
+For linear regression, we use the first two principal components resulting from the principal component analysis of all the predictor variables.
 
 $$Probability_{i} = \beta_0 + \beta_1 PC_1 X_{i} + \beta_2 PC_2 X_{i} + \varepsilon_{i}$$
 
-where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first principal component of the predictor variables, $PC_2X_{it}$ is the second explanatory of the predictor variables, and $\varepsilon_{i}$ is the error term.
+where $Probability_{i}$ is the outcome of win probability for unit $i$, $PC_1X_{it}$ is the first principal component of the predictor variables, $PC_2X_{it}$ is the second principal component of the predictor variables, and $\varepsilon_{i}$ is the error term.
 
 We cap the maximum probability at 1 and the minimum at 0
 
@@ -712,7 +705,7 @@ $$p(Y=1 \mid X_1, X_2)
 
 Where $X_{j,1}$ and $X_{j,2}$ are team-level stats for team 1 and team 2 respectively.
 
-$p(Y=1 \mid X_1, X_2)$ indicates the probability team 1 wins the match-up, given the difference in predictor values for each team.
+$p(Y=1 \mid X_1, X_2)$ indicates the probability team 1 wins the matchup, given the difference in predictor values for each team.
 
 $\beta_0$ is the intercept term.
 
@@ -726,13 +719,11 @@ $\frac{1}{1 + e^{-z}}$ transforms the linear predictor $z$ into probabilities be
 
 The final predicted probability is the average prediction across all trees in the forest:
 
-$$
-\hat{p}_i
+$$\hat{p}_i
 =
 \frac{1}{B}
 \sum_{b=1}^{B}
-T_b(X_i)
-$$
+T_b(X_i)$$
 
 where $\hat{p}_i$ is the predicted probability that team 1 wins game $i$, $B$ is the total number of decision trees in the forest, $T_b(X_i)$ is the predicted probability from tree $b$ using predictor vector $X_i$, and $X_i$ contains the differences in team-level statistics between the two teams.
 
@@ -740,8 +731,7 @@ Each tree is trained on a bootstrap sample of the data, while a random subset of
 
 ### Elastic Net
 
-$$
-\min_{\beta}
+$$\min_{\beta}
 \left\{
 \frac{1}{2n}
 \sum_{i=1}^{n}
@@ -756,18 +746,17 @@ y_i - X_i\beta
 \frac{1-\alpha}{2}
 \sum_{j=1}^{p} \beta_j^2
 \right]
-\right\}
-$$
+\right\}$$
 
 where $y_i$ is the observed outcome for game $i$, $X_i$ is the vector of predictor variables, $\beta$ is the vector of coefficients, $n$ is the number of observations, and $p$ is the number of predictor variables.
 
 $\lambda$ controls the overall strength of regularization, while $\alpha$ determines the balance between the lasso penalty ($L_1$) and ridge penalty ($L_2$). When $\alpha = 1$, the model becomes lasso regression, and when $\alpha = 0$, the model becomes ridge regression.
 
-For this study, Elastic Net is used to estimate match-up win probabilities while reducing multi-collinearity among predictor variables and preventing over-fitting.
+For this study, Elastic Net is used to estimate matchup win probabilities while reducing multicollinearity among predictor variables and preventing over-fitting.
 
 ### Training the models
 
-For each year the model is to predict, the model gets retrained on all previous years. For example, the model trained to predict 2024 gets trained on all data from 2003-2023, the 2025 model gets trained on 2003-2024, up to 2026. 
+For each year the model predicts, the model gets retrained on all previous years. For example, the model trained to predict 2024 gets trained on all data from 2003-2023, the 2025 model gets trained on 2003-2024, up to 2026.
 
 ## Public Picks (comparison model)
 
@@ -777,7 +766,7 @@ data$"Public Picks" %>%
   head(5)
 ```
 
-In order for the public pick data to be meaningful, it needs to be converted from frequency of teams picked to each round of the tournament into probability of team A beating team B.
+In order for the public pick data to be meaningful, it needs to be converted from frequency of teams picked to each round of the tournament into the probability of team A beating team B.
 
 We calculate a raw strength value based on the frequency a team was picked to each round of the tournament using the following formula:
 
@@ -835,7 +824,7 @@ $$B_b = \{Y_{1,b},Y_{2,b},\dots,Y_{63,b}\}$$
 
 $B_b$ = one complete simulated tournament bracket with random draws chosen for all 63 games
 
-These simulations generate a random 63 game bracket based on the probabilities given by each model, which is then repeated 100 times for each model on each year we predict. 
+These simulations generate a random 63 game bracket based on the probabilities given by each model, which is then repeated 100 times for each model for each year being predicted.
 
 #### Scoring brackets
 
@@ -901,7 +890,7 @@ pca_scores %>%
   theme_minimal()
 ```
 
-### Variance explained and Principle Component bindings
+### Variance explained and Principal Component bindings
 
 ```{r}
 #check bindings
@@ -998,7 +987,7 @@ ggplot(data$combined_scores, aes(x = Model, y = TotalPoints, fill = Model)) +
   scale_fill_viridis_d()
 ```
 
-###Championship game accuracies of simulated brackets:
+### Championship game accuracies of simulated brackets:
 
 ```{r}
 combined_champs<- data$champion_predictions_all_models2
@@ -1011,11 +1000,6 @@ year_summary <- combined_champs %>%
     Total = n(),
     .groups = "drop"
   )
-
-cat("\n", paste(rep("=", 60), collapse = ""), "\n")
-cat("ACCURACY BY YEAR\n")
-cat(paste(rep("=", 60), collapse = ""), "\n")
-print(year_summary)
 
 # Plot 1: Champion accuracy by model and year (all 5 models)
 # Use year_summary instead of accuracy_summary for faceted plot
@@ -1068,21 +1052,29 @@ print(p2+scale_fill_viridis_d())
 
 ## PCA review
 
-PC1 seems to correlate with team strength. PC2 seems to correlate with pace of play.
+PC1 seems to correlate with team strength. PC1's strongest loading is RankAdjEM at -.41 (a lower value correlates to a stronger team in this case) and AdjEM at .425.
 
-## Brier Score and Log-loss analysis
+PC2 seems to correlate with pace of play. The strongest loadings are AdjTempo at -.51 and AvgOppPoints at -.502, so teams higher in PC2 tend to play slower and get scored on less. This doesn't necessarily mean they are weaker teams; it just represents a difference in play-style.
 
-All of the machine learning models vary in brier score by about .02 year to year, which is a minimal difference. The public consensus model is the only model that performs significantly worse than the others for most years. Log-loss shows similar results. Besides the linear regression model performing significantly worse in 2022 and 2023 (Likely due to an extremely overconfident prediction), The public consensus model again performs significantly worse than the machine learning models. Appendix B examines the overconfidence issue in the public consensus model further, however I opted not to adjust the model for bracket simulations because the un-adjusted model outperforms the adjusted model in bracket selection.
+The graph of PC1 and PC2 on tournament teams supports this finding, as the teams high in PC1 tend to be higher seeded year to year, all with variable PC2 loadings.
+
+## Brier score and Log-loss analysis
+
+All of the machine learning models vary in Brier score by about .02 year to year, which is a minimal difference. The public consensus model is the only model that performs significantly worse than the others for most years. Log-loss shows similar results. Besides the linear regression model performing significantly worse in 2022 and 2023 (Likely due to an extremely overconfident prediction), The public consensus model again performs significantly worse than the machine learning models. Appendix B examines the overconfidence issue in the public consensus model further, however I opted not to adjust the human-derived model for bracket simulations because the un-adjusted model outperforms the adjusted model in bracket selection.
 
 ## Bracket simulation analysis
 
+In 2022, 2024, and 2025, the human-derived model outperformed all of the machine learning models. In 2021 and 2023, the gradient boosted model performed best, and in 2026 linear regression performed the best.
+
+Although these results are initially surprising and counter-intuitive given the human-derived model's log-loss scores, a further look into champion prediction accuracy helps us understand why the model performed best in 3 of the 6 years. Although the human-derived model tends to suffer from overconfidence in most of its predictions, it predicted the championship game more accurately than any machine learning model out of 100 simulations each year between 2021 and 2026.
+
+In 2023, the consensus model failed to pick the championship game correctly a single time out of 100 simulations. In contrast, the best model in 2023 picked the championship game correctly 36 times out of 100 simulations. In 2024, the human consensus model was nearly twice as accurate as the next most accurate model that year (50% versus 27%). This suggests that when the consensus model is overconfident in a champion and the champion wins, the consensus model outperforms the machine learning models. When the favorite doesn't win, the human consensus model performs poorly for that year.
+
 # Conclusion
 
-The findings suggest that out of the 63 games in the NCAA tournament, a gradient boosted tree model is, on average, the best on average at evaluating the probability that a team will win a given game. When looking at just the championship games for each year, the public consensus model on average is the best at picking champions. This increased championship accuracy causes the consensus model to outperform machine learning models in bracket generation in some years.
+The findings suggest that out of the 63 games in the NCAA tournament, a gradient boosted tree model is, on average, the best at evaluating the probability that a team will win a given game. Although Brier score and log-loss evaluation results in similar performance across most models. When looking at just the championship games for each year, the public consensus model is, on average, the best at picking champions. This increased championship accuracy causes the consensus model to outperform machine learning models in bracket generation in some years.
 
-However, the championship model is overconfident in its predictions, which can skew the results of the bracket simulations. Championship accuracy has a high deviation each year. In 2023, the consensus model failed to pick the championship game correctly a single time out of 100 simulations. In contrast the best model in 2023 picked the championship game correctly 36 times out of 100 simulations. In 2024, the consensus model was nearly twice as accurate as the next most accurate model that year (50% versus 27%). This suggests that when the consensus model is overconfident in a champion and the champion wins, the consensus model outperforms the machine learning models. When the favorite doesn't win, the consensus performs very poorly for that year. This explains the high variance in performance from the consensus year to year.
-
-The current findings suggest that using a gradient boosted model for the first 62 games of the tournament, and the consensus model for the championship game will perform the best on average. However, in the long run we may see the current championship accuracy of the consensus model start to normalize, and gradient boosted trees perform the best overall.
+The current findings suggest that using the gradient boosted model for the first 62 games of the tournament, and the consensus model for the championship game will perform the best on average. However, in the long run we may see the current championship accuracy of the consensus model start to normalize, and gradient boosted trees perform the best overall.
 
 Each year this project could be updated with the new tournament data to further examine how model performance averages out over time.
 
@@ -1096,13 +1088,9 @@ Jeff Sonas, Martyna Plomecka, Yao Yan, and Addison Howard. March Machine Learnin
 
 Pomeroy, K. (2026). KenPom college basketball ratings. https://kenpom.com. Accessed 5/1/2026.
 
-Amin, N. (2026). March Madness Data [Dataset, Public Picks.csv]. Kaggle. 
-	https://www.kaggle.com/datasets/nishaanamin/march-madness-data/code. Accessed 5/1/2026.
-	
-Kaggle. (2026). March Machine Learning Mania 2026 competition data [Data set]. Kaggle. 
-	https://www.kaggle.com/competitions/march-machine-learning-mania-2026/data. Accessed 5/1/2026
+Amin, N. (2026). March Madness Data \[Dataset, Public Picks.csv\]. Kaggle. https://www.kaggle.com/datasets/nishaanamin/march-madness-data/code. Accessed 5/1/2026.
 
-Pilafas, J. (2026). INT_KenPom_Summary (Pre-Tournament).csv [Data file]. Kaggle. https://www.kaggle.com/datasets/jonathanpilafas/2024-march-madness-statistical-analysis. Accessed 5/1/2026
+Pilafas, J. (2026). INT_KenPom_Summary (Pre-Tournament).csv \[Data file\]. Kaggle. https://www.kaggle.com/datasets/jonathanpilafas/2024-march-madness-statistical-analysis. Accessed 5/1/2026
 
 # Appendix
 
@@ -1302,15 +1290,15 @@ if (length(missing) == 0) {
 
 When evaluating the public consensus model, I found that it was consistently overconfident in its predictions. Initially, I applied a transformation to the consensus model, scaling it to be more under confident in all predictions.
 
-The following is a graph showing the brier score results of scaling public consensus:
+The following is a graph showing the Brier score results of scaling public consensus:
 
 ![](images/Screenshot%202026-05-12%20115226.png){width="340"}
 
-However, despite finding that public picks was overconfident and that scaling the probabilities saw a better brier score outcome, adjusting this overconfidence led to a decrease in scores during the bracket simulation across all years.
+However, despite finding that public picks was overconfident and that scaling the probabilities saw a better Brier score outcome, adjusting this overconfidence led to a decrease in scores during the bracket simulation across all years.
 
 ## Appendix C
 
-### C.1 Functions for generating brier score, log-loss, and simulated brackets
+### C.1 Functions for generating Brier score, log-loss, and simulated brackets
 
 #### Bracket simulation function
 
