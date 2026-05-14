@@ -70,17 +70,15 @@ theme_set(
 
 - **Project Webpage:** [HSR Visualization project](https://1aaronz.github.io/danl-310-data-storytelling.html)
 
-This project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. 60% of U.S. voters have a favorable opinion of high-speed rail and only 16% view it unfavorably (Public Policy Polling). Despite public interest in HSR in the US, the US has fallen behind in HSR construction when compared to countries that have built HSR.
+This project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. 60% of U.S. voters have a favorable opinion of high-speed rail and only 16% view it unfavorably (Public Policy Polling). Despite public interest in HSR in the US, the US has fallen behind in HSR construction.
 
-This project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future.
-
-# Guiding Question or Story Theme
-
-The guiding question of this project is: "How has the length of HSR lines by country changed overtime?"
+The analysis examines historical HSR growth and visualizes changes over time, extending up to the present day and 10 year projected estimates. 
 
 # Background and Context
 
 What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high-speed rail is defined as "the length of track where passenger trains can reliably go at least 200 kilometers per hour". In the case of the United States, the North East Corridor can, in theory, carry high speed rail much further than what the dataset for this project provides. However, only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project. This benchmark is applied to all countries in the dataset.
+
+The 10 year-projected HSR construction is based on projects that have been officially announced, with an estimated completion date within the next 10 years.
 
 # Data
 
