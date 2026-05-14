@@ -427,9 +427,9 @@ team_season_stats <- team_season_stats %>%
 skim(team_season_stats)
 ```
 
-## Cleaning Public Picks into a comparison model
+## Converting human pick data into a prediction model
 
-This code provides the full pipeline from the original consensus picks data frame, which provides public pick data from ESPN, and converts into a model that compares teams for each year and decides win probability based on how often each team was picked. A more in depth explanation of this process can be found in the Empirical Methods section.
+The dataframe "consensus1" will be cleaned and used to derive a human-based model. A more in depth explanation of this process can be found in the Empirical Methods section.
 
 ```{r}
 #| include: FALSE
@@ -602,9 +602,10 @@ if(nrow(missing_ids) > 0){
   cat("WARNING: These teams are still missing TeamIDs:\n")
   print(missing_ids %>% select(year, name, TeamName) %>% distinct())
   stop("ERROR: Some teams are still missing TeamIDs")
-} else {
-  #cat("all teams successfully matched with TeamIDs")
-}
+} 
+  #else {
+#   #cat("all teams successfully matched with TeamIDs")
+# }
 
 
 # READY FOR MODELING-------------------------------
@@ -667,7 +668,7 @@ pairwise_probs <- df_strength %>%
   ungroup()
 ```
 
-### Final model data frame
+### Final consensus model data frame
 
 ```{r}
 #| echo: true
@@ -815,7 +816,7 @@ $Bernoulli(p_{g,b})$ = a random draw with probability $p_{g,b}​$
 
 $$B_b = \{Y_{1,b},Y_{2,b},\dots,Y_{63,b}\}$$
 
-$B_b$ = one complete simulated tournament bracket with random draws chosen for all 63 games
+$B_b$ = one complete simulated tournament bracket
 
 These simulations generate a random 63 game bracket based on the probabilities given by each model, which is then repeated 100 times for each model for each year being predicted.
 
