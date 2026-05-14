@@ -92,17 +92,19 @@ March Madness is an annual tournament for Division 1 (DI) college basketball. I 
 
 The goal of this project is to find an effective way to fill out brackets of 63 game tournaments which consistently outperforms both people and the other prediction models. As a rough estimate of human judgement, a prediction model will be derived from public pick data (the way people filled out brackets and selected teams). This will serve as a baseline to compare the model results against.
 
+The evaluation of the models had nuanced results, with machine learning models generally outperforming a human-derived model. Despite this, the human-derived model outperformed in a key metric: championship game accuracy. These differences are examined in greater detail in the results section.
+
 ## Research Question
 
 The research question this project aims to answer is "How do NCAA March Madness prediction models perform relative to human-selected brackets?"
 
-To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets. The evaluation had nuanced results, with machine learning models generally outperforming a human-derived model, but with the human-derived model outperforming in a key metric, championship game accuracy.
+To answer this question, I will be evaluating each model on Brier-score, Log-loss, and Scored Simulated Brackets.
 
 # Background and Related Literature
 
 The structure of March Madness is a 64 team, single elimination tournament.
 
-Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., & Matthews, G. J), attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions.
+Many people fill out brackets each year, an estimated 50 million (Lopez, M. J., & Matthews, G. J), all attempting to predict which teams will move on to each round. Billions of dollars each year are gambled on the tournament. Using a model that outperforms all others would produce a significant advantage in NCAA bracket competitions.
 
 While the data for a DI basketball tournament contains a lot of noise and variance, and luck does play a part in win outcomes, there is still meaningful signal for machine learning models. In a study by Lopez and Matthews, where they tested a machine learning model against random chance, they found that "Relative to a contest based entirely on luck, where each entry would have a 1 in 433 chance of finishing first, our \[model's\] chances of winning were roughly 50 to 60 times higher". It's known that machine learning models perform significantly better than random chance, so this study will focus on comparing machine learning models to each other and to human judgement.
 
