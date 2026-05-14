@@ -1,5 +1,4 @@
-# app.R - High Speed Rail Explorer
-# Run this file to launch the Shiny app
+
 
 # Load libraries
 library(shiny)
@@ -13,6 +12,7 @@ library(ggthemes)
 library(hrbrthemes)
 library(rmarkdown)
 library(forcats)
+#rsconnect::deployApp("hsr-app")
 
 # -------------------- Data Loading & Preparation --------------------
 # Load your cleaned data
@@ -76,7 +76,6 @@ ui <- fluidPage(
                  hr()
                ),
                mainPanel(
-                 h3("Total HSR Kilometer by Country"),
                  plotlyOutput("rank_plot", height = "600px"),
                  br()
                )
@@ -117,7 +116,7 @@ server <- function(input, output, session) {
       guides(fill = "none") +
       theme_minimal() +
       labs(
-        title = paste("Total Operational High Speed Rail Per Country in", input$year_filter),
+        title = paste("Year:", input$year_filter),
         x = "Total HSR in Km",
         y = ""
       )

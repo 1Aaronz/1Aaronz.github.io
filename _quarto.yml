@@ -11,7 +11,7 @@ website:
       - text: March Madness Project
         href: project/marchmadnessproject.qmd
       - text: HSR Visualization
-        href: danl-310-data-storytelling.qmd
+        href: danl_310_ZALEN_AARON_project.qmd
       - text: Data Analysis
         menu: 
           - text: Beer markets analysis

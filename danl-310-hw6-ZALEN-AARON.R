@@ -1,5 +1,4 @@
-# app.R - High Speed Rail Explorer
-# Run this file to launch the Shiny app
+
 
 # Load libraries
 library(shiny)
@@ -16,8 +15,8 @@ library(forcats)
 library(gganimate)
 library(tidytext)
 library(gifski)
-# -------------------- Data Loading & Preparation --------------------
-# Load your cleaned data
+
+#Data Loading--------------------
 hsr <- read.csv("hsr.csv") %>%
   select(Line, Length_km, Opening_year, country, Status, Maximum.speed)
 
@@ -48,7 +47,7 @@ hsr_summary <- hsr %>%
   ) %>%
   arrange(desc(Total_HSR_km))
 
-# Data for time trend (cumulative HSR over years)
+# cumulative HSR over years
 hsr_trend <- hsr %>%
   filter(!is.na(Opening_year)) %>%
   group_by(Opening_year, country) %>%
@@ -235,7 +234,7 @@ for(i in seq_along(all_years)) {
   ggsave(paste0("frames/frame_", sprintf("%03d", i), ".png"), 
          p, width = 10, height = 7, dpi = 100)
   
-  # Progress
+  # Progress check
   if(i %% 5 == 0) cat("Rendered year", current_year, "(", i, "/", length(all_years), ")\n")
 }
 

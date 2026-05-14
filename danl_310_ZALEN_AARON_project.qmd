@@ -76,7 +76,7 @@ The analysis examines historical HSR growth and visualizes changes over time, ex
 
 # Background and Context
 
-What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high-speed rail is defined as "the length of track where passenger trains can reliably go at least 200 kilometers per hour". In the case of the United States, the North East Corridor can, in theory, carry high speed rail much further than what the dataset for this project provides. However, only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project. This benchmark is applied to all countries in the dataset.
+What qualifies as "high speed rail" can be ambiguous. For the purposes of this project, high-speed rail is defined as the length of track where passenger trains can reliably go at least 200 kilometers per hour. In the case of the United States, the North East Corridor can, in theory, carry high speed rail much further than what the dataset for this project provides. However, only about 80km of the North East Corridor is currently operating high speed rail, so only 80km is counted for this project. This benchmark is applied to all countries in the dataset.
 
 The 10 year-projected HSR construction is based on projects that have been officially announced, with an estimated completion date within the next 10 years.
 
@@ -453,15 +453,6 @@ Public Policy Polling. (2024). National survey on high-speed rail. https://www.u
 Wikipedia contributors. (n.d.). List of high-speed railway lines. In Wikipedia. Retrieved May 6, 2026, from https://en.wikipedia.org/wiki/List_of_high-speed_railway_lines
 
 # Appendix
-
-Use the appendix for extra materials that are useful but not central to the story.
-
-Examples:
-
-- additional tables,
-- additional figures,
-- extra data cleaning details,
-- code that is too long for the main narrative.
 
 #### Appendix A: Initial code to scrape the data
 
