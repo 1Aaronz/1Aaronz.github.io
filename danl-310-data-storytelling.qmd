@@ -402,7 +402,7 @@ ggplot(world_hsr) +
 This graph helps visualize how far behind the US currently is to the rest of the world. The countries with more high speed rail take up a large area on the map.
 
 ## Shiny App
-
+*Only one instance of the app can be actively ran at a time
 ```{=html}
 <div style="display: flex; justify-content: center; margin: 1em 0;">
   <iframe
@@ -414,6 +414,8 @@ This graph helps visualize how far behind the US currently is to the rest of the
   ></iframe>
 </div>
 ```
+
+## Animated Plot
 
 ![](hsr_race_chart.gif)
 

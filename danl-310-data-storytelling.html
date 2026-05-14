@@ -360,6 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualization-3-future-prospects-the-10-year-projection-of-new-hsr-by-country" id="toc-visualization-3-future-prospects-the-10-year-projection-of-new-hsr-by-country" class="nav-link" data-scroll-target="#visualization-3-future-prospects-the-10-year-projection-of-new-hsr-by-country">Visualization 3: Future Prospects, the 10 year projection of new HSR by country</a></li>
   <li><a href="#visualization-4-world-map-of-hsr-compared-to-the-us" id="toc-visualization-4-world-map-of-hsr-compared-to-the-us" class="nav-link" data-scroll-target="#visualization-4-world-map-of-hsr-compared-to-the-us">Visualization 4: World map of HSR compared to the US</a></li>
   <li><a href="#shiny-app" id="toc-shiny-app" class="nav-link" data-scroll-target="#shiny-app">Shiny App</a></li>
+  <li><a href="#animated-plot" id="toc-animated-plot" class="nav-link" data-scroll-target="#animated-plot">Animated Plot</a></li>
   <li><a href="#dashboard" id="toc-dashboard" class="nav-link" data-scroll-target="#dashboard">Dashboard</a></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
@@ -960,9 +961,13 @@ This graph helps visualize how far behind the US currently is to the rest of the
 </section>
 <section id="shiny-app" class="level2">
 <h2 class="anchored" data-anchor-id="shiny-app">Shiny App</h2>
+<p>*Only one instance of the app can be actively ran at a time</p>
 <div style="display: flex; justify-content: center; margin: 1em 0;">
   <iframe src="https://yjmcom-aaron-zalen.shinyapps.io/hsr-app/" width="800" height="800" frameborder="0" style="border: none;"></iframe>
 </div>
+</section>
+<section id="animated-plot" class="level2">
+<h2 class="anchored" data-anchor-id="animated-plot">Animated Plot</h2>
 <p><img src="hsr_race_chart.gif" class="img-fluid"></p>
 </section>
 <section id="dashboard" class="level2">
@@ -2006,7 +2011,7 @@ This graph helps visualize how far behind the US currently is to the rest of the
 <span id="cb12-404"><a href="#cb12-404" aria-hidden="true" tabindex="-1"></a>This graph helps visualize how far behind the US currently is to the rest of the world. The countries with more high speed rail take up a large area on the map.</span>
 <span id="cb12-405"><a href="#cb12-405" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-406"><a href="#cb12-406" aria-hidden="true" tabindex="-1"></a><span class="fu">## Shiny App</span></span>
-<span id="cb12-407"><a href="#cb12-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-407"><a href="#cb12-407" aria-hidden="true" tabindex="-1"></a>*Only one instance of the app can be actively ran at a time</span>
 <span id="cb12-408"><a href="#cb12-408" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb12-409"><a href="#cb12-409" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div style="display: flex; justify-content: center; margin: 1em 0;"&gt;</span></span>
 <span id="cb12-410"><a href="#cb12-410" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;iframe</span></span>
@@ -2019,177 +2024,179 @@ This graph helps visualize how far behind the US currently is to the rest of the
 <span id="cb12-417"><a href="#cb12-417" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
 <span id="cb12-418"><a href="#cb12-418" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb12-419"><a href="#cb12-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a><span class="al">![](hsr_race_chart.gif)</span></span>
+<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a><span class="fu">## Animated Plot</span></span>
 <span id="cb12-421"><a href="#cb12-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dashboard</span></span>
+<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a><span class="al">![](hsr_race_chart.gif)</span></span>
 <span id="cb12-423"><a href="#cb12-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The dashboard for my project can be found here:** <span class="co">[</span><span class="ot">1aaronz.github.io/danl310dashboard.html</span><span class="co">](https://1aaronz.github.io/danl310dashboard.html)</span></span>
+<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dashboard</span></span>
 <span id="cb12-425"><a href="#cb12-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a>The shiny app allows interactive visualization with the cumulative HSR bar chart.</span>
-<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a>The dashboard organizes the all the charts together.</span>
-<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a><span class="fu"># Discussion</span></span>
+<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The dashboard for my project can be found here:** <span class="co">[</span><span class="ot">1aaronz.github.io/danl310dashboard.html</span><span class="co">](https://1aaronz.github.io/danl310dashboard.html)</span></span>
+<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a>The shiny app allows interactive visualization with the cumulative HSR bar chart.</span>
+<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a>The dashboard organizes the all the charts together.</span>
 <span id="cb12-430"><a href="#cb12-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a>HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While the data suggests global adoption is only set to increase, the US has appears to have stalled behind the rest of the world in building HSR, and continues to build HSR at a slower rate than other countries. </span>
+<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a><span class="fu"># Discussion</span></span>
 <span id="cb12-432"><a href="#cb12-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a><span class="fu">## Limitations</span></span>
+<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a>HSR was almost exclusively a European phenomenon in 2000. Since then, HSR has been adopted by many countries throughout the world, with even more countries building their first lines as time goes on. While the data suggests global adoption is only set to increase, the US has appears to have stalled behind the rest of the world in building HSR, and continues to build HSR at a slower rate than other countries. </span>
 <span id="cb12-434"><a href="#cb12-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a>The 10 year projection is subject to change. It is based off of projects that have been officially announced. New projects set to be complete within the next 10 years could be announced, and projects that were announced could be cancelled.</span>
+<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a><span class="fu">## Limitations</span></span>
 <span id="cb12-436"><a href="#cb12-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a>The 10 year projection is subject to change. It is based off of projects that have been officially announced. New projects set to be complete within the next 10 years could be announced, and projects that were announced could be cancelled.</span>
 <span id="cb12-438"><a href="#cb12-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a>The data shows that the US has fallen behind in high-speed rail construction considerably. Since 2000, 13 countries that previously had no high speed rail have built enough rail today to be ahead of the US in HSR km. With the exception of Denmark, all of the 13 countries that had more HSR than the US in 2000 still have more HSR in 2026, with many increasing the gap between them and the US. </span>
+<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
 <span id="cb12-440"><a href="#cb12-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a>If the US is to catchup to the rest of the world, drastic changes will need to be made to the entire pipeline of funding, building, and operating high-speed rail lines</span>
+<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a>The data shows that the US has fallen behind in high-speed rail construction considerably. Since 2000, 13 countries that previously had no high speed rail have built enough rail today to be ahead of the US in HSR km. With the exception of Denmark, all of the 13 countries that had more HSR than the US in 2000 still have more HSR in 2026, with many increasing the gap between them and the US. </span>
 <span id="cb12-442"><a href="#cb12-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a><span class="fu"># Future Directions</span></span>
+<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a>If the US is to catchup to the rest of the world, drastic changes will need to be made to the entire pipeline of funding, building, and operating high-speed rail lines</span>
 <span id="cb12-444"><a href="#cb12-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a>Further research into this topic could involve looking into other variables for measuring high speed rail contributions such as amount of funding allocated to HSR projects. </span>
+<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a><span class="fu"># Future Directions</span></span>
 <span id="cb12-446"><a href="#cb12-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a>Additional research could look into areas where high speed-rail could be justified by analyzing the variables of places that have already built high-speed rail, such as population served, cost per mile, and terrain. We could then look for places that have similar or better statistics as good candidates for future high-speed rail prospects.</span>
+<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a>Further research into this topic could involve looking into other variables for measuring high speed rail contributions such as amount of funding allocated to HSR projects. </span>
 <span id="cb12-448"><a href="#cb12-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
+<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a>Additional research could look into areas where high speed-rail could be justified by analyzing the variables of places that have already built high-speed rail, such as population served, cost per mile, and terrain. We could then look for places that have similar or better statistics as good candidates for future high-speed rail prospects.</span>
 <span id="cb12-450"><a href="#cb12-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-451"><a href="#cb12-451" aria-hidden="true" tabindex="-1"></a>Public Policy Polling. (2024). National survey on high-speed rail. https://www.ushsr.com/</span>
+<span id="cb12-451"><a href="#cb12-451" aria-hidden="true" tabindex="-1"></a><span class="fu"># References</span></span>
 <span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a>Wikipedia contributors. (n.d.). List of high-speed railway lines. In Wikipedia. Retrieved May 6, 2026, from https://en.wikipedia.org/wiki/List_of_high-speed_railway_lines</span>
+<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a>Public Policy Polling. (2024). National survey on high-speed rail. https://www.ushsr.com/</span>
 <span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix</span></span>
+<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a>Wikipedia contributors. (n.d.). List of high-speed railway lines. In Wikipedia. Retrieved May 6, 2026, from https://en.wikipedia.org/wiki/List_of_high-speed_railway_lines</span>
 <span id="cb12-456"><a href="#cb12-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a>Use the appendix for extra materials that are useful but not central to the story.</span>
+<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a><span class="fu"># Appendix</span></span>
 <span id="cb12-458"><a href="#cb12-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a>Examples:</span>
+<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a>Use the appendix for extra materials that are useful but not central to the story.</span>
 <span id="cb12-460"><a href="#cb12-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>additional tables,</span>
-<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>additional figures,</span>
-<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>extra data cleaning details,</span>
-<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>code that is too long for the main narrative.</span>
-<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-466"><a href="#cb12-466" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Appendix A: Initial code to scrape the data</span></span>
+<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a>Examples:</span>
+<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>additional tables,</span>
+<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>additional figures,</span>
+<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>extra data cleaning details,</span>
+<span id="cb12-466"><a href="#cb12-466" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>code that is too long for the main narrative.</span>
 <span id="cb12-467"><a href="#cb12-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a><span class="in">```{r appendix-code}</span></span>
-<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
-<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb12-472"><a href="#cb12-472" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb12-473"><a href="#cb12-473" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb12-474"><a href="#cb12-474" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
-<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a><span class="co">#SCRAPE PAGE---------------------------------------------------------</span></span>
+<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Appendix A: Initial code to scrape the data</span></span>
+<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a><span class="in">```{r appendix-code}</span></span>
+<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: FALSE</span></span>
+<span id="cb12-472"><a href="#cb12-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-473"><a href="#cb12-473" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb12-474"><a href="#cb12-474" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
 <span id="cb12-478"><a href="#cb12-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://en.wikipedia.org/wiki/High-speed_rail_by_country"</span></span>
-<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a>page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
-<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-482"><a href="#cb12-482" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">xml_find_all</span>(page, <span class="st">"//h2 | //h3 | //table"</span>)</span>
+<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a><span class="co">#SCRAPE PAGE---------------------------------------------------------</span></span>
+<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://en.wikipedia.org/wiki/High-speed_rail_by_country"</span></span>
+<span id="cb12-482"><a href="#cb12-482" aria-hidden="true" tabindex="-1"></a>page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
 <span id="cb12-483"><a href="#cb12-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a>current_name <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb12-486"><a href="#cb12-486" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (node <span class="cf">in</span> nodes) {</span>
-<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update section name</span></span>
-<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">xml_name</span>(node) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"h2"</span>, <span class="st">"h3"</span>)) {</span>
-<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a>    current_name <span class="ot">&lt;-</span> <span class="fu">xml_text</span>(node, <span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-493"><a href="#cb12-493" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-494"><a href="#cb12-494" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-495"><a href="#cb12-495" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store table under current section name</span></span>
-<span id="cb12-496"><a href="#cb12-496" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">xml_name</span>(node) <span class="sc">==</span> <span class="st">"table"</span>) {</span>
-<span id="cb12-497"><a href="#cb12-497" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">html_table</span>(node, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-498"><a href="#cb12-498" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-499"><a href="#cb12-499" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb12-500"><a href="#cb12-500" aria-hidden="true" tabindex="-1"></a>    df[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(df, as.character)</span>
-<span id="cb12-501"><a href="#cb12-501" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-502"><a href="#cb12-502" aria-hidden="true" tabindex="-1"></a>    tables[[i]] <span class="ot">&lt;-</span> df</span>
-<span id="cb12-503"><a href="#cb12-503" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(tables)[i] <span class="ot">&lt;-</span> current_name</span>
-<span id="cb12-504"><a href="#cb12-504" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb12-505"><a href="#cb12-505" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb12-506"><a href="#cb12-506" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-507"><a href="#cb12-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-508"><a href="#cb12-508" aria-hidden="true" tabindex="-1"></a><span class="co">#MANUAL COUNTRY ASSIGNMENT---------------------------------------------------</span></span>
-<span id="cb12-509"><a href="#cb12-509" aria-hidden="true" tabindex="-1"></a>egypt <span class="ot">&lt;-</span> tables[[<span class="dv">5</span>]]</span>
-<span id="cb12-510"><a href="#cb12-510" aria-hidden="true" tabindex="-1"></a>morocco <span class="ot">&lt;-</span> tables[[<span class="dv">6</span>]]</span>
-<span id="cb12-511"><a href="#cb12-511" aria-hidden="true" tabindex="-1"></a>china <span class="ot">&lt;-</span> tables[[<span class="dv">7</span>]]</span>
-<span id="cb12-512"><a href="#cb12-512" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> tables[[<span class="dv">8</span>]]</span>
-<span id="cb12-513"><a href="#cb12-513" aria-hidden="true" tabindex="-1"></a>indonesia <span class="ot">&lt;-</span> tables[[<span class="dv">9</span>]]</span>
-<span id="cb12-514"><a href="#cb12-514" aria-hidden="true" tabindex="-1"></a>japan <span class="ot">&lt;-</span> tables[[<span class="dv">10</span>]]</span>
-<span id="cb12-515"><a href="#cb12-515" aria-hidden="true" tabindex="-1"></a>saudi_arabia <span class="ot">&lt;-</span> tables[[<span class="dv">11</span>]]</span>
-<span id="cb12-516"><a href="#cb12-516" aria-hidden="true" tabindex="-1"></a>south_korea <span class="ot">&lt;-</span> tables[[<span class="dv">12</span>]]</span>
-<span id="cb12-517"><a href="#cb12-517" aria-hidden="true" tabindex="-1"></a>taiwan <span class="ot">&lt;-</span> tables[[<span class="dv">13</span>]]</span>
-<span id="cb12-518"><a href="#cb12-518" aria-hidden="true" tabindex="-1"></a>thailand <span class="ot">&lt;-</span> tables[[<span class="dv">14</span>]]</span>
-<span id="cb12-519"><a href="#cb12-519" aria-hidden="true" tabindex="-1"></a>turkey <span class="ot">&lt;-</span> tables[[<span class="dv">15</span>]]</span>
-<span id="cb12-520"><a href="#cb12-520" aria-hidden="true" tabindex="-1"></a>uzbekistan <span class="ot">&lt;-</span> tables[[<span class="dv">16</span>]]</span>
-<span id="cb12-521"><a href="#cb12-521" aria-hidden="true" tabindex="-1"></a>austria <span class="ot">&lt;-</span> tables[[<span class="dv">17</span>]]</span>
-<span id="cb12-522"><a href="#cb12-522" aria-hidden="true" tabindex="-1"></a>baltic_states <span class="ot">&lt;-</span> tables[[<span class="dv">18</span>]]</span>
-<span id="cb12-523"><a href="#cb12-523" aria-hidden="true" tabindex="-1"></a>belgium <span class="ot">&lt;-</span> tables[[<span class="dv">19</span>]]</span>
-<span id="cb12-524"><a href="#cb12-524" aria-hidden="true" tabindex="-1"></a>czech_republic <span class="ot">&lt;-</span> tables[[<span class="dv">20</span>]]</span>
-<span id="cb12-525"><a href="#cb12-525" aria-hidden="true" tabindex="-1"></a>denmark <span class="ot">&lt;-</span> tables[[<span class="dv">21</span>]]</span>
-<span id="cb12-526"><a href="#cb12-526" aria-hidden="true" tabindex="-1"></a>finland <span class="ot">&lt;-</span> tables[[<span class="dv">22</span>]]</span>
-<span id="cb12-527"><a href="#cb12-527" aria-hidden="true" tabindex="-1"></a>france <span class="ot">&lt;-</span> tables[[<span class="dv">23</span>]]</span>
-<span id="cb12-528"><a href="#cb12-528" aria-hidden="true" tabindex="-1"></a>germany <span class="ot">&lt;-</span> tables[[<span class="dv">24</span>]]</span>
-<span id="cb12-529"><a href="#cb12-529" aria-hidden="true" tabindex="-1"></a>greece <span class="ot">&lt;-</span> tables[[<span class="dv">25</span>]]</span>
-<span id="cb12-530"><a href="#cb12-530" aria-hidden="true" tabindex="-1"></a>italy <span class="ot">&lt;-</span> tables[[<span class="dv">26</span>]]</span>
-<span id="cb12-531"><a href="#cb12-531" aria-hidden="true" tabindex="-1"></a>netherlands <span class="ot">&lt;-</span> tables[[<span class="dv">27</span>]]</span>
-<span id="cb12-532"><a href="#cb12-532" aria-hidden="true" tabindex="-1"></a>norway <span class="ot">&lt;-</span> tables[[<span class="dv">28</span>]]</span>
-<span id="cb12-533"><a href="#cb12-533" aria-hidden="true" tabindex="-1"></a>poland <span class="ot">&lt;-</span> tables[[<span class="dv">29</span>]]</span>
-<span id="cb12-534"><a href="#cb12-534" aria-hidden="true" tabindex="-1"></a>portugal <span class="ot">&lt;-</span> tables[[<span class="dv">30</span>]]</span>
-<span id="cb12-535"><a href="#cb12-535" aria-hidden="true" tabindex="-1"></a>russia <span class="ot">&lt;-</span> tables[[<span class="dv">31</span>]]</span>
-<span id="cb12-536"><a href="#cb12-536" aria-hidden="true" tabindex="-1"></a>serbia <span class="ot">&lt;-</span> tables[[<span class="dv">32</span>]]</span>
-<span id="cb12-537"><a href="#cb12-537" aria-hidden="true" tabindex="-1"></a>spain <span class="ot">&lt;-</span> tables[[<span class="dv">33</span>]]</span>
-<span id="cb12-538"><a href="#cb12-538" aria-hidden="true" tabindex="-1"></a>sweden <span class="ot">&lt;-</span> tables[[<span class="dv">34</span>]]</span>
-<span id="cb12-539"><a href="#cb12-539" aria-hidden="true" tabindex="-1"></a>switzerland <span class="ot">&lt;-</span> tables[[<span class="dv">35</span>]]</span>
-<span id="cb12-540"><a href="#cb12-540" aria-hidden="true" tabindex="-1"></a>united_kingdom <span class="ot">&lt;-</span> tables[[<span class="dv">36</span>]]</span>
-<span id="cb12-541"><a href="#cb12-541" aria-hidden="true" tabindex="-1"></a>united_states <span class="ot">&lt;-</span> tables[[<span class="dv">37</span>]]</span>
-<span id="cb12-542"><a href="#cb12-542" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-543"><a href="#cb12-543" aria-hidden="true" tabindex="-1"></a>hsr_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb12-544"><a href="#cb12-544" aria-hidden="true" tabindex="-1"></a>  <span class="at">Egypt =</span> egypt,</span>
-<span id="cb12-545"><a href="#cb12-545" aria-hidden="true" tabindex="-1"></a>  <span class="at">Morocco =</span> morocco,</span>
-<span id="cb12-546"><a href="#cb12-546" aria-hidden="true" tabindex="-1"></a>  <span class="at">China =</span> china,</span>
-<span id="cb12-547"><a href="#cb12-547" aria-hidden="true" tabindex="-1"></a>  <span class="at">India =</span> india,</span>
-<span id="cb12-548"><a href="#cb12-548" aria-hidden="true" tabindex="-1"></a>  <span class="at">Indonesia =</span> indonesia,</span>
-<span id="cb12-549"><a href="#cb12-549" aria-hidden="true" tabindex="-1"></a>  <span class="at">Japan =</span> japan,</span>
-<span id="cb12-550"><a href="#cb12-550" aria-hidden="true" tabindex="-1"></a>  <span class="at">Saudi_Arabia =</span> saudi_arabia,</span>
-<span id="cb12-551"><a href="#cb12-551" aria-hidden="true" tabindex="-1"></a>  <span class="at">South_Korea =</span> south_korea,</span>
-<span id="cb12-552"><a href="#cb12-552" aria-hidden="true" tabindex="-1"></a>  <span class="at">Taiwan =</span> taiwan,</span>
-<span id="cb12-553"><a href="#cb12-553" aria-hidden="true" tabindex="-1"></a>  <span class="at">Thailand =</span> thailand,</span>
-<span id="cb12-554"><a href="#cb12-554" aria-hidden="true" tabindex="-1"></a>  <span class="at">Turkey =</span> turkey,</span>
-<span id="cb12-555"><a href="#cb12-555" aria-hidden="true" tabindex="-1"></a>  <span class="at">Uzbekistan =</span> uzbekistan,</span>
-<span id="cb12-556"><a href="#cb12-556" aria-hidden="true" tabindex="-1"></a>  <span class="at">Austria =</span> austria,</span>
-<span id="cb12-557"><a href="#cb12-557" aria-hidden="true" tabindex="-1"></a>  <span class="at">Baltic_States =</span> baltic_states,</span>
-<span id="cb12-558"><a href="#cb12-558" aria-hidden="true" tabindex="-1"></a>  <span class="at">Belgium =</span> belgium,</span>
-<span id="cb12-559"><a href="#cb12-559" aria-hidden="true" tabindex="-1"></a>  <span class="at">Czech_Republic =</span> czech_republic,</span>
-<span id="cb12-560"><a href="#cb12-560" aria-hidden="true" tabindex="-1"></a>  <span class="at">Denmark =</span> denmark,</span>
-<span id="cb12-561"><a href="#cb12-561" aria-hidden="true" tabindex="-1"></a>  <span class="at">Finland =</span> finland,</span>
-<span id="cb12-562"><a href="#cb12-562" aria-hidden="true" tabindex="-1"></a>  <span class="at">France =</span> france,</span>
-<span id="cb12-563"><a href="#cb12-563" aria-hidden="true" tabindex="-1"></a>  <span class="at">Germany =</span> germany,</span>
-<span id="cb12-564"><a href="#cb12-564" aria-hidden="true" tabindex="-1"></a>  <span class="at">Greece =</span> greece,</span>
-<span id="cb12-565"><a href="#cb12-565" aria-hidden="true" tabindex="-1"></a>  <span class="at">Italy =</span> italy,</span>
-<span id="cb12-566"><a href="#cb12-566" aria-hidden="true" tabindex="-1"></a>  <span class="at">Netherlands =</span> netherlands,</span>
-<span id="cb12-567"><a href="#cb12-567" aria-hidden="true" tabindex="-1"></a>  <span class="at">Norway =</span> norway,</span>
-<span id="cb12-568"><a href="#cb12-568" aria-hidden="true" tabindex="-1"></a>  <span class="at">Poland =</span> poland,</span>
-<span id="cb12-569"><a href="#cb12-569" aria-hidden="true" tabindex="-1"></a>  <span class="at">Portugal =</span> portugal,</span>
-<span id="cb12-570"><a href="#cb12-570" aria-hidden="true" tabindex="-1"></a>  <span class="at">Russia =</span> russia,</span>
-<span id="cb12-571"><a href="#cb12-571" aria-hidden="true" tabindex="-1"></a>  <span class="at">Serbia =</span> serbia,</span>
-<span id="cb12-572"><a href="#cb12-572" aria-hidden="true" tabindex="-1"></a>  <span class="at">Spain =</span> spain,</span>
-<span id="cb12-573"><a href="#cb12-573" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sweden =</span> sweden,</span>
-<span id="cb12-574"><a href="#cb12-574" aria-hidden="true" tabindex="-1"></a>  <span class="at">Switzerland =</span> switzerland,</span>
-<span id="cb12-575"><a href="#cb12-575" aria-hidden="true" tabindex="-1"></a>  <span class="at">United_Kingdom =</span> united_kingdom,</span>
-<span id="cb12-576"><a href="#cb12-576" aria-hidden="true" tabindex="-1"></a>  <span class="at">United_States =</span> united_states</span>
-<span id="cb12-577"><a href="#cb12-577" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-578"><a href="#cb12-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-579"><a href="#cb12-579" aria-hidden="true" tabindex="-1"></a><span class="co">#COMBINE ALL TABLES---------------------------------------------------------</span></span>
-<span id="cb12-580"><a href="#cb12-580" aria-hidden="true" tabindex="-1"></a>hsr_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb12-581"><a href="#cb12-581" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">names</span>(hsr_list), <span class="cf">function</span>(country) {</span>
-<span id="cb12-582"><a href="#cb12-582" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> hsr_list[[country]]</span>
-<span id="cb12-583"><a href="#cb12-583" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>country <span class="ot">&lt;-</span> country</span>
-<span id="cb12-584"><a href="#cb12-584" aria-hidden="true" tabindex="-1"></a>    df</span>
-<span id="cb12-585"><a href="#cb12-585" aria-hidden="true" tabindex="-1"></a>  }),</span>
-<span id="cb12-586"><a href="#cb12-586" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"table_id"</span></span>
-<span id="cb12-587"><a href="#cb12-587" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-588"><a href="#cb12-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-589"><a href="#cb12-589" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(hsr_all, "hsr_all.csv")</span></span>
-<span id="cb12-590"><a href="#cb12-590" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">xml_find_all</span>(page, <span class="st">"//h2 | //h3 | //table"</span>)</span>
+<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-486"><a href="#cb12-486" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a>current_name <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (node <span class="cf">in</span> nodes) {</span>
+<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a>  <span class="co"># update section name</span></span>
+<span id="cb12-493"><a href="#cb12-493" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">xml_name</span>(node) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"h2"</span>, <span class="st">"h3"</span>)) {</span>
+<span id="cb12-494"><a href="#cb12-494" aria-hidden="true" tabindex="-1"></a>    current_name <span class="ot">&lt;-</span> <span class="fu">xml_text</span>(node, <span class="at">trim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-495"><a href="#cb12-495" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-496"><a href="#cb12-496" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-497"><a href="#cb12-497" aria-hidden="true" tabindex="-1"></a>  <span class="co"># store table under current section name</span></span>
+<span id="cb12-498"><a href="#cb12-498" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">xml_name</span>(node) <span class="sc">==</span> <span class="st">"table"</span>) {</span>
+<span id="cb12-499"><a href="#cb12-499" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">html_table</span>(node, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-500"><a href="#cb12-500" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-501"><a href="#cb12-501" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(df, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-502"><a href="#cb12-502" aria-hidden="true" tabindex="-1"></a>    df[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(df, as.character)</span>
+<span id="cb12-503"><a href="#cb12-503" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-504"><a href="#cb12-504" aria-hidden="true" tabindex="-1"></a>    tables[[i]] <span class="ot">&lt;-</span> df</span>
+<span id="cb12-505"><a href="#cb12-505" aria-hidden="true" tabindex="-1"></a>    <span class="fu">names</span>(tables)[i] <span class="ot">&lt;-</span> current_name</span>
+<span id="cb12-506"><a href="#cb12-506" aria-hidden="true" tabindex="-1"></a>    i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb12-507"><a href="#cb12-507" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-508"><a href="#cb12-508" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-509"><a href="#cb12-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-510"><a href="#cb12-510" aria-hidden="true" tabindex="-1"></a><span class="co">#MANUAL COUNTRY ASSIGNMENT---------------------------------------------------</span></span>
+<span id="cb12-511"><a href="#cb12-511" aria-hidden="true" tabindex="-1"></a>egypt <span class="ot">&lt;-</span> tables[[<span class="dv">5</span>]]</span>
+<span id="cb12-512"><a href="#cb12-512" aria-hidden="true" tabindex="-1"></a>morocco <span class="ot">&lt;-</span> tables[[<span class="dv">6</span>]]</span>
+<span id="cb12-513"><a href="#cb12-513" aria-hidden="true" tabindex="-1"></a>china <span class="ot">&lt;-</span> tables[[<span class="dv">7</span>]]</span>
+<span id="cb12-514"><a href="#cb12-514" aria-hidden="true" tabindex="-1"></a>india <span class="ot">&lt;-</span> tables[[<span class="dv">8</span>]]</span>
+<span id="cb12-515"><a href="#cb12-515" aria-hidden="true" tabindex="-1"></a>indonesia <span class="ot">&lt;-</span> tables[[<span class="dv">9</span>]]</span>
+<span id="cb12-516"><a href="#cb12-516" aria-hidden="true" tabindex="-1"></a>japan <span class="ot">&lt;-</span> tables[[<span class="dv">10</span>]]</span>
+<span id="cb12-517"><a href="#cb12-517" aria-hidden="true" tabindex="-1"></a>saudi_arabia <span class="ot">&lt;-</span> tables[[<span class="dv">11</span>]]</span>
+<span id="cb12-518"><a href="#cb12-518" aria-hidden="true" tabindex="-1"></a>south_korea <span class="ot">&lt;-</span> tables[[<span class="dv">12</span>]]</span>
+<span id="cb12-519"><a href="#cb12-519" aria-hidden="true" tabindex="-1"></a>taiwan <span class="ot">&lt;-</span> tables[[<span class="dv">13</span>]]</span>
+<span id="cb12-520"><a href="#cb12-520" aria-hidden="true" tabindex="-1"></a>thailand <span class="ot">&lt;-</span> tables[[<span class="dv">14</span>]]</span>
+<span id="cb12-521"><a href="#cb12-521" aria-hidden="true" tabindex="-1"></a>turkey <span class="ot">&lt;-</span> tables[[<span class="dv">15</span>]]</span>
+<span id="cb12-522"><a href="#cb12-522" aria-hidden="true" tabindex="-1"></a>uzbekistan <span class="ot">&lt;-</span> tables[[<span class="dv">16</span>]]</span>
+<span id="cb12-523"><a href="#cb12-523" aria-hidden="true" tabindex="-1"></a>austria <span class="ot">&lt;-</span> tables[[<span class="dv">17</span>]]</span>
+<span id="cb12-524"><a href="#cb12-524" aria-hidden="true" tabindex="-1"></a>baltic_states <span class="ot">&lt;-</span> tables[[<span class="dv">18</span>]]</span>
+<span id="cb12-525"><a href="#cb12-525" aria-hidden="true" tabindex="-1"></a>belgium <span class="ot">&lt;-</span> tables[[<span class="dv">19</span>]]</span>
+<span id="cb12-526"><a href="#cb12-526" aria-hidden="true" tabindex="-1"></a>czech_republic <span class="ot">&lt;-</span> tables[[<span class="dv">20</span>]]</span>
+<span id="cb12-527"><a href="#cb12-527" aria-hidden="true" tabindex="-1"></a>denmark <span class="ot">&lt;-</span> tables[[<span class="dv">21</span>]]</span>
+<span id="cb12-528"><a href="#cb12-528" aria-hidden="true" tabindex="-1"></a>finland <span class="ot">&lt;-</span> tables[[<span class="dv">22</span>]]</span>
+<span id="cb12-529"><a href="#cb12-529" aria-hidden="true" tabindex="-1"></a>france <span class="ot">&lt;-</span> tables[[<span class="dv">23</span>]]</span>
+<span id="cb12-530"><a href="#cb12-530" aria-hidden="true" tabindex="-1"></a>germany <span class="ot">&lt;-</span> tables[[<span class="dv">24</span>]]</span>
+<span id="cb12-531"><a href="#cb12-531" aria-hidden="true" tabindex="-1"></a>greece <span class="ot">&lt;-</span> tables[[<span class="dv">25</span>]]</span>
+<span id="cb12-532"><a href="#cb12-532" aria-hidden="true" tabindex="-1"></a>italy <span class="ot">&lt;-</span> tables[[<span class="dv">26</span>]]</span>
+<span id="cb12-533"><a href="#cb12-533" aria-hidden="true" tabindex="-1"></a>netherlands <span class="ot">&lt;-</span> tables[[<span class="dv">27</span>]]</span>
+<span id="cb12-534"><a href="#cb12-534" aria-hidden="true" tabindex="-1"></a>norway <span class="ot">&lt;-</span> tables[[<span class="dv">28</span>]]</span>
+<span id="cb12-535"><a href="#cb12-535" aria-hidden="true" tabindex="-1"></a>poland <span class="ot">&lt;-</span> tables[[<span class="dv">29</span>]]</span>
+<span id="cb12-536"><a href="#cb12-536" aria-hidden="true" tabindex="-1"></a>portugal <span class="ot">&lt;-</span> tables[[<span class="dv">30</span>]]</span>
+<span id="cb12-537"><a href="#cb12-537" aria-hidden="true" tabindex="-1"></a>russia <span class="ot">&lt;-</span> tables[[<span class="dv">31</span>]]</span>
+<span id="cb12-538"><a href="#cb12-538" aria-hidden="true" tabindex="-1"></a>serbia <span class="ot">&lt;-</span> tables[[<span class="dv">32</span>]]</span>
+<span id="cb12-539"><a href="#cb12-539" aria-hidden="true" tabindex="-1"></a>spain <span class="ot">&lt;-</span> tables[[<span class="dv">33</span>]]</span>
+<span id="cb12-540"><a href="#cb12-540" aria-hidden="true" tabindex="-1"></a>sweden <span class="ot">&lt;-</span> tables[[<span class="dv">34</span>]]</span>
+<span id="cb12-541"><a href="#cb12-541" aria-hidden="true" tabindex="-1"></a>switzerland <span class="ot">&lt;-</span> tables[[<span class="dv">35</span>]]</span>
+<span id="cb12-542"><a href="#cb12-542" aria-hidden="true" tabindex="-1"></a>united_kingdom <span class="ot">&lt;-</span> tables[[<span class="dv">36</span>]]</span>
+<span id="cb12-543"><a href="#cb12-543" aria-hidden="true" tabindex="-1"></a>united_states <span class="ot">&lt;-</span> tables[[<span class="dv">37</span>]]</span>
+<span id="cb12-544"><a href="#cb12-544" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-545"><a href="#cb12-545" aria-hidden="true" tabindex="-1"></a>hsr_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb12-546"><a href="#cb12-546" aria-hidden="true" tabindex="-1"></a>  <span class="at">Egypt =</span> egypt,</span>
+<span id="cb12-547"><a href="#cb12-547" aria-hidden="true" tabindex="-1"></a>  <span class="at">Morocco =</span> morocco,</span>
+<span id="cb12-548"><a href="#cb12-548" aria-hidden="true" tabindex="-1"></a>  <span class="at">China =</span> china,</span>
+<span id="cb12-549"><a href="#cb12-549" aria-hidden="true" tabindex="-1"></a>  <span class="at">India =</span> india,</span>
+<span id="cb12-550"><a href="#cb12-550" aria-hidden="true" tabindex="-1"></a>  <span class="at">Indonesia =</span> indonesia,</span>
+<span id="cb12-551"><a href="#cb12-551" aria-hidden="true" tabindex="-1"></a>  <span class="at">Japan =</span> japan,</span>
+<span id="cb12-552"><a href="#cb12-552" aria-hidden="true" tabindex="-1"></a>  <span class="at">Saudi_Arabia =</span> saudi_arabia,</span>
+<span id="cb12-553"><a href="#cb12-553" aria-hidden="true" tabindex="-1"></a>  <span class="at">South_Korea =</span> south_korea,</span>
+<span id="cb12-554"><a href="#cb12-554" aria-hidden="true" tabindex="-1"></a>  <span class="at">Taiwan =</span> taiwan,</span>
+<span id="cb12-555"><a href="#cb12-555" aria-hidden="true" tabindex="-1"></a>  <span class="at">Thailand =</span> thailand,</span>
+<span id="cb12-556"><a href="#cb12-556" aria-hidden="true" tabindex="-1"></a>  <span class="at">Turkey =</span> turkey,</span>
+<span id="cb12-557"><a href="#cb12-557" aria-hidden="true" tabindex="-1"></a>  <span class="at">Uzbekistan =</span> uzbekistan,</span>
+<span id="cb12-558"><a href="#cb12-558" aria-hidden="true" tabindex="-1"></a>  <span class="at">Austria =</span> austria,</span>
+<span id="cb12-559"><a href="#cb12-559" aria-hidden="true" tabindex="-1"></a>  <span class="at">Baltic_States =</span> baltic_states,</span>
+<span id="cb12-560"><a href="#cb12-560" aria-hidden="true" tabindex="-1"></a>  <span class="at">Belgium =</span> belgium,</span>
+<span id="cb12-561"><a href="#cb12-561" aria-hidden="true" tabindex="-1"></a>  <span class="at">Czech_Republic =</span> czech_republic,</span>
+<span id="cb12-562"><a href="#cb12-562" aria-hidden="true" tabindex="-1"></a>  <span class="at">Denmark =</span> denmark,</span>
+<span id="cb12-563"><a href="#cb12-563" aria-hidden="true" tabindex="-1"></a>  <span class="at">Finland =</span> finland,</span>
+<span id="cb12-564"><a href="#cb12-564" aria-hidden="true" tabindex="-1"></a>  <span class="at">France =</span> france,</span>
+<span id="cb12-565"><a href="#cb12-565" aria-hidden="true" tabindex="-1"></a>  <span class="at">Germany =</span> germany,</span>
+<span id="cb12-566"><a href="#cb12-566" aria-hidden="true" tabindex="-1"></a>  <span class="at">Greece =</span> greece,</span>
+<span id="cb12-567"><a href="#cb12-567" aria-hidden="true" tabindex="-1"></a>  <span class="at">Italy =</span> italy,</span>
+<span id="cb12-568"><a href="#cb12-568" aria-hidden="true" tabindex="-1"></a>  <span class="at">Netherlands =</span> netherlands,</span>
+<span id="cb12-569"><a href="#cb12-569" aria-hidden="true" tabindex="-1"></a>  <span class="at">Norway =</span> norway,</span>
+<span id="cb12-570"><a href="#cb12-570" aria-hidden="true" tabindex="-1"></a>  <span class="at">Poland =</span> poland,</span>
+<span id="cb12-571"><a href="#cb12-571" aria-hidden="true" tabindex="-1"></a>  <span class="at">Portugal =</span> portugal,</span>
+<span id="cb12-572"><a href="#cb12-572" aria-hidden="true" tabindex="-1"></a>  <span class="at">Russia =</span> russia,</span>
+<span id="cb12-573"><a href="#cb12-573" aria-hidden="true" tabindex="-1"></a>  <span class="at">Serbia =</span> serbia,</span>
+<span id="cb12-574"><a href="#cb12-574" aria-hidden="true" tabindex="-1"></a>  <span class="at">Spain =</span> spain,</span>
+<span id="cb12-575"><a href="#cb12-575" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sweden =</span> sweden,</span>
+<span id="cb12-576"><a href="#cb12-576" aria-hidden="true" tabindex="-1"></a>  <span class="at">Switzerland =</span> switzerland,</span>
+<span id="cb12-577"><a href="#cb12-577" aria-hidden="true" tabindex="-1"></a>  <span class="at">United_Kingdom =</span> united_kingdom,</span>
+<span id="cb12-578"><a href="#cb12-578" aria-hidden="true" tabindex="-1"></a>  <span class="at">United_States =</span> united_states</span>
+<span id="cb12-579"><a href="#cb12-579" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-580"><a href="#cb12-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-581"><a href="#cb12-581" aria-hidden="true" tabindex="-1"></a><span class="co">#COMBINE ALL TABLES---------------------------------------------------------</span></span>
+<span id="cb12-582"><a href="#cb12-582" aria-hidden="true" tabindex="-1"></a>hsr_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb12-583"><a href="#cb12-583" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">names</span>(hsr_list), <span class="cf">function</span>(country) {</span>
+<span id="cb12-584"><a href="#cb12-584" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> hsr_list[[country]]</span>
+<span id="cb12-585"><a href="#cb12-585" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>country <span class="ot">&lt;-</span> country</span>
+<span id="cb12-586"><a href="#cb12-586" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb12-587"><a href="#cb12-587" aria-hidden="true" tabindex="-1"></a>  }),</span>
+<span id="cb12-588"><a href="#cb12-588" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"table_id"</span></span>
+<span id="cb12-589"><a href="#cb12-589" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-590"><a href="#cb12-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-591"><a href="#cb12-591" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(hsr_all, "hsr_all.csv")</span></span>
+<span id="cb12-592"><a href="#cb12-592" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

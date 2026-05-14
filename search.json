@@ -417,7 +417,7 @@
     "href": "danl-310-data-storytelling.html#shiny-app",
     "title": "High Speed Rail Visualization",
     "section": "Shiny App",
-    "text": "Shiny App"
+    "text": "Shiny App\n*Only one instance of the app can be actively ran at a time"
   },
   {
     "objectID": "danl-310-data-storytelling.html#dashboard",
@@ -873,5 +873,12 @@
     "title": "High Speed Rail Visualization",
     "section": "Total HSR by country summary",
     "text": "Total HSR by country summary\n\nhsr |&gt;\n  group_by(country) |&gt;\n  filter(Opening_year&lt;=2026) %&gt;% \n  summarize(\n    n = n(),\n    mean_HSR_line = mean(Length_km, na.rm = TRUE),\n    Total_HSR_km = sum(Length_km, na.rm = TRUE)\n  ) |&gt;\n  arrange(desc(Total_HSR_km))\n\n# A tibble: 28 × 4\n   country            n mean_HSR_line Total_HSR_km\n   &lt;chr&gt;          &lt;int&gt;         &lt;dbl&gt;        &lt;dbl&gt;\n 1 China             15         2234.       33504.\n 2 Spain             18          230         4140 \n 3 Germany           30          117.        3511.\n 4 France            17          195.        3320.\n 5 Japan              8          369.        2956.\n 6 Sweden            12          165.        1981 \n 7 South_Korea       11          172.        1887 \n 8 Italy             15          106.        1590.\n 9 Turkey             7          227.        1586 \n10 United_Kingdom     8          186.        1489.\n# ℹ 18 more rows"
+  },
+  {
+    "objectID": "danl-310-data-storytelling.html#animated-plot",
+    "href": "danl-310-data-storytelling.html#animated-plot",
+    "title": "High Speed Rail Visualization",
+    "section": "Animated Plot",
+    "text": "Animated Plot"
   }
 ]
