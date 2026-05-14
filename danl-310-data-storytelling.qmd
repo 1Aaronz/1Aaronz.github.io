@@ -588,22 +588,3 @@ hsr_all <- bind_rows(
 
 # write.csv(hsr_all, "hsr_all.csv")
 ```
-
-# Project Checklist
-
-Before submitting, check that your project includes the following:
-
-- [ ] A clear Big Idea or main message.
-- [ ] A clear guiding question or story theme.
-- [ ] A description of the data source and unit of observation.
-- [ ] Data transformation code and explanation.
-- [ ] Descriptive statistics that help set up the story.
-- [ ] Clear and readable visualizations.
-- [ ] Written interpretation after each major figure.
-- [ ] A coherent narrative connecting the figures together.
-- [ ] A conclusion explaining why the story matters.
-- [ ] A published project webpage on each member's personal GitHub website.
-- [ ] A published Shiny app using the project data.
-- [ ] A published dashboard using the project data.
-- [ ] No unnecessary regression, machine learning, or formal modeling section.
-- [ ] No major code errors, warnings, or redundant output.
