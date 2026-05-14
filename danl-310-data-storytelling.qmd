@@ -1,5 +1,5 @@
 ---
-title: "Your Data Storytelling Project Title"
+title: "High Speed Rail Visualization"
 subtitle: "DANL 310: Data Visualization and Presentation"
 author:
   - name: Aaron Zalen
@@ -70,7 +70,7 @@ theme_set(
 
 - **Project Webpage:** [HSR Visualization project](https://1aaronz.github.io/danl-310-data-storytelling.html)
 
-This project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR.
+This project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. 60% of U.S. voters have a favorable opinion of high-speed rail and only 16% view it unfavorably (Public Policy Polling). Despite public interest in HSR in the US, the US has fallen behind in HSR construction when compared to countries that have built HSR.
 
 This project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future.
 

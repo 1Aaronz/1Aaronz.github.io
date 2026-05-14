@@ -338,35 +338,35 @@
   {
     "objectID": "danl-310-data-storytelling.html",
     "href": "danl-310-data-storytelling.html",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "",
-    "text": "Project Webpage: HSR Visualization project\n\nThis project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. Despite public interest in HSR in the US, 60% of U.S. voters have a favorable opinion of high-speed rail Only 16% view it unfavorably (Public Policy Polling), the US has fallen behind in HSR construction when compared to countries that have built HSR.\nThis project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future."
+    "text": "Project Webpage: HSR Visualization project\n\nThis project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. 60% of U.S. voters have a favorable opinion of high-speed rail and only 16% view it unfavorably (Public Policy Polling). Despite public interest in HSR in the US, the US has fallen behind in HSR construction when compared to countries that have built HSR.\nThis project will compare both historical HSR lengths and visualize the change up to the present day and 10 years into the future."
   },
   {
     "objectID": "danl-310-data-storytelling.html#key-variables",
     "href": "danl-310-data-storytelling.html#key-variables",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Key Variables",
     "text": "Key Variables\nLine: Name of high speed rail line\nLength_KM: Length of the high speed rail line in Kilometers\ncountry: Name of the country the rail line belongs to\nOpening_year: The year the high speed rail on the line became operational"
   },
   {
     "objectID": "danl-310-data-storytelling.html#unit-of-observation",
     "href": "danl-310-data-storytelling.html#unit-of-observation",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Unit of Observation",
     "text": "Unit of Observation\nEach row represents one rail line capable of carrying high-speed rail."
   },
   {
     "objectID": "danl-310-data-storytelling.html#data-source",
     "href": "danl-310-data-storytelling.html#data-source",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Data Source",
     "text": "Data Source\nThe data was scraped from tables from Wikipedia on 4/30/2026.\nThe scraping and initial cleaning process is shown in Appendix A."
   },
   {
     "objectID": "danl-310-data-storytelling.html#basic-summary",
     "href": "danl-310-data-storytelling.html#basic-summary",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Basic Summary",
     "text": "Basic Summary\n\nskim(hsr)\n\n\nData summary\n\n\nName\nhsr\n\n\nNumber of rows\n303\n\n\nNumber of columns\n6\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n4\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nLine\n0\n1\n5\n63\n0\n253\n0\n\n\ncountry\n0\n1\n5\n14\n0\n33\n0\n\n\nStatus\n0\n1\n0\n42\n3\n21\n0\n\n\nMaximum.speed\n0\n1\n18\n22\n0\n40\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nLength_km\n2\n0.99\n354.36\n817.37\n3\n57\n125.0\n258\n7210\n▇▁▁▁▁\n\n\nOpening_year\n21\n0.93\n2013.54\n16.91\n1931\n2005\n2016.5\n2028\n2040\n▁▁▂▇▇"
   },
@@ -380,56 +380,56 @@
   {
     "objectID": "danl-310-data-storytelling.html#initial-observations",
     "href": "danl-310-data-storytelling.html#initial-observations",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Initial Observations",
     "text": "Initial Observations\nChina appears as a big outlier in total HSR kilometers. The US is only seen much further down the list, and almost all countries that have any HSR are ahead of the US."
   },
   {
     "objectID": "danl-310-data-storytelling.html#visualization-1-hsr-by-country-in-2000",
     "href": "danl-310-data-storytelling.html#visualization-1-hsr-by-country-in-2000",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Visualization 1: HSR by country in 2000",
     "text": "Visualization 1: HSR by country in 2000\n\n# Replace this example with your own visualization.\n\nhsr_2000 &lt;- hsr_2000 %&gt;%\n  mutate(\n    country = fct_reorder(country, total_km)\n  )\n\nggplot(hsr_2000, aes(\n  x = total_km,\n  y = fct_reorder(country, total_km)\n)) +\n  geom_col(aes(fill = country)) +\n  scale_y_discrete(labels = function(x) {\n    ifelse(x == \"United_States\", \"United_States\", x)\n  }) +\n  theme_minimal() +\n  theme(\n    legend.position = \"none\",\n    axis.text.y = element_text(\n      color = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == \"United_States\",\n                     \"red\", \"black\"),\n      face = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == \"United_States\",\n                    \"bold\", \"plain\")\n    )\n  ) +\n  labs(\n    title = \"Total Operational High Speed Rail Per Country in 2000\",\n    y = \"\",\n    x= \"Total HSR in Km\",\n    subtitle = \"Countries Ahead of the US: 13\"\n  )+\n  scale_fill_viridis_d()\n\n\n\n\n\n\n\n\nInterpretation:\nThis gives us an initial view of what the landscape for HSR initially looked like in 2000. High speed rail was exclusive to European countries, Japan, and the US, with Japan leading the pack at nearly 2500km. Germany was a close second, followed by France.\nWhile the US was among only 16 countries with HSR in 2000, the US had only a small amount, less than 100km. The country with the most HSR in 2000, Japan, had 31 times more HSR than the US."
   },
   {
     "objectID": "danl-310-data-storytelling.html#visualization-2-hsr-by-country-in-2026",
     "href": "danl-310-data-storytelling.html#visualization-2-hsr-by-country-in-2026",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Visualization 2: HSR by Country in 2026",
     "text": "Visualization 2: HSR by Country in 2026\n\nhsr_2026 &lt;- hsr_2026 %&gt;%\n  left_join(\n    hsr_2000 %&gt;% select(country, total_km) %&gt;% rename(km_2000 = total_km),\n    by = \"country\"\n  ) %&gt;%\n  mutate(\n    km_2000 = ifelse(is.na(km_2000), 0, km_2000),\n    new_hsr = km_2000 == 0\n  )\n\nhsr_2026 &lt;- hsr_2026 %&gt;%\n  mutate(\n    country = fct_reorder(country, total_km)\n  )\n\nggplot(hsr_2026, aes(\n  x = total_km,\n  y = fct_reorder(country, total_km)\n)) +\n  geom_col(aes(fill = country)) +\n  scale_y_discrete(labels = function(x) {\n    x\n  }) +\n  theme_minimal() +\n  theme(\n    legend.position = \"none\",\n    axis.text.y = element_text(\n      color = ifelse(\n        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) == \"United_States\",\n        \"red\",\n        \"black\"\n      ),\n      face = ifelse(\n        levels(fct_reorder(hsr_2026$country, hsr_2026$total_km)) %in% \n          hsr_2026$country[hsr_2026$new_hsr],\n        \"bold\",\n        \"plain\"\n      )\n    )\n  ) +\n  labs(\n    title = \"Total Operational High Speed Rail Per Country in 2026\",\n    y = \"\",\n    x = \"Total HSR in Km\",\n    subtitle = \"Countries with no HSR in 2000 are Bolded | Countries Ahead of the US: 26\"\n  ) +\n  scale_fill_viridis_d()\n\n\n\n\n\n\n\n\nInterpretation:\nBetween 2000 and 2026, 13 more countries jumped ahead of the US in HSR km. Most notably is China, which went from having no HSR in 2000, to nearly 35000 km in 2026, beating out all other countries by a long-shot. The US only gained 50km of HSR between 2000 and 2026, with the opening of the Bright-line in Florida. Out of all the countries that have HSR, Denmark is the only country the US is ahead of.\nThe discrepancy between the front runner and the US grew a significant amount between 2000 and 2026. While the front runner had 31x more HSR than the US in 2000, in 2026 china, the current front runner, has 245x more HSR than the US."
   },
   {
     "objectID": "danl-310-data-storytelling.html#visualization-3-future-prospects-the-10-year-projection-of-new-hsr-by-country",
     "href": "danl-310-data-storytelling.html#visualization-3-future-prospects-the-10-year-projection-of-new-hsr-by-country",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Visualization 3: Future Prospects, the 10 year projection of new HSR by country",
     "text": "Visualization 3: Future Prospects, the 10 year projection of new HSR by country\n\nhsr_2036 &lt;- hsr %&gt;% \n  filter(Opening_year&lt;=2037) %&gt;% \n  filter(Opening_year&gt;=2027) %&gt;% \n  group_by(country) %&gt;% \n  summarise(total_km = sum(Length_km))\n\nhsr_2036 &lt;- hsr_2036 %&gt;%\n  filter(!is.na(total_km))\n\n# 2036 plot --------------------------------------------------------------\nhsr_2036 &lt;- hsr_2036 %&gt;%\n  mutate(\n    country = fct_reorder(country, total_km)\n  )\n\nggplot(hsr_2036, aes(\n  x = total_km,\n  y = fct_reorder(country, total_km)\n)) +\n  geom_col(aes(fill = country)) +\n  scale_y_discrete(labels = function(x) {\n    x\n  }) +\n  theme_minimal() +\n  theme(\n    legend.position = \"none\",\n    axis.text.y = element_text(\n      color = ifelse(\n        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) == \"United_States\",\n        \"red\",\n        \"black\"\n      ),\n      face = ifelse(\n        levels(fct_reorder(hsr_2036$country, hsr_2036$total_km)) %in% \n          hsr_2036$country[hsr_2036$total_km],\n        \"bold\",\n        \"plain\"\n      )\n    )\n  ) +\n  labs(\n    title = \"10 Year Projection of New HSR by Country\",\n    y = \"\",\n    x = \"Total HSR in Km\",\n    subtitle = \"HSR planned between 2027-2037\"\n  ) +\n  scale_x_continuous(\n    breaks = c(0, 2500, 5000, 10000, 20000, 25000),\n    limits = c(0, 30000),\n  expand=c(0,0))+\n  scale_fill_viridis_d()\n\n\n\n\n\n\n\n\nInterpretation:\nThe United States is set to make some progress within the next 10 years. The opening of California HSR and the Bright line west, both expected within the next 10 years, are set to add 626 more km of HSR to the US. Even with this boost, 11 countries are still set to outpace the US in new construction. China plans to nearly double their already extensive HSR network in the next 10 years."
   },
   {
     "objectID": "danl-310-data-storytelling.html#visualization-4-world-map-of-hsr-compared-to-the-us",
     "href": "danl-310-data-storytelling.html#visualization-4-world-map-of-hsr-compared-to-the-us",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Visualization 4: World map of HSR compared to the US",
     "text": "Visualization 4: World map of HSR compared to the US\n\nhsr_clean &lt;- hsr_2026 %&gt;%\n  mutate(\n    country = dplyr::recode(country,\n                     \"United_States\" = \"United States of America\",\n                     \"United_Kingdom\" = \"United Kingdom\",\n                     \"South_Korea\" = \"South Korea\",\n                     \"Saudi_Arabia\" = \"Saudi Arabia\",\n                     \"Russia\" = \"Russia\"\n    )\n  )\n\nworld &lt;- ne_countries(scale = \"medium\", returnclass = \"sf\")\n\nus_value &lt;- hsr_clean %&gt;%\n  filter(country == \"United States of America\") %&gt;%\n  pull(total_km)\n\nworld_hsr &lt;- world %&gt;%\n  left_join(hsr_clean, by = c(\"name\" = \"country\")) %&gt;%\n  mutate(\n    status = case_when(\n      name == \"United States of America\" ~ \"United States\",\n      total_km &gt; us_value ~ \"Above US\",\n      TRUE ~ \"Below US\" \n    )\n  )\n\nggplot(world_hsr) +\n  geom_sf(aes(fill = status), color = \"white\", linewidth = 0.2) +\n  scale_fill_manual(\n    values = c(\n      \"Above US\" = \"#D55E00\",\n      \"Below US\" = \"#999999\",\n      \"United States\" = \"#0072B2\"\n    )\n  ) +\n  labs(\n    title = \"Countries With More Operational High Speed Rail than the US (2026)\",\n    fill = \"\"\n  )+\n  theme_map()+\n  theme(title = element_text(size=15),\n        axis.text = element_blank(),\n        legend.position = c(0, 0.5), \n        legend.justification = c(0, 0.5),\n        legend.text = element_text(size = 12),\n        plot.title = element_text(hjust = 0.5))\n\n\n\n\n\n\n\n\nInterpretation:\nThis graph helps visualize how far behind the US currently is to the rest of the world. The countries with more high speed rail take up a large area on the map."
   },
   {
     "objectID": "danl-310-data-storytelling.html#shiny-app",
     "href": "danl-310-data-storytelling.html#shiny-app",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Shiny App",
     "text": "Shiny App"
   },
   {
     "objectID": "danl-310-data-storytelling.html#dashboard",
     "href": "danl-310-data-storytelling.html#dashboard",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Dashboard",
     "text": "Dashboard\n\nThe dashboard for my project can be found here: 1aaronz.github.io/danl310dashboard.html\n\nThe shiny app allows interactive visualization with the cumulative HSR bar chart. The dashboard organizes the all the charts together."
   },
   {
     "objectID": "danl-310-data-storytelling.html#limitations",
     "href": "danl-310-data-storytelling.html#limitations",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Limitations",
     "text": "Limitations\nThe 10 year projection is subject to change. It is based off of projects that have been officially announced. New projects set to be complete within the next 10 years could be announced, and projects that were announced could be cancelled."
   },
@@ -870,7 +870,7 @@
   {
     "objectID": "danl-310-data-storytelling.html#total-hsr-by-country-summary",
     "href": "danl-310-data-storytelling.html#total-hsr-by-country-summary",
-    "title": "Your Data Storytelling Project Title",
+    "title": "High Speed Rail Visualization",
     "section": "Total HSR by country summary",
     "text": "Total HSR by country summary\n\nhsr |&gt;\n  group_by(country) |&gt;\n  filter(Opening_year&lt;=2026) %&gt;% \n  summarize(\n    n = n(),\n    mean_HSR_line = mean(Length_km, na.rm = TRUE),\n    Total_HSR_km = sum(Length_km, na.rm = TRUE)\n  ) |&gt;\n  arrange(desc(Total_HSR_km))\n\n# A tibble: 28 × 4\n   country            n mean_HSR_line Total_HSR_km\n   &lt;chr&gt;          &lt;int&gt;         &lt;dbl&gt;        &lt;dbl&gt;\n 1 China             15         2234.       33504.\n 2 Spain             18          230         4140 \n 3 Germany           30          117.        3511.\n 4 France            17          195.        3320.\n 5 Japan              8          369.        2956.\n 6 Sweden            12          165.        1981 \n 7 South_Korea       11          172.        1887 \n 8 Italy             15          106.        1590.\n 9 Turkey             7          227.        1586 \n10 United_Kingdom     8          186.        1489.\n# ℹ 18 more rows"
   }
