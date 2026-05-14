@@ -39,6 +39,7 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(ggthemes)
 library(maps)
+library(rsconnect)
 
 # Add other packages as needed.
 # Examples:
@@ -64,8 +65,6 @@ theme_set(
 # scale_colour_discrete <- function(...) scale_colour_viridis_d(...)
 # scale_fill_discrete <- function(...) scale_fill_viridis_d(...)
 ```
-
-# This page is currently a work in progress
 
 # Project Overview
 
@@ -140,12 +139,10 @@ This may include:
 - preparing data specifically for your Shiny app or dashboard.
 
 ```{r data-preparation}
-# Replace this example with your own data cleaning and transformation code.
 
 hsr_all <- read.csv("hsr_all.csv")
-# ------------------------------------------------------------
-# 5. CLEAN LENGTH COLUMN
-# ------------------------------------------------------------
+
+#CLEAN LENGTH COLUMN---------------------------------------------------------
 if ("Length" %in% names(hsr_all)) {
   hsr_all <- hsr_all %>%
     mutate(
@@ -154,9 +151,7 @@ if ("Length" %in% names(hsr_all)) {
     )
 }
 
-# ------------------------------------------------------------
-# 6. CLEAN OPENING YEAR (ROBUST FIX)
-# ------------------------------------------------------------
+# CLEAN OPENING YEAR------------------------------------------------------
 if ("Opening" %in% names(hsr_all)) {
   hsr_all <- hsr_all %>%
     mutate(
@@ -452,14 +447,14 @@ ggplot(world_hsr) +
 ```
 
 **Interpretation:**\
-Use this only if it adds something meaningful to the story.
+This graph helps visualize how far behind the US currently is to the rest of the world. The countries with more high speed rail take up a large area on the map.
 
 ## Shiny App
 
 ```{=html}
 <div style="display: flex; justify-content: center; margin: 1em 0;">
   <iframe
-    src="YOUR_SHINY_APP_URL"
+    src="https://yjmcom-aaron-zalen.shinyapps.io/hsr-app/"
     width="800"
     height="800"
     frameborder="0"
@@ -475,6 +470,8 @@ Briefly describe the Shiny app and dashboard that accompany this project.
 - **The dashboard for my project can be found here:** [1aaronz.github.io/danl310dashboard.html](https://1aaronz.github.io/danl310dashboard.html)
 
 The dashboard organizes the all the charts together
+
+![](hsr_race_chart.gif)
 
 # Connecting the Dots
 
@@ -527,7 +524,7 @@ Examples:
 
 # References
 
-Public Policy Polling. (2024). National survey on high-speed rail (conducted for the U.S. High Speed Rail Coalition). https://www.ushsr.com/
+Public Policy Polling. (2024). National survey on high-speed rail. https://www.ushsr.com/
 
 Wikipedia contributors. (n.d.). List of high-speed railway lines. In Wikipedia. Retrieved May 6, 2026, from https://en.wikipedia.org/wiki/List_of_high-speed_railway_lines
 

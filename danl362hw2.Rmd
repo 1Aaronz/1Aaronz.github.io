@@ -179,7 +179,7 @@ Out of 10,000 orders last month, 12% were late, with specific performance issues
 ### 2) Action Plan
 
 | **Cause** | **Evidence from Data** | **Recommended Action** | **Expected Impact** | **Cost Estimate** |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **1. Warehouse Delays** | 310 complaints related to warehouse delays. | Optimize warehouse layout and implement better labor scheduling. | Reduce warehouse delays by 20%. Improve operational efficiency. | \$10,000 (layout + labor) |
 | **2. Carrier X Performance** | Carrier X is responsible for 30% of orders and has a 20% late rate. | Reroute some orders from Carrier X to Carrier Y or Z; improve Carrier X's service-level agreement (SLA). | Reduce Carrier X delays by 10%. Improve overall delivery reliability. | \$7,000 (SLA renegotiation + rerouting) |
 | **3. Tracking Issues** | 420 complaints about “No tracking updates.” | Implement a more robust tracking system; integrate proactive customer notifications. | Reduce tracking-related complaints by 15%. Improve customer satisfaction. | \$5,000 (tracking system upgrade) |
@@ -204,7 +204,7 @@ Out of 10,000 orders last month, 12% were late, with specific performance issues
 
 2.  **Carrier SLA performance data** for Carrier X’s average delay times per route.
 
-## Why this prompt works: 
+## Why this prompt works:
 
 This prompt gets the answer to answer in such a way that is actionable and easily understood. The prompt itself has a lot of information that's difficult to parse on its own, while the ai's response clearly organizes the information and suggests improvements.
 
@@ -401,7 +401,7 @@ Your late‑delivery rate (12%) is driven primarily by three evidence‑supporte
 ## 2) Table of causes, evidence, actions, impact, cost
 
 | Cause | Evidence from data | Recommended action | Expected impact (30 days) | Cost estimate |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **1. Carrier X underperformance** | Carrier X has **20% late** vs Y at 8% and Z at 10%; X handles **30% of all orders** | Shift **10–15% of volume** from Carrier X to Y/Z; implement daily pickup confirmation | Reduce late deliveries by **2–3 pts** | \$5,000 (contract adjustments + ops labor) |
 | **2. Region A operational delays** | Region A late rate **18%**, double Region B (9%) | Launch a **Region A rapid‑response taskforce**: audit handoff timing, enforce cutoff adherence, add temporary labor during peak | Reduce late deliveries by **1–1.5 pts** | \$12,000 (temp labor + overtime) |
 | **3. Warehouse processing delays** | “Warehouse delay” (310) + “No tracking updates” (420) indicate slow release-to-carrier handoff | Add a **dedicated late‑order lane**, tighten scan‑to‑handoff process, and run hourly exception sweeps | Reduce late deliveries by **0.5–1 pt** | \$6,000 (labor + process tooling) |
@@ -519,7 +519,7 @@ The 12% late delivery rate is a critical friction point driven by Carrier X’s 
 ### 2) 30-Day Action Plan
 
 |  |  |  |  |  |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | **Cause** | **Evidence from data** | **Recommended action** | **Expected impact** | **Cost estimate** |
 | **Carrier X Underperformance** | 20% late rate; accounts for 50% of total lates (600/1,200). | Shift 15% of total order volume from Carrier X to Carrier Y. | Reduction of \~180 late deliveries/month. | \$0 (Admin change) |
 | **Warehouse Backlogs** | 310 "Warehouse delay" complaint tags. | Hire 4 temporary staff for peak shifts to clear daily backlog. | 25% reduction in "Warehouse delay" complaints. | \$18,000 (Labor) |

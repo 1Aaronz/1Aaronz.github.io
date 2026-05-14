@@ -6,12 +6,34 @@ library(shiny)
 library(tidyverse)
 library(plotly)
 library(DT)
+library(ggiraph)
+library(htmlwidgets)
+library(gganimate)
+library(ggthemes)
+library(hrbrthemes)
+library(rmarkdown)
+library(forcats)
 
 # -------------------- Data Loading & Preparation --------------------
-# Load your cleaned data (adjust path if needed)
-# Assuming 'hsr.csv' is in the same folder as app.R
+# Load your cleaned data
 hsr <- read.csv("hsr.csv") %>%
   select(Line, Length_km, Opening_year, country, Status, Maximum.speed)
+
+hsr_2026 <- hsr %>% 
+  filter(Opening_year<=2026) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+
+hsr_2000 <- hsr %>% 
+  filter(Opening_year<=2000) %>% 
+  group_by(country) %>% 
+  summarise(total_km = sum(Length_km))
+
+hsr_2000 <- hsr_2000 %>%
+  mutate(
+    country = as.character(country),
+    is_us = country == "United_States")
 
 # Prepare summary data for the app
 hsr_summary <- hsr %>%
@@ -34,6 +56,10 @@ hsr_trend <- hsr %>%
   group_by(country) %>%
   arrange(Opening_year) %>%
   mutate(Cumulative_km = cumsum(Yearly_km))
+
+
+
+# Question 1 --------------------------------------------------------------
 
 # -------------------- UI --------------------
 ui <- fluidPage(
@@ -75,46 +101,33 @@ server <- function(input, output, session) {
   
   # Plot 1: Rankings
   output$rank_plot <- renderPlotly({
-    df <- filtered_data()
     
-    # Highlight US
-    df$color <- ifelse(df$country == "United_States", "red", "steelblue")
-    
-    df <- df %>%
+    df <- filtered_data() %>%
       mutate(
-        country = fct_reorder(country, total_km)
+        country = fct_reorder(country, total_km),
+        is_us = country == "United_States"
       )
     
     p <- ggplot(df, aes(
       x = total_km,
-      y = fct_reorder(country, total_km)
+      y = country,
+      fill = is_us
     )) +
-      geom_col(aes(fill = country)) +
-      scale_y_discrete(labels = function(x) {
-        ifelse(x == "United_States", "United_States", x)
-      }) +
+      geom_col() +
+      scale_fill_manual(values = c("TRUE" = "steelblue", "FALSE" = "grey85")) +
+      guides(fill = "none") +
       theme_minimal() +
-      theme(
-        legend.position = "none",
-        axis.text.y = element_text(
-          color = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
-                         "red", "black"),
-          face = ifelse(levels(fct_reorder(hsr_2000$country, hsr_2000$total_km)) == "United_States",
-                        "bold", "plain")
-        )
-      ) +
       labs(
-        title = "Total Operational High Speed Rail Per Country in 2000",
-        y = "",
-        x= "Total HSR in Km",
-        subtitle = "Countries Ahead of the US: 13"
-      )+
-      scale_fill_viridis_d()
+        title = paste("Total Operational High Speed Rail Per Country in", input$year_filter),
+        x = "Total HSR in Km",
+        y = ""
+      )
     
-    ggplotly(p, tooltip = "text") %>% layout(hoverlabel = list(bgcolor = "white"))
+    ggplotly(p)
+    
   })
   
-  # Table 1: Rankings
+  # Rankings
   output$rank_table <- renderDT({
     df <- filtered_data() %>%
       mutate(total_km = round(total_km, 0)) %>%

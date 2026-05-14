@@ -739,8 +739,7 @@ $T_b(X_i)$ is the predicted probability from tree $b$ using predictor vector $X_
 
 We build decision trees iteratively using the formula:
 
-$$\hat{p}(X) = \sigma\left(\sum_{m=1}^{M} f_m(X)\right)$$
-where $\hat{p}(X)$ is the probability of team 1 winning
+$$\hat{p}(X) = \sigma\left(\sum_{m=1}^{M} f_m(X)\right)$$ where $\hat{p}(X)$ is the probability of team 1 winning
 
 $σ(⋅)$ is the logistic sigmoid function
 
