@@ -68,8 +68,6 @@ theme_set(
 
 # Project Overview
 
-- **Project Webpage:** [HSR Visualization project](https://1aaronz.github.io/danl-310-data-storytelling.html)
-
 This project visualizes global high-speed rail (HSR) progress compared to the US. It highlights the difference in the length of high-speed rail other countries have managed to achieve compared to the relative slow HSR progress of the US. 60% of U.S. voters have a favorable opinion of high-speed rail and only 16% view it unfavorably (Public Policy Polling). Despite public interest in HSR in the US, the US has fallen behind in HSR construction.
 
 The analysis examines historical HSR growth and visualizes changes over time, extending up to the present day and 10 year projected estimates. 
