@@ -1254,13 +1254,13 @@ kenpom_final <- bind_rows(
   distinct(Season, TeamID, .keep_all = TRUE) %>%   # one row per team-season
   arrange(Season, TeamID)
 
-# --- 8. FINAL VERIFICATION ---
-cat("\n", strrep("=", 60), "\n")
-cat("FINAL KENPOM DATASET\n")
-cat(strrep("=", 60), "\n")
-cat("Rows:", nrow(kenpom_final), "\n")
-cat("Unique teams:", n_distinct(kenpom_final$TeamID), "\n")
-cat("Seasons:", min(kenpom_final$Season, na.rm=TRUE), "-", max(kenpom_final$Season, na.rm=TRUE), "\n")
+# # --- 8. FINAL VERIFICATION ---
+# cat("\n", strrep("=", 60), "\n")
+# cat("FINAL KENPOM DATASET\n")
+# cat(strrep("=", 60), "\n")
+# cat("Rows:", nrow(kenpom_final), "\n")
+# cat("Unique teams:", n_distinct(kenpom_final$TeamID), "\n")
+# cat("Seasons:", min(kenpom_final$Season, na.rm=TRUE), "-", max(kenpom_final$Season, na.rm=TRUE), "\n")
 
 # Verify tournament teams (2003+)
 tourney_teams <- data$MNCAATourneySeeds %>%
@@ -1270,7 +1270,7 @@ tourney_teams <- data$MNCAATourneySeeds %>%
 
 missing <- setdiff(tourney_teams, kenpom_final$TeamID)
 if (length(missing) == 0) {
-  cat("\n✅ TOURNAMENT TEAMS (2003+): ALL", length(tourney_teams), "PRESENT\n")
+  cat("\n tournaments teams cleaned") 
 } else {
   cat("\n⚠️ Missing tournament teams:", length(missing), "\n")
   cat("Missing IDs:", paste(missing, collapse = ", "), "\n")
@@ -1594,11 +1594,11 @@ generate_monte_carlo_brackets <- function(
   set.seed(seed)
   
   model_type <- prediction_models$model_type
-  cat("  Using model type:", model_type, "\n")
-  if (grepl("elo", model_type)) {
-    cat("  ELO Gamma:", elo_gamma, "\n")
-  }
-  
+  #cat("  Using model type:", model_type, "\n")
+  # if (grepl("elo", model_type)) {
+  #   cat("  ELO Gamma:", elo_gamma, "\n")
+  # }
+  # 
   # Get bracket structure
   if (is_future) {
     full_bracket <- get_bracket_structure(season, data)
@@ -1612,10 +1612,10 @@ generate_monte_carlo_brackets <- function(
   first_round <- full_bracket %>% filter(GameRound == 1)
   later_rounds <- full_bracket %>% filter(GameRound > 1) %>% arrange(GameRound)
   
-  cat("→ Play-in games:", nrow(play_in_games), "\n")
-  if (!is_future && nrow(play_in_games) > 0) {
-    cat("→ Play-in winners known:", sum(!is.na(play_in_games$Winner)), "of", nrow(play_in_games), "\n")
-  }
+  # cat("→ Play-in games:", nrow(play_in_games), "\n")
+  # if (!is_future && nrow(play_in_games) > 0) {
+  #   cat("→ Play-in winners known:", sum(!is.na(play_in_games$Winner)), "of", nrow(play_in_games), "\n")
+  # }
   
   # Model-agnostic prediction function (with ELO gamma support)
   predict_game <- function(t1, t2) {
@@ -1791,8 +1791,8 @@ generate_monte_carlo_brackets <- function(
       .groups = "drop"
     )
   
-  cat("✓ Bracket generation complete\n")
-  cat("  Simulated", mean(stats$GamesSimulated), "games per bracket\n")
+  # cat("✓ Bracket generation complete\n")
+  # cat("  Simulated", mean(stats$GamesSimulated), "games per bracket\n")
   
   list(brackets = brackets, stats = stats)
 }
@@ -2007,7 +2007,7 @@ run_pipeline <- function(
   max_historical <- max(data$MNCAATourneyCompactResults$Season, na.rm = TRUE)
   is_future <- season > max_historical
   
-  cat("→ Building training data (pre-", season, ")...\n", sep = "")
+  # cat("→ Building training data (pre-", season, ")...\n", sep = "")
   
   train_data <- build_training_data_balanced(
     data = data,
@@ -2171,7 +2171,7 @@ run_pipeline <- function(
     picked$scores <- list(scores = tibble())
   }
   
-  cat("✓ Pipeline complete\n")
+  # cat("✓ Pipeline complete\n")
   
   list(
     mc = mc,
