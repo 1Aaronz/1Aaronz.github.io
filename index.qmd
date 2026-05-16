@@ -22,6 +22,8 @@ about:
       href: mailto:AaronZalen222@gmail.com
 ---
 
+Welcome to my portfolio webpage. Here you can find the data analysis projects I've worked on. 
+
 ## Education
 
 State University of New York at Geneseo \| Geneseo, NY <br> B.S. in Data Analytics \| Aug 2022 - May 2026 <br>
