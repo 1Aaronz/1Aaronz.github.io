@@ -2301,7 +2301,7 @@ calculate_brier_by_year_iterative_ranger <- function(
   
   for (eval_year in years_to_evaluate) {
     
-    cat("\nTraining Ranger RF on", start_train_season, "-", eval_year - 1, "evaluating on", eval_year, "\n")
+    # cat("\nTraining Ranger RF on", start_train_season, "-", eval_year - 1, "evaluating on", eval_year, "\n")
     
     train_data <- build_training_data_balanced(
       data = data,
@@ -2310,7 +2310,7 @@ calculate_brier_by_year_iterative_ranger <- function(
       train_until_season = eval_year
     )
     
-    cat("Training data has", nrow(train_data), "games\n")
+    # cat("Training data has", nrow(train_data), "games\n")
     
     predictors <- setdiff(names(train_data), c("Win", "Season"))
     
@@ -2334,7 +2334,7 @@ calculate_brier_by_year_iterative_ranger <- function(
     train_pred <- predict(rf_model, data = train_data_rf)$predictions[, "1"]
     y_train <- as.numeric(as.character(train_data_rf$Win))
     train_brier <- mean((train_pred - y_train)^2)
-    cat("Training Brier:", round(train_brier,4), "\n")
+    # cat("Training Brier:", round(train_brier,4), "\n")
     
     importance_matrix <- data.frame(
       Feature = names(rf_model$variable.importance),
@@ -2412,7 +2412,7 @@ calculate_brier_by_year_iterative_ranger <- function(
   }
   
   overall_brier <- weighted.mean(all_brier_results$Brier_Score, all_brier_results$N_Valid_Predictions)
-  cat("Overall Brier:", round(overall_brier,4), "\n")
+  # cat("Overall Brier:", round(overall_brier,4), "\n")
   
   return(list(results=all_brier_results, models=all_model_info))
 }
@@ -2431,15 +2431,15 @@ calculate_brier_by_year_iterative_lm <- function(
   all_model_info <- list()
   
   for (eval_year in years_to_evaluate) {
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║  Training model on", start_train_season, "-", eval_year - 1, 
-        "and evaluating on", eval_year, "║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n")
-    cat("\n")
-    
-    # Step 1: Build training data up to but not including eval_year
-    cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
+    # cat("\n")
+    # cat("╔══════════════════════════════════════════════════════════════╗\n")
+    # cat("║  Training model on", start_train_season, "-", eval_year - 1, 
+    #     "and evaluating on", eval_year, "║\n")
+    # cat("╚══════════════════════════════════════════════════════════════╝\n")
+    # cat("\n")
+    # 
+    # # Step 1: Build training data up to but not including eval_year
+    # cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
     train_data <- build_training_data_balanced(
       data = data,
       team_season_stats = team_season_stats %>% filter(Season < eval_year),
@@ -2447,13 +2447,13 @@ calculate_brier_by_year_iterative_lm <- function(
       train_until_season = eval_year
     )
     
-    cat("  ✓ Training data has", nrow(train_data), "games\n")
+    # cat("  ✓ Training data has", nrow(train_data), "games\n")
     
     # Step 2: Get predictors
     predictors <- setdiff(names(train_data), c("Win", "Season"))
     
     # Step 3: Train linear model (logistic or linear regression)
-    cat("→ Training", ifelse(use_logistic, "logistic regression", "linear regression"), "model...\n")
+    # cat("→ Training", ifelse(use_logistic, "logistic regression", "linear regression"), "model...\n")
     
     if (use_logistic) {
       # Logistic regression for binary outcomes
@@ -2463,12 +2463,12 @@ calculate_brier_by_year_iterative_lm <- function(
         family = binomial(link = "logit")
       )
       
-      cat("  ✓ Model converged:", lm_model$converged, "\n")
+      # cat("  ✓ Model converged:", lm_model$converged, "\n")
       
       # Get predictions on training data (for pseudo R-squared)
       train_pred_prob <- predict(lm_model, type = "response")
       train_accuracy <- mean((train_pred_prob >= 0.5) == train_data$Win)
-      cat("  ✓ Training accuracy:", round(train_accuracy, 3), "\n")
+      # cat("  ✓ Training accuracy:", round(train_accuracy, 3), "\n")
       
     } else {
       # Linear regression 
@@ -2477,8 +2477,8 @@ calculate_brier_by_year_iterative_lm <- function(
         data = train_data[, c(predictors, "Win")]
       )
       
-      cat("  ✓ Linear regression trained\n")
-      cat("  ✓ R-squared:", round(summary(lm_model)$r.squared, 3), "\n")
+      # cat("  ✓ Linear regression trained\n")
+      # cat("  ✓ R-squared:", round(summary(lm_model)$r.squared, 3), "\n")
     }
     
     # Create prediction_models structure for evaluation
@@ -2492,8 +2492,8 @@ calculate_brier_by_year_iterative_lm <- function(
       use_logistic = use_logistic
     )
     
-    # Step 4: Evaluate on tournament games from eval_year
-    cat("→ Evaluating on", eval_year, "tournament games...\n")
+    # # Step 4: Evaluate on tournament games from eval_year
+    # cat("→ Evaluating on", eval_year, "tournament games...\n")
     
     # Get actual tournament games for eval_year
     tourney_games <- data$MNCAATourneyCompactResults %>%
@@ -2502,12 +2502,12 @@ calculate_brier_by_year_iterative_lm <- function(
     
     # Count tournament games
     n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games for", eval_year, "\n")
-    
-    if (n_total_games == 0) {
-      cat("  ⚠ No tournament games found for", eval_year, "\n")
-      next
-    }
+    # cat("  Found", n_total_games, "total tournament games for", eval_year, "\n")
+    # 
+    # if (n_total_games == 0) {
+    #   cat("  ⚠ No tournament games found for", eval_year, "\n")
+    #   next
+    # }
     
     # Create game pairs for evaluation (random orientation)
     set.seed(seed)
@@ -2568,17 +2568,17 @@ calculate_brier_by_year_iterative_lm <- function(
     n_valid_predictions <- nrow(predictions[!is.na(predictions$Pred_Prob), ])
     predictions <- predictions[!is.na(predictions$Pred_Prob), ]
     
-    cat("  Successfully predicted", n_valid_predictions, "out of", n_total_games, "games\n")
-    
-    if (nrow(predictions) == 0) {
-      cat("  ⚠ No valid predictions for", eval_year, "\n")
-      next
-    }
-    
-    if (games_with_errors > 0) {
-      cat("  ⚠ Failed to predict", games_with_errors, "games\n")
-    }
-    
+    # cat("  Successfully predicted", n_valid_predictions, "out of", n_total_games, "games\n")
+    # 
+    # if (nrow(predictions) == 0) {
+    #   cat("  ⚠ No valid predictions for", eval_year, "\n")
+    #   next
+    # }
+    # 
+    # if (games_with_errors > 0) {
+    #   cat("  ⚠ Failed to predict", games_with_errors, "games\n")
+    # }
+    # 
     # Calculate metrics
     predictions$Brier_Component <- (predictions$Pred_Prob - predictions$Actual_Win)^2
     brier_score <- mean(predictions$Brier_Component)
@@ -2618,14 +2618,14 @@ calculate_brier_by_year_iterative_lm <- function(
       predictions = predictions
     )
     
-    cat("\n  ✓ Results for", eval_year, ":")
-    cat("\n    - Brier Score:", round(brier_score, 4))
-    cat("\n    - Log Loss:", round(log_loss, 4))
-    cat("\n    - Accuracy:", round(accuracy, 3))
-    cat("\n    - Total Games:", n_total_games)
-    cat("\n    - Valid Predictions:", n_valid_predictions)
-    cat("\n    - Train Games:", nrow(train_data))
-    cat("\n")
+    # cat("\n  ✓ Results for", eval_year, ":")
+    # cat("\n    - Brier Score:", round(brier_score, 4))
+    # cat("\n    - Log Loss:", round(log_loss, 4))
+    # cat("\n    - Accuracy:", round(accuracy, 3))
+    # cat("\n    - Total Games:", n_total_games)
+    # cat("\n    - Valid Predictions:", n_valid_predictions)
+    # cat("\n    - Train Games:", nrow(train_data))
+    # cat("\n")
   }
   
   # Calculate overall metrics across all evaluation years
@@ -2680,15 +2680,15 @@ calculate_brier_by_year_iterative_xgb <- function(
   all_model_info <- list()
   
   for (eval_year in years_to_evaluate) {
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║  Training XGBoost on", start_train_season, "-", eval_year - 1, 
-        "and evaluating on", eval_year, "║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n\n")
+    # cat("\n")
+    # cat("╔══════════════════════════════════════════════════════════════╗\n")
+    # cat("║  Training XGBoost on", start_train_season, "-", eval_year - 1, 
+    #     "and evaluating on", eval_year, "║\n")
+    # cat("╚══════════════════════════════════════════════════════════════╝\n\n")
     
     
     # BUILD TRAINING DATA========================
-    cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
+    # cat("→ Building training data (", start_train_season, "-", eval_year - 1, ")...\n", sep="")
     
     train_data <- build_training_data_balanced(
       data = data,
@@ -2697,13 +2697,13 @@ calculate_brier_by_year_iterative_xgb <- function(
       train_until_season = eval_year
     )
     
-    cat("  ✓ Training data has", nrow(train_data), "games\n")
+    # cat("  ✓ Training data has", nrow(train_data), "games\n")
     
     predictors <- setdiff(names(train_data), c("Win", "Season"))
     
     
     # TRAIN XGBOOST ========================
-    cat("→ Training XGBoost model...\n")
+    # cat("→ Training XGBoost model...\n")
     
     x_train <- as.matrix(train_data[, predictors])
     y_train <- train_data$Win
@@ -2743,19 +2743,19 @@ calculate_brier_by_year_iterative_xgb <- function(
     if (!is.null(xgb_model$best_iteration)) {
       best_nrounds <- xgb_model$best_iteration
       best_logloss <- xgb_model$best_score
-      cat("  ✓ Best rounds:", best_nrounds)
-      cat("\n  ✓ Validation Log Loss:", round(best_logloss, 4), "\n")
+      # cat("  ✓ Best rounds:", best_nrounds)
+      # cat("\n  ✓ Validation Log Loss:", round(best_logloss, 4), "\n")
     } else {
       # If early stopping didn't trigger, use the final model
       best_nrounds <- nrounds
       # Get final validation loss from evaluation log
       if (!is.null(xgb_model$evaluation_log)) {
         best_logloss <- min(xgb_model$evaluation_log$valid_logloss)
-        cat("  ✓ Used all", nrounds, "rounds (early stopping didn't trigger)")
-        cat("\n  ✓ Validation Log Loss:", round(best_logloss, 4), "\n")
+        # cat("  ✓ Used all", nrounds, "rounds (early stopping didn't trigger)")
+        # cat("\n  ✓ Validation Log Loss:", round(best_logloss, 4), "\n")
       } else {
         best_logloss <- NA
-        cat("  ✓ Used all", nrounds, "rounds\n")
+        # cat("  ✓ Used all", nrounds, "rounds\n")
       }
     }
     
@@ -2766,10 +2766,10 @@ calculate_brier_by_year_iterative_xgb <- function(
     
     importance_matrix <- xgb.importance(feature_names = predictors, model = xgb_model)
     
-    cat("  ✓ Top 3 features:\n")
-    for(i in 1:min(3, nrow(importance_matrix))) {
-      cat("    -", importance_matrix$Feature[i], ":", round(importance_matrix$Gain[i], 4), "\n")
-    }
+    # cat("  ✓ Top 3 features:\n")
+    # for(i in 1:min(3, nrow(importance_matrix))) {
+    #   cat("    -", importance_matrix$Feature[i], ":", round(importance_matrix$Gain[i], 4), "\n")
+    # }
     
     prediction_models <- list(
       xgb_model = xgb_model,
@@ -2778,15 +2778,15 @@ calculate_brier_by_year_iterative_xgb <- function(
       params = params
     )
     
-    # EVALUATION ========================
-    cat("→ Evaluating on", eval_year, "tournament games...\n")
+   # EVALUATION ========================
+    # cat("→ Evaluating on", eval_year, "tournament games...\n")
     
     tourney_games <- data$MNCAATourneyCompactResults %>%
       dplyr::filter(Season == eval_year) %>%
       dplyr::select(WTeamID, LTeamID)
     
     n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games\n")
+    # cat("  Found", n_total_games, "total tournament games\n")
     
     if (n_total_games == 0) next
     
@@ -2836,7 +2836,7 @@ calculate_brier_by_year_iterative_xgb <- function(
     predictions <- predictions[!is.na(predictions$Pred_Prob), ]
     
     n_valid_predictions <- nrow(predictions)
-    cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
+    # cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
     
     if (n_valid_predictions == 0) next
     
@@ -2875,9 +2875,9 @@ calculate_brier_by_year_iterative_xgb <- function(
       importance = importance_matrix
     )
     
-    cat("\n  ✓ Brier:", round(brier_score, 4),
-        "| LogLoss:", round(log_loss, 4),
-        "| Acc:", round(accuracy, 3), "\n")
+    # cat("\n  ✓ Brier:", round(brier_score, 4),
+    #     "| LogLoss:", round(log_loss, 4),
+    #     "| Acc:", round(accuracy, 3), "\n")
   }
   
   
@@ -2910,7 +2910,7 @@ calculate_brier_by_year_iterative_pca_lm <- function(
   
   for (eval_year in years_to_evaluate) {
     
-    cat("\nPCA + Linear Regression on", eval_year, "\n")
+    # cat("\nPCA + Linear Regression on", eval_year, "\n")
     
     # TRAIN DATA=====================
     train_data <- build_training_data_balanced(
@@ -2935,11 +2935,11 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     # Check how many components we have
     n_components <- ncol(pca_model$x)
     
-    if(n_components < 2) {
-      cat("  ERROR: Only", n_components, "principal component(s) available. Need at least 2.\n")
-      cat("  Skipping year", eval_year, "\n")
-      next
-    }
+    # if(n_components < 2) {
+    #   cat("  ERROR: Only", n_components, "principal component(s) available. Need at least 2.\n")
+    #   cat("  Skipping year", eval_year, "\n")
+    #   next
+    # }
     
     # Take ONLY first 2 components
     pca_train <- as.data.frame(pca_model$x[, 1:2])
@@ -2952,7 +2952,7 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     
     train_pred <- predict(lm_model)
     train_brier <- mean((train_pred - y_train)^2)
-    cat("  Training Brier:", round(train_brier, 4), "\n")
+    # cat("  Training Brier:", round(train_brier, 4), "\n")
     
     # TEST DATA=====================
     tourney_games <- data$MNCAATourneyCompactResults %>%
@@ -3012,10 +3012,10 @@ calculate_brier_by_year_iterative_pca_lm <- function(
     
     predictions <- predictions[!is.na(predictions$Pred_Prob), ]
     
-    if(nrow(predictions) == 0) {
-      cat("  No valid predictions for", eval_year, "\n")
-      next
-    }
+    # if(nrow(predictions) == 0) {
+    #   cat("  No valid predictions for", eval_year, "\n")
+    #   next
+    # }
     
     # METRICS====================
     brier_score <- mean((predictions$Pred_Prob - predictions$Actual_Win)^2)
@@ -3074,18 +3074,18 @@ calculate_brier_by_year_iterative_elo <- function(
   
   for (eval_year in years_to_evaluate) {
     
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║        Evaluating ELO model on", eval_year, "tournament        ║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n\n")
-    
+    # cat("\n")
+    # cat("╔══════════════════════════════════════════════════════════════╗\n")
+    # cat("║        Evaluating ELO model on", eval_year, "tournament        ║\n")
+    # cat("╚══════════════════════════════════════════════════════════════╝\n\n")
+    # 
     # GET TOURNAMENT GAMES======================
     tourney_games <- data$MNCAATourneyCompactResults %>%
       dplyr::filter(Season == eval_year) %>%
       dplyr::select(WTeamID, LTeamID)
     
     n_total_games <- nrow(tourney_games)
-    cat("  Found", n_total_games, "total tournament games\n")
+    # cat("  Found", n_total_games, "total tournament games\n")
     
     if (n_total_games == 0) next
     
@@ -3137,7 +3137,7 @@ calculate_brier_by_year_iterative_elo <- function(
     predictions <- predictions[!is.na(predictions$Pred_Prob), ]
     
     n_valid_predictions <- nrow(predictions)
-    cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
+    # cat("  ✓ Predicted", n_valid_predictions, "/", n_total_games, "games\n")
     
     if (n_valid_predictions == 0) next
     
@@ -3183,9 +3183,9 @@ calculate_brier_by_year_iterative_elo <- function(
       all_brier_results$N_Valid_Predictions
     )
     
-    cat("\n══════════════════════════════════════════\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), "\n")
-    cat("══════════════════════════════════════════\n")
+    # cat("\n══════════════════════════════════════════\n")
+    # cat("Overall Brier Score:", round(overall_brier, 4), "\n")
+    # cat("══════════════════════════════════════════\n")
   }
   
   return(list(
@@ -3204,7 +3204,7 @@ brier_analysis_ranger <- calculate_brier_by_year_iterative_ranger(
   seed = 123
 )
 
-print(brier_analysis_ranger$results)
+# print(brier_analysis_ranger$results)
 
 # Run with logistic regression (recommended for binary outcomes)
 brier_analysis_lr <- calculate_brier_by_year_iterative_lm(
