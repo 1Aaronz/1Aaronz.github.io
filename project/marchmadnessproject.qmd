@@ -2408,7 +2408,7 @@ calculate_brier_by_year_iterative_ranger <- function(
       importance = importance_matrix
     )
     
-    cat("Year", eval_year, "| Brier:", round(brier_score,4), "| LogLoss:", round(log_loss,4), "| Accuracy:", round(accuracy,3), "\n")
+    # cat("Year", eval_year, "| Brier:", round(brier_score,4), "| LogLoss:", round(log_loss,4), "| Accuracy:", round(accuracy,3), "\n")
   }
   
   overall_brier <- weighted.mean(all_brier_results$Brier_Score, all_brier_results$N_Valid_Predictions)
@@ -2643,15 +2643,15 @@ calculate_brier_by_year_iterative_lm <- function(
     attr(all_brier_results, "total_valid_games") <- sum(all_brier_results$N_Valid_Predictions)
     attr(all_brier_results, "total_games") <- sum(all_brier_results$N_Total_Games)
     
-    cat("\n")
-    cat("╔══════════════════════════════════════════════════════════════╗\n")
-    cat("║                    OVERALL PERFORMANCE                        ║\n")
-    cat("╚══════════════════════════════════════════════════════════════╝\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), 
-        "over", sum(all_brier_results$N_Valid_Predictions), "valid predictions\n")
-    cat("Overall Log Loss:", round(overall_logloss, 4), "\n")
-    cat("Overall Accuracy:", round(overall_accuracy, 3), "\n")
-    cat("\n")
+    # cat("\n")
+    # cat("╔══════════════════════════════════════════════════════════════╗\n")
+    # cat("║                    OVERALL PERFORMANCE                        ║\n")
+    # cat("╚══════════════════════════════════════════════════════════════╝\n")
+    # cat("Overall Brier Score:", round(overall_brier, 4), 
+    #     "over", sum(all_brier_results$N_Valid_Predictions), "valid predictions\n")
+    # cat("Overall Log Loss:", round(overall_logloss, 4), "\n")
+    # cat("Overall Accuracy:", round(overall_accuracy, 3), "\n")
+    # cat("\n")
   }
   
   # Return results and optionally models
@@ -2762,7 +2762,7 @@ calculate_brier_by_year_iterative_xgb <- function(
     # Training diagnostics
     train_pred <- predict(xgb_model, xgb.DMatrix(x_train))
     train_brier <- mean((train_pred - y_train)^2)
-    cat("  ✓ Training Brier:", round(train_brier, 4), "\n")
+    # cat("  ✓ Training Brier:", round(train_brier, 4), "\n")
     
     importance_matrix <- xgb.importance(feature_names = predictors, model = xgb_model)
     
@@ -2886,9 +2886,9 @@ calculate_brier_by_year_iterative_xgb <- function(
     overall_brier <- weighted.mean(all_brier_results$Brier_Score,
                                    all_brier_results$N_Valid_Predictions)
     
-    cat("\n══════════════════════════════════════════\n")
-    cat("Overall Brier Score:", round(overall_brier, 4), "\n")
-    cat("══════════════════════════════════════════\n")
+    # cat("\n══════════════════════════════════════════\n")
+    # cat("Overall Brier Score:", round(overall_brier, 4), "\n")
+    # cat("══════════════════════════════════════════\n")
   }
   
   return(list(
@@ -3047,9 +3047,9 @@ calculate_brier_by_year_iterative_pca_lm <- function(
       predictions = predictions
     )
     
-    cat("  ✓ Brier:", round(brier_score, 4),
-        "| LogLoss:", round(log_loss, 4),
-        "| Acc:", round(accuracy, 3), "\n")
+    # cat("  ✓ Brier:", round(brier_score, 4),
+    #     "| LogLoss:", round(log_loss, 4),
+    #     "| Acc:", round(accuracy, 3), "\n")
   }
   
   return(list(
@@ -3170,9 +3170,9 @@ calculate_brier_by_year_iterative_elo <- function(
       predictions = predictions
     )
     
-    cat("\n  ✓ Brier:", round(brier_score, 4),
-        "| LogLoss:", round(log_loss, 4),
-        "| Acc:", round(accuracy, 3), "\n")
+    # cat("\n  ✓ Brier:", round(brier_score, 4),
+    #     "| LogLoss:", round(log_loss, 4),
+    #     "| Acc:", round(accuracy, 3), "\n")
   }
   
   # OVERALL METRICS====================
