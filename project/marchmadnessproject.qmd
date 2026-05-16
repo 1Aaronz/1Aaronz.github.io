@@ -1296,7 +1296,6 @@ However, despite finding that public picks was overconfident and that scaling th
 #### Bracket simulation function
 
 ```{r}
-#| execute: FALSE
 # model predictors function --------------------------------------
 get_model_predictors <- function() {
   c(
@@ -2184,8 +2183,6 @@ run_pipeline <- function(
 #### Run bracket simulation
 
 ```{r}
-#| execute: FALSE
-#| echo: FALSE
 library(xgboost)
 
 n <- 1 #Number of simulations. Be aware, 100 simulations is computationally expensive.
@@ -2282,9 +2279,6 @@ all_scores %>%
 #### Full pipeline for brier score and log-loss
 
 ```{r}
-#| execute: FALSE
-#| echo: FALSE
-
 calculate_brier_by_year_iterative_ranger <- function(
     data,
     team_season_stats,
